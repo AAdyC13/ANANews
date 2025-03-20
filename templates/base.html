@@ -6,39 +6,29 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>ANANews</title>
-  <meta name="description" content="">
+  <!-- base_設定_網站介紹，通常是搜尋引擎才會看 -->
+  <meta name="description" content="學校作品：Django框架網站-ANANews">
+  <!-- base_設定_依視窗比例自動排版網頁 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- base_設定_禁止爬蟲 -->
   <meta name="robots" content="noindex">
 
-  <!-- Multi Js-->
-  <link rel="stylesheet" href="{% static 'vendor/multi.js/multi.min.css' %}">
-  <!-- Choices.js-->
-  <link rel="stylesheet" href="{% static 'vendor/choices.js/public/assets/styles/choices.min.css' %}">
-  <!-- Google fonts - Muli-->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,700">
-  <!-- theme stylesheet-->
-  <link rel="stylesheet" href="{% static 'css/style.default.premium.css' %}" id="theme-stylesheet">
-  <!-- Custom stylesheet-->
-  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-  <!-- Favicon-->
+  <!-- base_引入css_Mulish，好看英文字體-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:300,400,700">
+  <!-- base_引入圖片_網站標籤的icon-->
   <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 </head>
 
 <body>
-  <!-- include navbar -->
+  <!-- base_引入navbar -->
   {% include "navbar.html" %}
   <div class="d-flex align-items-stretch">
-    <!-- include navbar -->
+    <!-- base_引入sidebar -->
     {% include "sidebar.html" %}
-    <!-- 各app繼承頁面-->
-    {% block content %}{% endblock %}
-
-
-
-
-
-
-    <!-- JavaScript files-->
+    <!-- base_app複寫區塊_開始-->
+    {% block content %}
+    {% endblock %}
+    <!-- base_app複寫區塊_結束-->
   </div>
   <footer class="position-absolute bottom-0 bg-dash-dark-2 text-white text-center py-3 w-100 text-xs" id="footer">
     <div class="container-fluid text-center">
@@ -46,6 +36,10 @@
           title="作者">鄭宇哲</a>.C110134217</p>
     </div>
   </footer>
+  <!--base_引入CSS_模板自定義樣式-->
+  <link rel="stylesheet" href="{% static 'css/style.default.premium.css' %}" id="theme-stylesheet">
+  <!-- base_引入CSS_我的自定義樣式-->
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 </body>
 
 </html>

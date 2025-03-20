@@ -6,14 +6,14 @@ import app_top_keyword.top_keyword_ana as tops
 
 def home(request):
     return render(request,
-                      'app_top_keyword/app_top_keyword_home.html')
+                      'app_top_keyword/app_top_keyword.html')
 
-@csrf_exempt  # 如果有 CSRF 保護，可以用 AJAX Token 處理
+@csrf_exempt  # 取消 CSRF 保護
 def get_chart_data(request):
     if request.method == "POST":
         data = json.loads(request.body)  
-        keyword_max = int(data.get("keyword_count"))  # 取得數字輸入框數值
-        category:str = data.get("category")  # 取得選擇框的值
+        keyword_max = int(data.get("keyword_count"))
+        category:str = data.get("category")
 
         keyword_ana = tops.top_keyword_ana(category)
  

@@ -1,17 +1,23 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-
-
+<!-- top_keyword_引入js_chart.js，好看長條圖-->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+<!-- top_keyword_引入CSS_nouislider -->
+<link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.css' %}">
+<!-- top_keyword_引入js_nouislider -->
+<script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
+<!-- top_keyword_引入js_wNumb，nouislider部分功能 -->
+<script src="{% static 'vendor/nouislider/wNumb.min.js' %}"></script>
 
 <div class="page-content form-page">
-  <!-- 頁面大標題-->
+  <!-- top_keyword_頁面大標題-->
   <div class="bg-dash-dark-2 py-4">
     <div class="container-fluid">
       <h2 class="h5 mb-0">各類新聞熱門關鍵詞</h2>
     </div>
   </div>
-  <!-- 頁面索引-->
+  <!-- top_keyword_頁面索引-->
   <div class="container-fluid py-2">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-0 py-3 px-0">
@@ -20,13 +26,12 @@
       </ol>
     </nav>
   </div>
-  <!-- 頁面主板塊-->
+  <!-- top_keyword_頁面主板塊-->
   <section class="pt-0">
-    <!-- 主板塊黑邊-->
     <div class="container-fluid">
       <div class="row gy-4">
-        <!-- 頁面正文-->
-        <!-- 熱門關鍵字 選項框 -->
+
+        <!-- top_keyword_關鍵字選項框 -->
         <div class="col-lg-6">
           <div class="card">
             <div class="card-header">
@@ -79,7 +84,7 @@
           </div>
         </div>
 
-        <!--關鍵字滑桿-->
+        <!-- top_keyword_關鍵字滑桿-->
         <div class="col-lg-6">
           <div class="card">
             <div class="card-header">
@@ -90,18 +95,16 @@
 
               <p class="mb-0 text-center">請透過此滑桿調整關鍵詞數量的最大值</p>
               <form>
-                <!-- <div class="card-body p-sm-5"> -->
 
-                  <div class="nouislider mt-5">
-                    <div id="keyword_maxNum_NoUISlider"></div>
-                  </div>
-                <!-- </div> -->
+                <div class="nouislider mt-5">
+                  <div id="keyword_maxNum_NoUISlider"></div>
+                </div>
               </form>
             </div>
           </div>
         </div>
 
-        <!-- 熱門關鍵字繪圖 -->
+        <!-- top_keyword_關鍵字長條圖 -->
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
@@ -113,15 +116,12 @@
                   <div class=""></div>
                 </div>
               </div><strong>熱門關鍵字繪圖</strong>
-              <canvas id="keyword_barChart"
-                class="chartjs-render-monitor"></canvas> 
-                <!-- width="565" height="282" style="display: block; width: 565px; height: 282px; -->
+              <canvas id="keyword_barChart" class="chartjs-render-monitor"></canvas>
             </div>
           </div>
         </div>
 
-
-        <!-- 熱門關鍵字列表 -->
+        <!-- top_keyword_關鍵字列表 -->
         <div class="col-lg-12">
           <div class="card mb-0">
             <div class="card-header">
@@ -145,19 +145,11 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </section>
 </div>
-<!-- Chart.js 長條圖-->
-<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
-<!-- 關鍵字滑桿 CSS -->
-<link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.css' %}">
-<!-- 關鍵字滑桿 JS -->
-<script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
-<script src="{% static 'vendor/nouislider/wNumb.min.js' %}"></script>
-<!-- 多個 自訂CSS-->
-<link rel="stylesheet" href="{% static 'css/style.default.premium.css' %}" id="theme-stylesheet">
-<!-- 本頁自定義js，需要在上面的js之後加載-->
-<script src="static\js\app_top_keyword_home.js"></script>
+<!-- top_keyword_引入js_自定義js-->
+<script src="static\js\app_top_keyword.js"></script>
 {% endblock %}
