@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>ANANews</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+
+  <!-- Multi Js-->
+  <link rel="stylesheet" href="{% static 'vendor/multi.js/multi.min.css' %}">
+  <!-- Choices.js-->
+  <link rel="stylesheet" href="{% static 'vendor/choices.js/public/assets/styles/choices.min.css' %}">
+  <!-- Google fonts - Muli-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,700">
+  <!-- theme stylesheet-->
+  <link rel="stylesheet" href="{% static 'css/style.default.premium.css' %}" id="theme-stylesheet">
+  <!-- Custom stylesheet-->
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+  <!-- Favicon-->
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+</head>
+
+<body>
+  <!-- include navbar -->
+  {% include "navbar.html" %}
+  <div class="d-flex align-items-stretch">
+    <!-- include navbar -->
+    {% include "sidebar.html" %}
+    <!-- 各app繼承頁面-->
+    {% block content %}{% endblock %}
+
+
+
+
+
+
+    <!-- JavaScript files-->
+  </div>
+  <footer class="position-absolute bottom-0 bg-dash-dark-2 text-white text-center py-3 w-100 text-xs" id="footer">
+    <div class="container-fluid text-center">
+      <p class="mb-0 text-dash-gray">&copy; 大數據分析實務 <a target="_blank" href="{% static 'img/author_icon.jpg' %}"
+          title="作者">鄭宇哲</a>.C110134217</p>
+    </div>
+  </footer>
+</body>
+
+</html>

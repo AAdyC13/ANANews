@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+
+<div class="page-content form-page">
+  <!-- 頁面大標題-->
+  <div class="bg-dash-dark-2 py-4">
+    <div class="container-fluid">
+      <h2 class="h5 mb-0">各類新聞熱門關鍵詞</h2>
+    </div>
+  </div>
+  <!-- 頁面索引-->
+  <div class="container-fluid py-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 py-3 px-0">
+        <li class="breadcrumb-item"><a href="\">首頁</a></li>
+        <li class="breadcrumb-item active" aria-current="page">各類新聞熱門關鍵詞 </li>
+      </ol>
+    </nav>
+  </div>
+  <!-- 頁面主板塊-->
+  <section class="pt-0">
+    <!-- 主板塊黑邊-->
+    <div class="container-fluid">
+      <div class="row gy-4">
+        <!-- 頁面正文-->
+        <!-- 熱門關鍵字 選項框 -->
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="mb-0">熱門關鍵字類別</h4>
+            </div>
+            <div class="card-body pt-0">
+              <p>以下表單為關鍵字類別，<br>請將欲查看之類別點選移置表單右側，再次點選即可取消顯示</p>
+              <form>
+                <div class="form-group">
+                  <label class="form-label">(暫時:使用已匯入的新聞100+)</label>
+                  <select class="form-select" id="keyword_select">
+                    <option value="全部" selected>全部</option>
+                    <option value="要聞">要聞</option>
+                    <option value="娛樂">娛樂</option>
+                    <option value="運動">運動</option>
+                    <option value="全球">全球</option>
+                    <option value="社會">社會</option>
+                    <option value="地方">地方</option>
+                    <option value="產經">產經</option>
+                    <option value="股市">股市</option>
+                    <option value="房市">房市</option>
+                    <option value="生活">生活</option>
+                    <option value="寵物">寵物</option>
+                    <option value="健康">健康</option>
+                    <option value="橘世代">橘世代</option>
+                    <option value="文教">文教</option>
+                    <option value="評論">評論</option>
+                    <option value="兩岸">兩岸</option>
+                    <option value="科技">科技</option>
+                    <option value="閱讀">閱讀</option>
+                    <option value="旅遊">旅遊</option>
+                    <option value="雜誌">雜誌</option>
+                    <option value="報時光">報時光</option>
+                    <option value="倡議+">倡議+</option>
+                    <option value="500輯">500輯</option>
+                    <option value="轉角國際">轉角國際</option>
+                    <option value="NBA">NBA</option>
+                    <option value="時尚">時尚</option>
+                    <option value="汽車">汽車</option>
+                    <option value="棒球">棒球</option>
+                    <option value="HBL">HBL</option>
+                    <option value="遊戲">遊戲</option>
+                    <option value="專題">專題</option>
+                    <option value="網誌">網誌</option>
+                    <option value="女子漾">女子漾</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!--關鍵字滑桿-->
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="mb-0 text-center">熱門關鍵字數量</h4>
+
+            </div>
+            <div class="card-body pt-0">
+
+              <p class="mb-0 text-center">請透過此滑桿調整關鍵詞數量的最大值</p>
+              <form>
+                <!-- <div class="card-body p-sm-5"> -->
+
+                  <div class="nouislider mt-5">
+                    <div id="keyword_maxNum_NoUISlider"></div>
+                  </div>
+                <!-- </div> -->
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 熱門關鍵字繪圖 -->
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="chartjs-size-monitor">
+                <div class="chartjs-size-monitor-expand">
+                  <div class=""></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink">
+                  <div class=""></div>
+                </div>
+              </div><strong>熱門關鍵字繪圖</strong>
+              <canvas id="keyword_barChart"
+                class="chartjs-render-monitor"></canvas> 
+                <!-- width="565" height="282" style="display: block; width: 565px; height: 282px; -->
+            </div>
+          </div>
+        </div>
+
+
+        <!-- 熱門關鍵字列表 -->
+        <div class="col-lg-12">
+          <div class="card mb-0">
+            <div class="card-header">
+              <h3 class="h4 mb-0">熱門關鍵字列表</h3>
+            </div>
+            <div class="card-body pt-0">
+              <div class="table-responsive">
+                <table id="keyword_table" class="table mb-0 table-striped table-sm">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>關鍵字</th>
+                      <th>次數</th>
+                    </tr>
+                  </thead>
+                  <tbody id="keyword_tbody">
+                    <tr style="display: none;"></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- Chart.js 長條圖-->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+<!-- 關鍵字滑桿 CSS -->
+<link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.css' %}">
+<!-- 關鍵字滑桿 JS -->
+<script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
+<script src="{% static 'vendor/nouislider/wNumb.min.js' %}"></script>
+<!-- 多個 自訂CSS-->
+<link rel="stylesheet" href="{% static 'css/style.default.premium.css' %}" id="theme-stylesheet">
+<!-- 本頁自定義js，需要在上面的js之後加載-->
+<script src="static\js\app_top_keyword_home.js"></script>
+{% endblock %}
