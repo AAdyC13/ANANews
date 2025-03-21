@@ -22,9 +22,9 @@ def web_requester(url: str) -> BeautifulSoup|None:
         req = requests.get(
             url, headers={'user-agent': user_agent.random}, timeout=10)
         req.raise_for_status()  # 如果返回狀態碼不正常，則會觸發異常
-        data = BeautifulSoup(req.text, 'lxml')
         time.sleep(10)  # 所有網站呼叫的操作必須休息10秒再進行下一次爬取
-        return data
+        return BeautifulSoup(req.text, 'lxml')
+    
     except requests.exceptions.RequestException as e:
         print(f"❗core/news_scraper 爬取失敗: {e}")
         return None
