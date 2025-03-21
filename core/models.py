@@ -180,7 +180,6 @@ class system_config(models.Model):
     sysdb_id = models.IntegerField(primary_key=True)
     sysdb_name:str = models.CharField(max_length=50, blank=True, null=True)
     sysdb_data = models.JSONField(default=dict)
-    all_news_category:list = models.JSONField(default=list)
 
     def __str__(self)->str:
     
