@@ -3,9 +3,7 @@ from pandas import DataFrame
 
 class analysed_news(models.Model):
     """分析完畢的新聞表格\n
-        content:"暫無"\n
-        sentiment:"暫無"
-    """    
+    """
     news_id_one:int = models.IntegerField()
     news_id_two:int = models.IntegerField()
     class Meta:
@@ -174,3 +172,49 @@ class analysed_news(models.Model):
             bool: 若存在則回傳 True，否則回傳 False
         """
         return cls.objects.filter(news_id_one=news_id[0],news_id_two=news_id[1]).exists()
+    
+    
+class system_config(models.Model):
+    """系統資料\n
+    """
+    sysdb_id = models.IntegerField(primary_key=True)
+    sysdb_name:str = models.CharField(max_length=50, blank=True, null=True)
+    sysdb_data = models.JSONField(default=dict)
+    all_news_category:list = models.JSONField(default=list)
+
+    def __str__(self)->str:
+    
+        return (
+            f"{self.sysdb_id}.{self.sysdb_name}：{self.sysdb_data}"
+        )
+        
+    def get_data(self)->dict:
+        
+        return self.sysdb_data
+        
+    @classmethod
+    def sysdb_get(cls,sysdb_name:str) -> dict:
+        """回傳指定的sysdb_data
+
+        Returns:
+            dict: 指定的sysdb_data
+        """        
+        return cls.objects.get(sysdb_name).get_data()
+    
+    @classmethod
+    def sysdb_update(cls,sysdb_name:str,sysdb_data:dict) -> bool:
+        """
+        設定指定sysdb_name的sysdb_data
+
+        Returns:
+            bool: 是否成功
+        """        
+        try:
+            cls.objects.update_or_create(
+            sysdb_name = sysdb_name,
+            defaults={"sysdb_data":sysdb_data}
+            )
+            return True
+        except Exception as e:
+            print(f"❗core/models/db_update 發生錯誤: {e}")
+            return False
