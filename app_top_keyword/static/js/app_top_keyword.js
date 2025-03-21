@@ -19,6 +19,22 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // 關鍵字選項框初始
+    fetch('/get-categories/')
+    .then(response => response.json())
+    .then(data => {
+        const selectElement = document.getElementById("keyword_select");
+        selectElement.innerHTML = ""; // 清空原有
+
+        data.categories.forEach(category => {
+            let option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            selectElement.appendChild(option);
+        });
+    })
+    .catch(error => console.error("Error fetching categories:", error));
+
     // fetch.請求keyword並動作
     function keyword_sendRequest() {
         fetch("/api/chart-data/", {

@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import app_top_keyword.top_keyword_ana as tops
+from  core.utils import news_categories as newsCat
 
 def home(request):
     return render(request,
@@ -27,3 +28,9 @@ def get_chart_data(request):
         return JsonResponse(Response_data)
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+@csrf_exempt  # 取消 CSRF 保護
+def get_categories(request):
+    categories = ["全部"]
+    categories += newsCat()
+    return JsonResponse({"categories": categories})
