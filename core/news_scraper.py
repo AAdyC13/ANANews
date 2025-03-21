@@ -94,7 +94,6 @@ def news_scraper():
                     "date": item['time']["date"],
                     "category": in_page.find('nav', {"class": "article-content__breadcrumb"}).find_all("a")[1].get_text('', strip=True),
                     "title": item['title'],
-                    # 重要：這裡的內文無誤，但沒有分段，所以若之後要讓這個文本自帶分段，可以回來調整
                     "content": in_page.find('section', {"class": "article-content__editor"}).get_text('', strip=True),
                     "photo_link": item['url']}
                 news.db_update(news_id, news_dict)
