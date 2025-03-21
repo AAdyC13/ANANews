@@ -47,6 +47,7 @@ def news_collector_one() -> bool:
     Returns:
         bool: 是否成功
     """
+    print("開始爬取")
     page = web_requester('https://udn.com/news/breaknews/1/99#breaknews')
     if(page):
         news_counter = 0
