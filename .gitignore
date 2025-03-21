@@ -1,0 +1,2 @@
+# 忽略 Python 產生的快取
+__pycache__/
