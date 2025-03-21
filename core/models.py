@@ -198,7 +198,14 @@ class system_config(models.Model):
         Returns:
             dict: 指定的sysdb_data
         """        
-        return cls.objects.get(sysdb_name).get_data()
+        try:
+            return cls.objects.get(sysdb_name=sysdb_name).get_data()
+        except cls.DoesNotExist:
+            print(f"❗core/models/sysdb_get 找不到資料，回傳空字典")
+            return {}
+        except Exception as e:
+            print(f"❗core/models/sysdb_get 發生錯誤，回傳空字典: {e}")
+        return {}
     
     @classmethod
     def sysdb_update(cls,sysdb_name:str,sysdb_data:dict) -> bool:
@@ -215,5 +222,5 @@ class system_config(models.Model):
             )
             return True
         except Exception as e:
-            print(f"❗core/models/db_update 發生錯誤: {e}")
+            print(f"❗core/models/sysdb_update 發生錯誤: {e}")
             return False

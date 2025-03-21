@@ -1,14 +1,12 @@
 from collections import Counter
 from core.models import analysed_news as news
+from  core.utils import news_categories as newsCat
 _cached_top_cate_words = None  
 
 def analyze_top_keywords():
     """分析並計算關鍵字"""
     df = news.db_get_all_DataFrame()
-    news_categories = ['要聞', '娛樂', '運動', '全球', '社會', '地方', '產經', '股市', '房市', '生活', '寵物',
-                       '健康', '橘世代', '文教', '評論', '兩岸', '科技', 'Oops', '閱讀', '旅遊', '雜誌', '報時光',
-                       '倡議+', '500輯', '轉角國際', 'NBA', '時尚', '汽車', '棒球', 'HBL', '遊戲', '專題', '網誌', '女子漾']
-    
+    news_categories = newsCat()
     allowedPOS = ['Na', 'Nb', 'Nc']
     counter_all = Counter()
     top_cate_words = {}
