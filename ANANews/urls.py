@@ -6,5 +6,5 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 
-    path('', include('app_top_keyword.urls'))
+    path('', include('index.urls'))
 ]
