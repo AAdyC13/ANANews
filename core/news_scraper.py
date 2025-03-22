@@ -31,7 +31,7 @@ def web_requester(url: str) -> BeautifulSoup|None:
         return None
 
 def news_story_extract(news_link: str) -> dict:
-    in_page = web_requester(news_link)
+    in_page = web_requester("https://udn.com"+news_link)
     if in_page:
         # 重要：replace("&", "&amp;")是必要的，網站伺服器會針對 & 和 &amp 傳輸兩張不一樣的圖片，據觀察，好像是大圖和縮小圖，縮小圖應該是為了不占用資源的版本
         try:
@@ -58,8 +58,8 @@ def news_collector() -> bool:
     """
     news_category_info:dict = sysdb.sysdb_get("news_categories")
     for i in range(10):
-        print(f"開始爬取【{news_category_info["news_categories"][i]}】類新聞")
-        page = web_requester(f"https://udn.com/news/breaknews/1/{news_category_info["website_numbers"][i]}#breaknews")
+        print(f"開始爬取【{news_category_info['news_categories'][i]}】類新聞")
+        page = web_requester(f"https://udn.com/news/breaknews/1/{news_category_info['website_numbers'][i]}#breaknews")
         if(page):
             news_counter = 0
             for each_news in page.find_all('a', {"class": "story-list__image--holder", 'data-content_level': "開放閱讀"}):
@@ -80,7 +80,10 @@ def news_collector() -> bool:
                             news_counter += 1
                         else:
                             print("❗收錄新聞失敗：", news_id)
-            print(f"本次一共新收錄{news_counter}份新聞\n")
+                break
+        break
+    print(f"本次一共新收錄{news_counter}份新聞\n")
+            
     
 # 停用：透過js內部請求新聞的api抓取新聞，用途為一次運行無限抓取新聞，直到條件滿足
 # 停用原因：不穩定，沒必要
