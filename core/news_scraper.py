@@ -2,6 +2,7 @@ from fake_useragent import UserAgent
 import requests
 from bs4 import BeautifulSoup
 from .models import analysed_news as news
+from .models import system_config as sysdb
 import time
 
 # 停用機制：一次爬取某個時間段內所有新聞
@@ -30,7 +31,7 @@ def web_requester(url: str) -> BeautifulSoup|None:
         return None
 
 def news_story_extract(news_link: str) -> dict:
-    in_page = web_requester('https://udn.com'+news_link)
+    in_page = web_requester(news_link)
     if in_page:
         # 重要：replace("&", "&amp;")是必要的，網站伺服器會針對 & 和 &amp 傳輸兩張不一樣的圖片，據觀察，好像是大圖和縮小圖，縮小圖應該是為了不占用資源的版本
         try:
@@ -46,58 +47,40 @@ def news_story_extract(news_link: str) -> dict:
             print(f"❗core/news_scraper/news_story_extract 內文category的find_all()[1]出錯，回傳空字典: {e}")
             return {}
 
-def news_collector_one() -> bool:
+def news_collector() -> bool:
     """
     從【聯合新聞網】的【即時】頁面底下\n
-    抓取頁面回傳的【娛樂】【科技】類新聞(數量因各種情況受影響)
-    並存入資料庫
+    抓取及時列表中【要聞】,【社會】,【地方】,【全球】,【兩岸】,\n
+    【產經】,【股市】,【運動】,【生活】,【文教】\n
+    類新聞(數量因各種情況受影響)並存入資料庫
     Returns:
         bool: 是否成功
     """
-    print("開始爬取【娛樂】【科技】類新聞")
-    website_numbers = [8,13]
-    for website_number in website_numbers:
-        page = web_requester(f"https://udn.com/news/breaknews/1/{website_number}#breaknews")
+    news_category_info:dict = sysdb.sysdb_get("news_categories")
+    for i in range(10):
+        print(f"開始爬取【{news_category_info["news_categories"][i]}】類新聞")
+        page = web_requester(f"https://udn.com/news/breaknews/1/{news_category_info["website_numbers"][i]}#breaknews")
         if(page):
             news_counter = 0
             for each_news in page.find_all('a', {"class": "story-list__image--holder", 'data-content_level': "開放閱讀"}):
                 news_dict = {}
                 if each_news.get('href'):
-                    news_link = each_news.get('href').replace(
-                        f"?from=udn-ch1_breaknews-1-{website_number}-news", "")
-                    news_id = (news_link.split("/")[3], news_link.split("/")[4])
-
+                    parts = each_news.get('href').split("/")
+                    news_id1, news_id2 = parts[-2], parts[-1].split("?")[0]
+                    news_id = (int(news_id1), int(news_id2))
                     if news.db_is_news_exists(news_id):
                         print(f"🔸已收錄新聞：{news_id}")
                     else:
                         news_dict = {
                             "title": each_news.get('aria-label'),
                             "photo_link": each_news.find('source', {"type": "image/webp"}).get('srcset').replace("&", "&amp;")
-                        }| news_story_extract(news_link)
+                        }| news_story_extract(each_news.get('href'))
                         if news.db_update(news_id, news_dict):
                             print("新收錄新聞：", news_id)
                             news_counter += 1
                         else:
                             print("❗收錄新聞失敗：", news_id)
             print(f"本次一共新收錄{news_counter}份新聞\n")
-
-def news_collector_two() -> bool:
-    """
-    從【聯合新聞網】的⬇️專欄底下\n
-    【要聞】,【運動】,【全球】,【社會】,【地方】,【兩岸】,【Oops】,\n
-    【產經】,【股市】,【生活】,【文教】,【評論】,【旅遊】\n
-    抓取頁面回傳的新聞(數量因各種情況受影響)
-    並存入資料庫
-    Returns:
-        bool: 是否成功
-    """
-    
-    
-    
-    
-    
-    
-    
     
 # 停用：透過js內部請求新聞的api抓取新聞，用途為一次運行無限抓取新聞，直到條件滿足
 # 停用原因：不穩定，沒必要

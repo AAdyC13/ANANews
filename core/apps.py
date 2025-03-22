@@ -11,6 +11,9 @@ class CoreConfig(AppConfig):
             # import core.tokenizer
             # core.tokenizer.tokenizer()
             
-            #import core.news_scraper
-            #core.news_scraper.news_collector_one()
+            # import core.news_scraper
+            # core.news_scraper.news_collector()
+            
+            import core.utils
+            core.utils.set_news_categories()
             
