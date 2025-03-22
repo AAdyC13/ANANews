@@ -55,6 +55,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'ANANews.global_vars.global_variables',  # 加入全局html可用的變數
             ],
         },
     },
