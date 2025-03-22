@@ -14,6 +14,6 @@ class CoreConfig(AppConfig):
             # import core.news_scraper
             # core.news_scraper.news_collector()
             
-            import core.utils
-            core.utils.set_news_categories()
+            # import core.utils
+            # core.utils.set_news_categories()
             
