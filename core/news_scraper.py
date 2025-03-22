@@ -11,13 +11,15 @@ import time
 # page_time = datetime.strptime(news_dict['date'], '%Y-%m-%d %H:%M')
 
 user_agent = UserAgent()
-def web_requester(url: str) -> BeautifulSoup|None:
+
+
+def web_requester(url: str) -> BeautifulSoup | None:
     """網頁爬蟲
     Args:
         url (str): 網頁連結
     Returns:
         BeautifulSoup|None: 爬取內容，若失敗回傳None
-        
+
     """
     try:
         req = requests.get(
@@ -25,27 +27,30 @@ def web_requester(url: str) -> BeautifulSoup|None:
         req.raise_for_status()  # 如果返回狀態碼不正常，則會觸發異常
         time.sleep(10)  # 所有網站呼叫的操作必須休息10秒再進行下一次爬取
         return BeautifulSoup(req.text, 'lxml')
-    
+
     except requests.exceptions.RequestException as e:
         print(f"❗core/news_scraper/web_requester 爬取失敗: {e}")
         return None
 
-def news_story_extract(news_link: str) -> dict:
+
+def news_story_extract(news_link: str) -> dict | None:
     in_page = web_requester("https://udn.com"+news_link)
     if in_page:
         # 重要：replace("&", "&amp;")是必要的，網站伺服器會針對 & 和 &amp 傳輸兩張不一樣的圖片，據觀察，好像是大圖和縮小圖，縮小圖應該是為了不占用資源的版本
         try:
-            return{
+            return {
                 "date": in_page.find('div', {"class": "article-content__subinfo"}).find('section', {"class": "authors"}).find('time', {"class": "article-content__time"}).get_text('', strip=True),
                 "category": in_page.find('nav', {"class": "article-content__breadcrumb"}).find_all("a")[1].get_text('', strip=True),
                 "content": in_page.find('section', {"class": "article-content__editor"}).get_text('', strip=True),
             }
         except AttributeError as e:
-            print(f"❗core/news_scraper/news_story_extract 找不到對應資料，回傳空字典: {e}")
-            return {}
+            print(f"❗core/news_scraper/news_story_extract 找不到對應資料: {e}")
+            return None
         except IndexError as e:
-            print(f"❗core/news_scraper/news_story_extract 內文category的find_all()[1]出錯，回傳空字典: {e}")
-            return {}
+            print(
+                f"❗core/news_scraper/news_story_extract 內文category的find_all()[1]出錯: {e}")
+            return None
+
 
 def news_collector() -> bool:
     """
@@ -56,12 +61,13 @@ def news_collector() -> bool:
     Returns:
         bool: 是否成功
     """
-    news_category_info:dict = sysdb.sysdb_get("news_categories")
+    news_category_info: dict = sysdb.sysdb_get("news_categories")
+    news_counter = 0
     for i in range(10):
         print(f"開始爬取【{news_category_info['news_categories'][i]}】類新聞")
-        page = web_requester(f"https://udn.com/news/breaknews/1/{news_category_info['website_numbers'][i]}#breaknews")
-        if(page):
-            news_counter = 0
+        page = web_requester(
+            f"https://udn.com/news/breaknews/1/{news_category_info['website_numbers'][i]}#breaknews")
+        if (page):
             for each_news in page.find_all('a', {"class": "story-list__image--holder", 'data-content_level': "開放閱讀"}):
                 news_dict = {}
                 if each_news.get('href'):
@@ -71,20 +77,25 @@ def news_collector() -> bool:
                     if news.db_is_news_exists(news_id):
                         print(f"🔸已收錄新聞：{news_id}")
                     else:
-                        news_dict = {
-                            "title": each_news.get('aria-label'),
-                            "photo_link": each_news.find('source', {"type": "image/webp"}).get('srcset').replace("&", "&amp;")
-                        }| news_story_extract(each_news.get('href'))
-                        if news.db_update(news_id, news_dict):
-                            print("新收錄新聞：", news_id)
-                            news_counter += 1
+                        data = news_story_extract(each_news.get('href'))
+                        if data:
+                            news_dict = {
+                                "title": each_news.get('aria-label'),
+                                "photo_link": each_news.find('source', {"type": "image/webp"}).get('srcset').replace("&", "&amp;")
+                            } | data
+
+                            if news.db_update(news_id, news_dict):
+                                print("新收錄新聞：", news_id)
+                                news_counter += 1
+                            else:
+                                print("❗收錄新聞失敗：", news_id)
+
                         else:
                             print("❗收錄新聞失敗：", news_id)
-                break
-        break
+
     print(f"本次一共新收錄{news_counter}份新聞\n")
-            
-    
+
+
 # 停用：透過js內部請求新聞的api抓取新聞，用途為一次運行無限抓取新聞，直到條件滿足
 # 停用原因：不穩定，沒必要
     # news_counter = 0
