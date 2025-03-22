@@ -55,15 +55,16 @@ def news_collector_one() -> bool:
         bool: 是否成功
     """
     print("開始爬取【娛樂】【科技】類新聞")
-    pages = [web_requester('https://udn.com/news/breaknews/1/8#breaknews'),web_requester('https://udn.com/news/breaknews/1/13#breaknews')]
-    for page in pages:
+    website_numbers = [8,13]
+    for website_number in website_numbers:
+        page = web_requester(f"https://udn.com/news/breaknews/1/{website_number}#breaknews")
         if(page):
             news_counter = 0
             for each_news in page.find_all('a', {"class": "story-list__image--holder", 'data-content_level': "開放閱讀"}):
                 news_dict = {}
                 if each_news.get('href'):
                     news_link = each_news.get('href').replace(
-                        "?from=udn-ch1_breaknews-1-99-news", "")
+                        f"?from=udn-ch1_breaknews-1-{website_number}-news", "")
                     news_id = (news_link.split("/")[3], news_link.split("/")[4])
 
                     if news.db_is_news_exists(news_id):
