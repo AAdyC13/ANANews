@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-import app_top_keyword.top_keyword_ana as tops
+import app_top_keyword.top_keyword_ana as keyword_ana
+import app_top_keyword.top_person_ana as person_ana
 from  core.utils import news_categories as newsCat
 
 def top_keyword(request):
@@ -22,11 +23,11 @@ def get_chart_data(request):
         keyword_max = int(data.get("keyword_count"))
         category:str = data.get("category")
 
-        keyword_ana = tops.top_keyword_ana(category)
+        ana = keyword_ana.top_keyword_ana(category)
  
         label = []
         dataset = []
-        for each_word in keyword_ana[:keyword_max]:
+        for each_word in ana[:keyword_max]:
             label.append(each_word[0])
             dataset.append(each_word[1])
         Response_data= {"words": label, "counts": dataset}
@@ -41,11 +42,11 @@ def get_persons(request):
         keyword_max = int(data.get("person_count"))
         category:str = data.get("category")
 
-        keyword_ana = tops.top_keyword_ana(category)
+        ana = person_ana.top_keyword_ana(category)
  
         label = []
         dataset = []
-        for each_word in keyword_ana[:keyword_max]:
+        for each_word in ana[:keyword_max]:
             label.append(each_word[0])
             dataset.append(each_word[1])
         Response_data= {"words": label, "counts": dataset}

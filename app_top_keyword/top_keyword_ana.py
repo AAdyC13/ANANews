@@ -1,7 +1,8 @@
 from collections import Counter
 from core.models import analysed_news as news
-from  core.utils import news_categories as newsCat
-_cached_top_cate_words = None  
+from core.utils import news_categories as newsCat
+_cached_top_cate_words = None
+
 
 def analyze_top_keywords():
     """分析並計算關鍵字"""
@@ -16,7 +17,8 @@ def analyze_top_keywords():
         words_group = []
 
         for row in df_group.token_pos:
-            filtered_words = [word for word, pos in eval(row) if len(word) >= 2 and pos in allowedPOS]
+            filtered_words = [word for word, pos in eval(
+                row) if len(word) >= 2 and pos in allowedPOS]
             words_group += filtered_words
 
         counter = Counter(words_group)
@@ -26,7 +28,8 @@ def analyze_top_keywords():
     top_cate_words['全部'] = counter_all.most_common(100)
     return top_cate_words
 
-def top_keyword_ana(category: str)->dict:
+
+def top_keyword_ana(category: str) -> dict:
     """
     回傳聯合新聞網所有類別的關鍵字及其數量
 
