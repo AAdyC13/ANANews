@@ -12,7 +12,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- base_設定_禁止爬蟲 -->
   <meta name="robots" content="noindex">
-
   <!-- base_引入css_Mulish，好看英文字體-->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:300,400,700">
   <!-- base_引入圖片_網站標籤的icon-->
@@ -25,10 +24,10 @@
   <div class="d-flex align-items-stretch">
     <!-- base_引入sidebar -->
     {% include "sidebar.html" %}
-    <!-- base_app複寫區塊_開始-->
-    {% block content %}
+    <!-- base_APP複寫區塊_開始-->
+    {% block apps_content %}
     {% endblock %}
-    <!-- base_app複寫區塊_結束-->
+    <!-- base_APP複寫區塊_結束-->
   </div>
   <footer class="position-absolute bottom-0 bg-dash-dark-2 text-white text-center py-3 w-100 text-xs" id="footer">
     <div class="container-fluid text-center">
@@ -36,10 +35,16 @@
           title="作者">鄭宇哲</a>.C110134217</p>
     </div>
   </footer>
-  <!--base_引入CSS_模板自定義樣式-->
+
+  <!-- base_引入CSS_模板自定義樣式-->
   <link rel="stylesheet" href="{% static 'css/style.default.premium.css' %}" id="theme-stylesheet">
   <!-- base_引入CSS_我的自定義樣式-->
   <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+  <!-- bass_引入js_模板自定義功能-->
+  <script src="{% static 'js/front.js' %}"></script>
+  <!-- bass_引入js_bootstrap官方js庫-->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
 </body>
 
 </html>

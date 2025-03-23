@@ -8,19 +8,20 @@
       </div>
     </div><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">可用功能</span>
     <ul class="list-unstyled">
-          <li class="sidebar-item active"><a class="sidebar-link" href=''> 
+          <li class="sidebar-item active"><a class="sidebar-link" href='/'> 
                   <svg class="svg-icon svg-icon-sm svg-icon-heavy">
                     <use xlink:href="#real-estate-1"> </use>
-                  </svg><span>各類新聞熱門關鍵詞 </span></a></li>
-          <!-- <li class="sidebar-item"><a class="sidebar-link" href="#tablesDropdown" data-bs-toggle="collapse"> 
+                  </svg><span>首頁</span></a></li>
+          <li class="sidebar-item"><a class="sidebar-link" href="#tablesDropdown" data-bs-toggle="collapse"> 
                   <svg class="svg-icon svg-icon-sm svg-icon-heavy">
                     <use xlink:href="#portfolio-grid-1"> </use>
-                  </svg><span>Tables </span></a>
+                  </svg><span>熱門分析</span></a>
             <ul class="collapse list-unstyled " id="tablesDropdown">
-              <li><a class="sidebar-link" href="tables.html">Bootstrap tables</a></li>
-              <li><a class="sidebar-link" href="tables-datatable.html">Datatable</a></li>
+              <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/top_keyword">{{top_keyword}}</a></li>
+              <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/top_person">{{top_person}}</a></li>
             </ul>
           </li>
+          <!-- 
           <li class="sidebar-item"><a class="sidebar-link" href="#chartsDropdown" data-bs-toggle="collapse"> 
                   <svg class="svg-icon svg-icon-sm svg-icon-heavy">
                     <use xlink:href="#sales-up-1"> </use>

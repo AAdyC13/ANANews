@@ -1,0 +1,59 @@
+{% extends 'app_top_keyword/top_base.html' %}
+{% load static %}
+{% block head_script %}
+<!-- top_keyword_引入CSS_nouislider -->
+<link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.css' %}">
+<!-- top_keyword_引入js_nouislider -->
+<script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
+<!-- top_keyword_引入js_wNumb，nouislider部分功能 -->
+<script src="{% static 'vendor/nouislider/wNumb.min.js' %}"></script>
+{% endblock %}
+
+{% block big_title %}{{top_keyword}}{% endblock %}
+{% block small_title %}{{top_keyword}}{% endblock %}
+
+{% block top_content %}
+<!-- top_keyword_關鍵字選項框 -->
+<div class="col-lg-6">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="mb-0">熱門關鍵字類別</h4>
+    </div>
+    <div class="card-body pt-0">
+      <p>請選擇欲顯示之熱門關鍵字類別</p>
+      <form>
+        <div class="form-group">
+          <label class="form-label">(暫時:使用已匯入的新聞100+)</label>
+          <select class="form-select" id="keyword_select">
+            <option value="全部" selected>如果你看到了我，說明請求選單的函數出錯了</option>
+            <option value="None">js沒收到選單</option>
+            <option value="None">所以沒更新默認html</option>
+          </select>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- top_keyword_關鍵字滑桿-->
+<div class="col-lg-6">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="mb-0 text-center">熱門關鍵字數量</h4>
+
+    </div>
+    <div class="card-body pt-0">
+
+      <p class="mb-0 text-center">請透過此滑桿調整關鍵詞數量的最大值</p>
+      <form>
+        <div class="nouislider mt-5">
+          <div id="keyword_maxNum_NoUISlider"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- top_keyword_引入js_自定義js-->
+<script src="{% static 'js\top_keyword.js' %}"></script>
+{% endblock %}

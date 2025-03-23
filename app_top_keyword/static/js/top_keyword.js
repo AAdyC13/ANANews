@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //初始化
     let category = document.getElementById("keyword_select").value;
     let keywordCount = 0;
-    let tbody = document.getElementById("keyword_tbody");
+    let tbody = document.getElementById("top_tbody");
 
     // 滑桿初始
     var stepSlider = document.getElementById("keyword_maxNum_NoUISlider");
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 關鍵字選項框初始
-    fetch('/get-categories/')
+    fetch('/top/api/get-categories/')
     .then(response => response.json())
     .then(data => {
         const selectElement = document.getElementById("keyword_select");
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // fetch.請求keyword並動作
     function keyword_sendRequest() {
-        fetch("/api/chart-data/", {
+        fetch("/top/api/chart-data/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             
@@ -48,9 +48,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 let words = data.words;
                 let counts = data.counts;
-                myChart.data.labels = words;
-                myChart.data.datasets[0].data = counts;
-                myChart.update();
+                window.top.myChart.data.labels = words;
+                window.top.myChart.data.datasets[0].data = counts;
+                window.top.myChart.update();
                 tbody.innerHTML = "";
                 for (let i = 0; i < words.length; i++) {
                     let row = tbody.insertRow();
@@ -72,28 +72,4 @@ document.addEventListener("DOMContentLoaded", function () {
         keywordCount = values[handle] || 0;
         keyword_sendRequest()
     });
-
-    // 長條圖初始
-    var ctx = document.getElementById("keyword_barChart").getContext("2d");
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [{
-                label: '次數',
-                data: [],
-                //backgroundColor: 'rgb(133, 77, 217)',
-                backgroundColor: "rgba(134, 77, 217, 0.88)",
-                borderColor: "rgba(134, 77, 217, 088)",
-                borderCapStyle: "butt",
-                borderDash: [],
-                borderDashOffset: 0.0,
-                borderJoinStyle: "miter",
-                borderWidth: 1,
-                spanGaps: false,
-            }]
-        },
-        options: { responsive: true }
-    });
-
 });
