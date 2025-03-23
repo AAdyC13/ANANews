@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 關鍵字選項框初始
-    fetch('api/get-categories/')
+    fetch('/top/api/get-categories/')
     .then(response => response.json())
     .then(data => {
         const selectElement = document.getElementById("keyword_select");
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // fetch.請求keyword並動作
     function keyword_sendRequest() {
-        fetch("api/chart-data/", {
+        fetch("/top/api/chart-data/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             

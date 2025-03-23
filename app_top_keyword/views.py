@@ -7,7 +7,13 @@ from  core.utils import news_categories as newsCat
 
 def top_keyword(request):
     return render(request,
-                      'app_top_keyword/app_top_keyword.html')
+                      'app_top_keyword/top_keyword.html')
+def top_person(request):
+    return render(request,
+                      'app_top_keyword/top_person.html')
+def base(request):
+    return render(request,
+                      'app_top_keyword/top_base.html')
 
 @csrf_exempt  # 取消 CSRF 保護
 def get_chart_data(request):
