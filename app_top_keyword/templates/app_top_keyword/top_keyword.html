@@ -1,124 +1,60 @@
-{% extends "base.html" %}
+{% extends 'app_top_keyword/top_base.html' %}
 {% load static %}
-{% block apps_content %}
-<!-- top_keyword_引入js_chart.js，好看長條圖-->
-<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+{% block head_script %}
 <!-- top_keyword_引入CSS_nouislider -->
 <link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.css' %}">
 <!-- top_keyword_引入js_nouislider -->
 <script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
 <!-- top_keyword_引入js_wNumb，nouislider部分功能 -->
 <script src="{% static 'vendor/nouislider/wNumb.min.js' %}"></script>
+{% endblock %}
 
-<div class="page-content form-page">
-  <!-- top_keyword_頁面大標題-->
-  <div class="bg-dash-dark-2 py-4">
-    <div class="container-fluid">
-      <h2 class="h5 mb-0">{{top_keyword}}</h2>
+{% block big_title %}{{top_keyword}}{% endblock %}
+{% block small_title %}{{top_keyword}}{% endblock %}
+
+{% block top_content %}
+<!-- top_keyword_關鍵字選項框 -->
+<div class="col-lg-6">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="mb-0">熱門關鍵字類別</h4>
+    </div>
+    <div class="card-body pt-0">
+      <p>請選擇欲顯示之熱門關鍵字類別</p>
+      <form>
+        <div class="form-group">
+          <label class="form-label">(暫時:使用已匯入的新聞100+)</label>
+          <select class="form-select" id="keyword_select">
+            <option value="全部" selected>如果你看到了我，說明請求選單的函數出錯了</option>
+            <option value="None">js沒收到選單</option>
+            <option value="None">所以沒更新默認html</option>
+          </select>
+        </div>
+      </form>
     </div>
   </div>
-  <!-- top_keyword_頁面索引-->
-  <div class="container-fluid py-2">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb mb-0 py-3 px-0">
-        <li class="breadcrumb-item"><a href="\">首頁</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{top_keyword}} </li>
-      </ol>
-    </nav>
-  </div>
-  <!-- top_keyword_頁面主板塊-->
-  <section class="pt-0">
-    <div class="container-fluid">
-      <div class="row gy-4">
-
-        <!-- top_keyword_關鍵字選項框 -->
-        <div class="col-lg-6">
-          <div class="card">
-            <div class="card-header">
-              <h4 class="mb-0">熱門關鍵字類別</h4>
-            </div>
-            <div class="card-body pt-0">
-              <p>請選擇欲顯示之熱門關鍵字類別</p>
-              <form>
-                <div class="form-group">
-                  <label class="form-label">(暫時:使用已匯入的新聞100+)</label>
-                  <select class="form-select" id="keyword_select">
-                    <option value="全部" selected>如果你看到了我，說明請求選單的函數出錯了</option>
-                    <option value="None">js沒收到選單</option>
-                    <option value="None">所以沒更新默認html</option>
-                  </select>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <!-- top_keyword_關鍵字滑桿-->
-        <div class="col-lg-6">
-          <div class="card">
-            <div class="card-header">
-              <h4 class="mb-0 text-center">熱門關鍵字數量</h4>
-
-            </div>
-            <div class="card-body pt-0">
-
-              <p class="mb-0 text-center">請透過此滑桿調整關鍵詞數量的最大值</p>
-              <form>
-
-                <div class="nouislider mt-5">
-                  <div id="keyword_maxNum_NoUISlider"></div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <!-- top_keyword_關鍵字長條圖 -->
-        <div class="col-lg-12">
-          <div class="card">
-            <div class="card-body">
-              <div class="chartjs-size-monitor">
-                <div class="chartjs-size-monitor-expand">
-                  <div class=""></div>
-                </div>
-                <div class="chartjs-size-monitor-shrink">
-                  <div class=""></div>
-                </div>
-              </div><strong>熱門關鍵字繪圖</strong>
-              <canvas id="keyword_barChart" class="chartjs-render-monitor"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- top_keyword_關鍵字列表 -->
-        <div class="col-lg-12">
-          <div class="card mb-0">
-            <div class="card-header">
-              <h3 class="h4 mb-0">熱門關鍵字列表</h3>
-            </div>
-            <div class="card-body pt-0">
-              <div class="table-responsive">
-                <table id="keyword_table" class="table mb-0 table-striped table-sm">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>關鍵字</th>
-                      <th>次數</th>
-                    </tr>
-                  </thead>
-                  <tbody id="keyword_tbody">
-                    <tr style="display: none;"></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
 </div>
+
+<!-- top_keyword_關鍵字滑桿-->
+<div class="col-lg-6">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="mb-0 text-center">熱門關鍵字數量</h4>
+
+    </div>
+    <div class="card-body pt-0">
+
+      <p class="mb-0 text-center">請透過此滑桿調整關鍵詞數量的最大值</p>
+      <form>
+
+        <div class="nouislider mt-5">
+          <div id="keyword_maxNum_NoUISlider"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- top_keyword_引入js_自定義js-->
 <script src="{% static 'js\app_top_keyword.js' %}"></script>
 {% endblock %}
