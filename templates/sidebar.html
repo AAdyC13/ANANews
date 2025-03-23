@@ -8,7 +8,7 @@
       </div>
     </div><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">可用功能</span>
     <ul class="list-unstyled">
-          <li class="sidebar-item active"><a class="sidebar-link" href=''> 
+          <li class="sidebar-item active"><a class="sidebar-link" href='/'> 
                   <svg class="svg-icon svg-icon-sm svg-icon-heavy">
                     <use xlink:href="#real-estate-1"> </use>
                   </svg><span>首頁</span></a></li>
@@ -17,7 +17,7 @@
                     <use xlink:href="#portfolio-grid-1"> </use>
                   </svg><span>熱門分析</span></a>
             <ul class="collapse list-unstyled " id="tablesDropdown">
-              <li><a class="sidebar-link" href="tables.html">{{top_keyword}}</a></li>
+              <li><a class="sidebar-link" href="http://{{ request.get_host }}/top_keyword/">{{top_keyword}}</a></li>
               <li><a class="sidebar-link" href="tables-datatable.html">熱門人物排行</a></li>
             </ul>
           </li>

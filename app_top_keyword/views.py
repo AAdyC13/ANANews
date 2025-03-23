@@ -5,7 +5,7 @@ import json
 import app_top_keyword.top_keyword_ana as tops
 from  core.utils import news_categories as newsCat
 
-def home(request):
+def top_keyword(request):
     return render(request,
                       'app_top_keyword/app_top_keyword.html')
 

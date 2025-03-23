@@ -16,10 +16,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:300,400,700">
   <!-- base_引入圖片_網站標籤的icon-->
   <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
-  <!-- base_引入CSS_模板自定義樣式-->
-  <link rel="stylesheet" href="{% static 'css/style.default.premium.css' %}" id="theme-stylesheet">
-  <!-- base_引入CSS_我的自定義樣式-->
-  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 </head>
 
 <body>
@@ -40,7 +36,10 @@
     </div>
   </footer>
 
-
+  <!-- base_引入CSS_模板自定義樣式-->
+  <link rel="stylesheet" href="{% static 'css/style.default.premium.css' %}" id="theme-stylesheet">
+  <!-- base_引入CSS_我的自定義樣式-->
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
   <!-- bass_引入js_模板自定義功能-->
   <script src="{% static 'js/front.js' %}"></script>
   <!-- bass_引入js_bootstrap官方js庫-->
