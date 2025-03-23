@@ -32,9 +32,26 @@ def get_chart_data(request):
         Response_data= {"words": label, "counts": dataset}
                   
         return JsonResponse(Response_data)
-
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+@csrf_exempt  # 取消 CSRF 保護
+def get_persons(request):
+    if request.method == "POST":
+        data = json.loads(request.body)  
+        keyword_max = int(data.get("person_count"))
+        category:str = data.get("category")
+
+        keyword_ana = tops.top_keyword_ana(category)
+ 
+        label = []
+        dataset = []
+        for each_word in keyword_ana[:keyword_max]:
+            label.append(each_word[0])
+            dataset.append(each_word[1])
+        Response_data= {"words": label, "counts": dataset}
+        return JsonResponse(Response_data)
+    return JsonResponse({"error": "Invalid request"}, status=400)
+    
 @csrf_exempt  # 取消 CSRF 保護
 def get_categories(request):
     categories = ["全部"]

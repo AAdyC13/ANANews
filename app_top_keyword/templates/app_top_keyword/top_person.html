@@ -1,0 +1,101 @@
+{% extends 'app_top_keyword/top_base.html' %}
+{% load static %}
+{% block head_script %}
+
+{% endblock %}
+
+{% block big_title %}{{top_person}}{% endblock %}
+{% block small_title %}{{top_person}}{% endblock %}
+
+{% block top_content %}
+<!-- top_keyword_關鍵字選項框 -->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">熱門人物類別</h4>
+        </div>
+        <div class="card-body pt-0">
+            <p>請選擇欲顯示之熱門人物類別</p>
+            
+            <form>
+                <div class="form-group">
+                    
+                    <select class="form-select" size="6" id="person_select">
+                        <option value="全部" selected>如果你看到了我，說明請求選單的函數出錯了</option>
+                        <option value="None">js沒收到選單</option>
+                        <option value="None">所以沒更新默認html</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- top_keyword_關鍵字滑桿-->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">熱門人物數量</h4>
+        </div>
+        <div class="card-body pt-0">
+            <p>請選擇熱門人物顯示數量的最大值</p>
+            <form>
+                <div class="row" id="person_radios_row">
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" id="person_counter_5" type="radio" name="person_radios"checked>
+                            <label class="form-check-label" for="person_counter_5">5</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" id="person_counter_10" type="radio" name="person_radios">
+                            <label class="form-check-label" for="person_counter_10">10</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" id="person_counter_20" type="radio" name="person_radios">
+                            <label class="form-check-label" for="person_counter_20">20</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" id="person_counter_30" type="radio" name="person_radios">
+                            <label class="form-check-label" for="person_counter_30">30</label>
+                        </div>
+                    </div>
+            
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" id="person_counter_40" type="radio" name="person_radios">
+                            <label class="form-check-label" for="person_counter_40">40</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" id="person_counter_50" type="radio" name="person_radios">
+                            <label class="form-check-label" for="person_counter_50">50</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" id="person_counter_75" type="radio" name="person_radios">
+                            <label class="form-check-label" for="person_counter_75">75</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" id="person_counter_100" type="radio" name="person_radios">
+                            <label class="form-check-label" for="person_counter_100">100</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- top_keyword_引入js_自定義js-->
+<script src="{% static 'js\top_person.js' %}"></script>
+{% endblock %}
