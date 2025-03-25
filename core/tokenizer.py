@@ -14,9 +14,10 @@ def tokenizer():
     print("🔥載入斷詞模型完成！")
 
     # model="albert-tiny" 模型小，斷詞速度比較快，犧牲一些精確度
-    ws = CkipWordSegmenter(model="albert-tiny") 
-    pos = CkipPosTagger(model="albert-tiny")
-    ner = CkipNerChunker(model="albert-tiny")
+    # model="bert-base"
+    ws = CkipWordSegmenter(model="albert-tiny", device=0) 
+    pos = CkipPosTagger(model="albert-tiny", device=0)
+    ner = CkipNerChunker(model="albert-tiny", device=0)
     
 
     got_news_dict = news.db_get_all_DataFrame()
