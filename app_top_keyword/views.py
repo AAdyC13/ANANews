@@ -66,13 +66,14 @@ def get_categories(request):
 @csrf_exempt  # 取消 CSRF 保護
 def get_user_interest(request):
     if request.method == "POST":
+        data = json.loads(request.body)
         
-        user_keywords=['民進黨']
-        cond='or'
-        cate='全部'
-        weeks=4
-        Response_data = interest_ana.get_keyword_time_based_freq(user_keywords, cond, cate, weeks)
-
+        category:str = data.get("category")
+        cond:str=data.get("cond")
+        user_keywords:str=data.get("user_keywords")
+        weeks:int=data.get("weeks")
+        Response_data = interest_ana.get_keyword_time_based_freq(user_keywords, cond, category, weeks)
+        print(Response_data)
         return JsonResponse(Response_data)
     
     return JsonResponse({"error": "Invalid request"}, status=400)

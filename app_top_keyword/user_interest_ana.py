@@ -9,9 +9,8 @@ def filter_dataFrame(user_keywords, cond, cate, weeks):
     # end date: the date of the latest record of news
     df = news.db_get_all_DataFrame()
     end_date = df.date.max()
-    
     # start date
-    start_date = (datetime.strptime(end_date, '%Y-%m-%d').date() - timedelta(weeks=weeks)).strftime('%Y-%m-%d')
+    start_date = (datetime.strptime(end_date, '%Y-%m-%d %H:%M').date() - timedelta(weeks=weeks)).strftime('%Y-%m-%d')
 
     # (1) proceed filtering: a duration of a period of time
     # 期間條件

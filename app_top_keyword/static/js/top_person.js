@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     //初始化
-    let category = document.getElementById("person_select").value;
     let personCount = 5;
     let tbody = document.getElementById("top_tbody");
     let selectElement = document.getElementById("person_select");
+    let category = selectElement.value;
 
     // 關鍵字選項框初始
     fetch('/top/api/get-categories/')

@@ -2,7 +2,7 @@
 {% load static %}
 {% block apps_content %}
 
-<!-- top_keyword_引入js_chart.js，好看長條圖-->
+<!-- top_base_引入js_chart.js，好看長條圖-->
 <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
 <!-- top_base_引入js_自定義js-->
 <script src="{% static 'js\top_base.js' %}"></script>
@@ -10,13 +10,13 @@
 {% endblock %}
 
 <div class="page-content form-page">
-    <!-- top_keyword_頁面大標題-->
+    <!-- top_base_頁面大標題-->
     <div class="bg-dash-dark-2 py-4">
         <div class="container-fluid">
             <h2 class="h5 mb-0">{% block big_title %}{% endblock %}</h2>
         </div>
     </div>
-    <!-- top_keyword_頁面索引-->
+    <!-- top_base_頁面索引-->
     <div class="container-fluid py-2">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 py-3 px-0">
@@ -25,7 +25,7 @@
             </ol>
         </nav>
     </div>
-    <!-- top_keyword_頁面主板塊-->
+    <!-- top_base_頁面主板塊-->
     <section class="pt-0">
         <div class="container-fluid">
             <div class="row gy-4">
