@@ -1,0 +1,16 @@
+{% extends 'app_top_keyword/top_base.html' %}
+{% load static %}
+{% block head_script %}
+
+{% endblock %}
+
+{% block big_title %}{{user_interest}}{% endblock %}
+{% block small_title %}{{user_interest}}{% endblock %}
+
+{% block top_content %}
+
+
+
+<!-- user_interest_引入js_自定義js-->
+<script src="{% static 'js\user_interest.js' %}"></script>
+{% endblock %}

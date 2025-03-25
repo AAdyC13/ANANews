@@ -13,8 +13,8 @@ def tokenizer():
     from ckip_transformers.nlp import CkipWordSegmenter, CkipPosTagger, CkipNerChunker
     print("🔥載入斷詞模型完成！")
 
-    # model="albert-tiny" 模型小，斷詞速度比較快，犧牲一些精確度
-    # model="bert-base"
+    # model="albert-tiny" 最小模型，斷詞速度比較快，犧牲一些精確度
+    # model="bert-base" 最大模型，斷詞準確，不要用CPU來算
     ws = CkipWordSegmenter(model="bert-base") 
     pos = CkipPosTagger(model="bert-base")
     ner = CkipNerChunker(model="bert-base")

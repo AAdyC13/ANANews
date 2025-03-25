@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import app_top_keyword.top_keyword_ana as keyword_ana
 import app_top_keyword.top_person_ana as person_ana
+import app_top_keyword.user_interest_ana as interest_ana
 from  core.utils import news_categories as newsCat
 
 def top_keyword(request):
@@ -15,6 +16,9 @@ def top_person(request):
 def base(request):
     return render(request,
                       'app_top_keyword/top_base.html')
+def user_interest(request):
+    return render(request,
+                      'app_top_keyword/user_interest.html')
 
 @csrf_exempt  # 取消 CSRF 保護
 def get_chart_data(request):
@@ -58,3 +62,17 @@ def get_categories(request):
     categories = ["全部"]
     categories += newsCat()
     return JsonResponse({"categories": categories})
+
+@csrf_exempt  # 取消 CSRF 保護
+def get_user_interest(request):
+    if request.method == "POST":
+        
+        user_keywords=['民進黨']
+        cond='or'
+        cate='全部'
+        weeks=4
+        Response_data = interest_ana.get_keyword_time_based_freq(user_keywords, cond, cate, weeks)
+
+        return JsonResponse(Response_data)
+    
+    return JsonResponse({"error": "Invalid request"}, status=400)
