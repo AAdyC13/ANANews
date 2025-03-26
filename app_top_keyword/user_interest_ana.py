@@ -10,7 +10,10 @@ def filter_dataFrame(user_keywords, cond, cate, weeks):
     df = news.db_get_all_DataFrame()
     end_date = df.date.max()
     # start date
-    start_date = (datetime.strptime(end_date, '%Y-%m-%d %H:%M').date() - timedelta(weeks=weeks)).strftime('%Y-%m-%d')
+    try:
+        start_date = (datetime.strptime(end_date, '%Y-%m-%d %H:%M').date() - timedelta(weeks=weeks)).strftime('%Y-%m-%d')
+    except Exception as e:
+        print(f"❗app_top_keyword/user_interest_ana/時間相減發生錯誤: {e}")
 
     # (1) proceed filtering: a duration of a period of time
     # 期間條件

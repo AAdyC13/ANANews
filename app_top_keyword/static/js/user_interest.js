@@ -28,6 +28,45 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".choices__inner").classList.add("form-control");
 
 
+    // 折線圖初始
+    window.top = window.top || {};
+    var ctx = document.getElementById("keyword_barChart").getContext("2d");
+    window.top.myChart = new Chart(ctx, {
+        type: "line",
+        options: {
+            responsive: true,
+            legend: { labels: { fontColor: "#777", fontSize: 12 } },
+        },
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: "各時間點數據量",
+                    fill: true,
+                    lineTension: 0,
+                    backgroundColor: "rgba(134, 77, 217, 0.88)",
+                    borderColor: "rgba(134, 77, 217, 088)",
+                    borderCapStyle: "butt",
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: "miter",
+                    borderWidth: 1,
+                    pointBorderColor: "rgba(134, 77, 217, 0.88)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(134, 77, 217, 0.88)",
+                    pointHoverBorderColor: "rgba(134, 77, 217, 0.88)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [],
+                    spanGaps: false,
+                }
+            ],
+        },
+    });
+
     // 關鍵字類別選項框初始
     fetch('/top/api/get-categories/')
         .then(response => response.json())
@@ -46,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => console.error("Error fetching categories:", error));
 
-    // fetch.請求keyword並動作
+    // fetch.請求資料並動作
     function interest_sendRequest() {
         let category = selectElement.value;
         let cond = document.querySelector('input[name="search_type"]:checked').id || "and"
@@ -60,10 +99,10 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then(response => response.json())
             .then(data => {
-                let words = data.words;
-                let counts = data.counts;
-                window.top.myChart.data.labels = words;
-                window.top.myChart.data.datasets[0].data = counts;
+                let date = data.date;
+                let y = data.y;
+                window.top.myChart.data.labels = date;
+                window.top.myChart.data.datasets[0].data = y;
                 window.top.myChart.update();
                 tbody.innerHTML = "";
                 for (let i = 0; i < words.length; i++) {
@@ -79,6 +118,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // 事件.當按下查詢按鈕時
     document.getElementById("interest_submit").addEventListener("click", function () {
         interest_sendRequest()
+    });
+
+    // 事件.當按下清空按鈕時
+    document.getElementById("interest_del").addEventListener("click", function () {
+        tagsInput.removeActiveItems();
     });
 
     // 事件.當滑桿end時

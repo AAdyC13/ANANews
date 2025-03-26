@@ -31,7 +31,7 @@
                 <div class="row gy-2 mb-4">
                     <label class="col-sm-3 form-label" for="inputHorizontalElOne">查詢字詞</label>
                     <div class="col-sm-9">
-                        <input class="form-control tags-input mb-0" type="text" value="台灣,大學" id="tagsInput"
+                        <input class="form-control tags-input mb-0" type="text" value="" id="tagsInput"
                             data-customclass="form-control">
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-9 ms-auto">
-                        <button class="btn btn-secondary" type="reset">清空</button>
+                        <button class="btn btn-secondary" id="interest_del"type="reset">清空</button>
                         <button class="btn btn-primary" id="interest_submit" type="button">查詢</button>
                     </div>
                 </div>
@@ -99,4 +99,70 @@
 
 <!-- user_interest_引入js_自定義js-->
 <script src="{% static 'js\user_interest.js' %}"></script>
+{% endblock %}
+{% block top_bar_Table %}
+<!-- user_interest_出現頻率圖 -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="chartjs-size-monitor">
+                <div class="chartjs-size-monitor-expand">
+                    <div class=""></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink">
+                    <div class=""></div>
+                </div>
+            </div><strong>出現頻率圖</strong>
+            <canvas id="keyword_barChart" class="chartjs-render-monitor"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- user_interest_按類統計-新聞次數 -->
+<div class="col-lg-6">
+    <div class="card mb-0">
+        <div class="card-header">
+            <h3 class="h4 mb-0">按類統計-新聞次數</h3>
+        </div>
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table id="interest_newsCount" class="table mb-0 table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>類別</th>
+                            <th>有多少新聞報導提起</th>
+                        </tr>
+                    </thead>
+                    <tbody id="top_tbody">
+                        <tr style="display: none;"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- user_interest_按類統計-出現次數 -->
+<div class="col-lg-6">
+    <div class="card mb-0">
+        <div class="card-header">
+            <h3 class="h4 mb-0">按類統計-出現次數</h3>
+        </div>
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table id="interest_wordCount" class="table mb-0 table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>類別</th>
+                            <th>單字出現次數</th>
+                        </tr>
+                    </thead>
+                    <tbody id="top_tbody">
+                        <tr style="display: none;"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
