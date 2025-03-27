@@ -6,20 +6,20 @@ from core.utils import news_categories as newsCat
 
 df = news.db_get_all_DataFrame()
 
+def ana_main(user_keywords, cond, cate, weeks):
+    df_query = filter_dataFrame(user_keywords, cond, cate, weeks)
+    cate_freq, cate_occurence = count_keyword(user_keywords, cond, weeks)
 
-
-def date_checker(weeks: int):
-    end_date: str = df.date.max()
-    start_date = ""
-    # start date
-    try:
-        start_date = (datetime.strptime(
-            end_date, '%Y-%m-%d %H:%M').date() - timedelta(weeks=weeks)).strftime('%Y-%m-%d')
-        return end_date, start_date
-    except Exception as e:
-        print(f"❗app_top_keyword/user_interest_ana/時間相減發生錯誤: {e}")
-        return end_date, start_date
-
+    date_samples = df_query.date
+    query_freq = pd.DataFrame({'date_index': pd.to_datetime(
+        date_samples), 'freq': [1 for _ in range(len(df_query))]})
+    data = query_freq.groupby(pd.Grouper(key='date_index', freq='D')).sum()
+    time_data = []
+    for i, date_idx in enumerate(data.index):
+        row = {'x': date_idx.strftime('%Y-%m-%d'), 'y': int(data.iloc[i].freq)}
+        time_data.append(row)
+    
+    return time_data, cate_freq, cate_occurence
 
 def filter_dataFrame(user_keywords, cond, cate, weeks):
 
@@ -52,23 +52,6 @@ def filter_dataFrame(user_keywords, cond, cate, weeks):
 
     return df_query
 
-
-def ana_main(user_keywords, cond, cate, weeks):
-    df_query = filter_dataFrame(user_keywords, cond, cate, weeks)
-    cate_freq, cate_occurence = count_keyword(user_keywords, cond, weeks)
-
-    date_samples = df_query.date
-    query_freq = pd.DataFrame({'date_index': pd.to_datetime(
-        date_samples), 'freq': [1 for _ in range(len(df_query))]})
-    data = query_freq.groupby(pd.Grouper(key='date_index', freq='D')).sum()
-    time_data = []
-    for i, date_idx in enumerate(data.index):
-        row = {'x': date_idx.strftime('%Y-%m-%d'), 'y': int(data.iloc[i].freq)}
-        time_data.append(row)
-    
-    return time_data, cate_freq, cate_occurence
-
-
 def count_keyword(user_keywords, cond, weeks):
     end_date, start_date = date_checker(weeks)
     news_categories = ["全部"]+newsCat()
@@ -99,3 +82,15 @@ def count_keyword(user_keywords, cond, weeks):
         cate_freq['全部'] += freq
 
     return cate_freq, cate_occurence
+
+def date_checker(weeks: int):
+    end_date: str = df.date.max()
+    start_date = ""
+    # start date
+    try:
+        start_date = (datetime.strptime(
+            end_date, '%Y-%m-%d %H:%M').date() - timedelta(weeks=weeks)).strftime('%Y-%m-%d')
+        return end_date, start_date
+    except Exception as e:
+        print(f"❗app_top_keyword/user_interest_ana/時間相減發生錯誤: {e}")
+        return end_date, start_date
