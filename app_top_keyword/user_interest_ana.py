@@ -6,10 +6,12 @@ from core.utils import news_categories as newsCat
 
 df = news.db_get_all_DataFrame()
 
-def ana_main(user_keywords, cond, cate, weeks):
-    df_query = filter_dataFrame(user_keywords, cond, cate, weeks)
-    cate_freq, cate_occurence = count_keyword(user_keywords, cond, weeks)
 
+def ana_main(user_keywords, cond, cate, weeks):
+    
+    df_query = filter_dataFrame(user_keywords, cond, cate, weeks) # 回傳已過濾的dataFrame
+    
+    # 將Dataframe製作成用於點線圖顯示的xy軸
     date_samples = df_query.date
     query_freq = pd.DataFrame({'date_index': pd.to_datetime(
         date_samples), 'freq': [1 for _ in range(len(df_query))]})
@@ -18,18 +20,19 @@ def ana_main(user_keywords, cond, cate, weeks):
     for i, date_idx in enumerate(data.index):
         row = {'x': date_idx.strftime('%Y-%m-%d'), 'y': int(data.iloc[i].freq)}
         time_data.append(row)
-    
-    return time_data, cate_freq, cate_occurence
+
+    wordCount, newsCount = count_keyword(user_keywords, cond, weeks) # 回傳wordCount, newsCount兩個Dict
+
+    return time_data, wordCount, newsCount
+
 
 def filter_dataFrame(user_keywords, cond, cate, weeks):
 
     end_date, start_date = date_checker(weeks)
 
-    # (1) proceed filtering: a duration of a period of time
     # 期間條件
     period_condition = (df.date >= start_date) & (df.date <= end_date)
 
-    # (2) proceed filtering: news category
     # 新聞類別條件
     if (cate == "全部"):
         condition = period_condition  # "全部"類別不必過濾新聞種類
@@ -37,7 +40,6 @@ def filter_dataFrame(user_keywords, cond, cate, weeks):
         # category新聞類別條件
         condition = period_condition & (df.category == cate)
 
-    # (3) proceed filtering: keywords
     # and or 條件
     if (cond == 'and'):
         # query keywords condition使用者輸入關鍵字條件and
@@ -52,11 +54,12 @@ def filter_dataFrame(user_keywords, cond, cate, weeks):
 
     return df_query
 
+
 def count_keyword(user_keywords, cond, weeks):
     end_date, start_date = date_checker(weeks)
     news_categories = ["全部"]+newsCat()
-    cate_occurence = {}
-    cate_freq = {}
+    newsCount = {}
+    wordCount = {}
     if (cond == 'and'):
         query_df = df[
             (df.date >= start_date) & (df.date <= end_date)
@@ -66,22 +69,23 @@ def count_keyword(user_keywords, cond, weeks):
         query_df = df[
             (df['date'] >= start_date) & (df['date'] <= end_date)
             & df.tokens_v2.apply(lambda row: any((qk in row) for qk in user_keywords))]
-    
+
     for cate in news_categories:
-        cate_occurence[cate] = 0
-        cate_freq[cate] = 0
-    
+        newsCount[cate] = 0
+        wordCount[cate] = 0
+
     for idx, row in query_df.iterrows():
         # count number of news
-        cate_occurence[row.category] += 1  # add 1 to its category's occurence
-        cate_occurence['全部'] += 1
+        newsCount[row.category] += 1
+        newsCount['全部'] += 1
 
         # how manay times?
         freq = len([word for word in row.tokens_v2 if (word in user_keywords)])
-        cate_freq[row.category] += freq
-        cate_freq['全部'] += freq
+        wordCount[row.category] += freq
+        wordCount['全部'] += freq
 
-    return cate_freq, cate_occurence
+    return wordCount, newsCount
+
 
 def date_checker(weeks: int):
     end_date: str = df.date.max()
