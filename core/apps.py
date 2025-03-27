@@ -9,10 +9,11 @@ class CoreConfig(AppConfig):
         if os.environ.get('RUN_MAIN') == 'true':  # 確保只在主進程執行
             ...
             # import core.tokenizer
-            # core.tokenizer.tokenizer()
+            #core.tokenizer.tokenizer()
+            #core.tokenizer.test()
             
-            import core.news_scraper
-            core.news_scraper.news_collector()
+            # import core.news_scraper
+            # core.news_scraper.news_collector()
             
             # import core.utils
             # core.utils.set_news_categories()

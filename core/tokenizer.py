@@ -1,8 +1,9 @@
 
+def test():
+    ...  
 def tokenizer():
     #段詞分析 需要網路！
     from pandas import DataFrame
-    import numpy
     from collections import Counter
     from .models import analysed_news as news
 
@@ -20,7 +21,7 @@ def tokenizer():
     ner = CkipNerChunker(model="bert-base")
     
 
-    got_news_dict = news.db_get_all_DataFrame()
+    got_news_dict:DataFrame = news.db_get_rowNews_DataFrame()
 
     # Word Segmentation 進行分詞
     tokens = ws(got_news_dict.content)

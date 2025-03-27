@@ -96,11 +96,24 @@ class analysed_news(models.Model):
             DataFrame | 包含所有新聞，若失敗則回傳 None
         """        
         try:
-            queryset = cls.objects.all().values()  # 取得所有新聞的 QuerySet，轉為字典列表
-            df = DataFrame(list(queryset))  # 轉換為 DataFrame
+            df = DataFrame(list(cls.objects.all().values()))  # 轉換為 DataFrame
             return df if not df.empty else None  # 確保回傳非空的 DataFrame
         except Exception as e:
-            print(f"❗core/models/db_get_all_df 發生錯誤: {e}")
+            print(f"❗core/models/db_get_all_DataFrame 發生錯誤: {e}")
+            return False
+        
+    @classmethod
+    def db_get_rowNews_DataFrame(cls) -> "DataFrame | None":
+        """將未處理的新聞打包進 DataFrame
+
+        Returns:
+            DataFrame | 包含未處理的新聞，若失敗則回傳 None
+        """        
+        try:
+            df = DataFrame(list(cls.objects.filter(tokens=[]).values()))  # 轉換為 DataFrame
+            return df if not df.empty else None  # 確保回傳非空的 DataFrame
+        except Exception as e:
+            print(f"❗core/models/db_get_rowNews_DataFrame 發生錯誤: {e}")
             return False
         
     @classmethod
