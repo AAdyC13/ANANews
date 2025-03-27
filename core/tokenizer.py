@@ -1,35 +1,30 @@
 
 def test():
-    ...  
+    ...
+
+
 def tokenizer():
-    #段詞分析 需要網路！
+    # 段詞分析 需要網路！
     from pandas import DataFrame
     from collections import Counter
     from .models import analysed_news as news
-
-	
-    #print(news.db_get(news_id=(7315,8614171)))
-
     print("🔥載入斷詞模型...真浪費時間")
     from ckip_transformers.nlp import CkipWordSegmenter, CkipPosTagger, CkipNerChunker
     print("🔥載入斷詞模型完成！")
 
-    # model="albert-tiny" 最小模型，斷詞速度比較快，犧牲一些精確度
-    # model="bert-base" 最大模型，斷詞準確，不要用CPU來算
-    ws = CkipWordSegmenter(model="bert-base") 
-    pos = CkipPosTagger(model="bert-base")
-    ner = CkipNerChunker(model="bert-base")
-    
+    # "albert-tiny" 最小模型，斷詞速度比較快，犧牲一些精確度
+    # "bert-base" 最大模型，斷詞準確，不要用CPU來算
+    mod = "bert-base"
+    dev = 0
+    ws = CkipWordSegmenter(model=mod, device=dev)
+    pos = CkipPosTagger(model=mod, device=dev)
+    ner = CkipNerChunker(model=mod, device=dev)
 
-    got_news_dict:DataFrame = news.db_get_rowNews_DataFrame()
-
-    # Word Segmentation 進行分詞
-    tokens = ws(got_news_dict.content)
+    got_news_dict: DataFrame = news.db_get_rowNews_DataFrame()
     # Word Segmentation 進行分詞
     tokens = ws(got_news_dict.content)
     # POS 分析詞性
     tokens_pos = pos(tokens)
-
     # word pos pair 將1和2黏在一起
     word_pos_pair = [list(zip(w, p)) for w, p in zip(tokens, tokens_pos)]
 
@@ -56,7 +51,7 @@ def tokenizer():
         for word, pos in wp_pair:
             if (pos in allowPOS) & (len(word) >= 2):
                 filtered_words.append(word)
-            #print('%s %s' % (word, pos))
+            # print('%s %s' % (word, pos))
         counter = Counter(filtered_words)
         return counter.most_common(200)
 
@@ -74,14 +69,13 @@ def tokenizer():
         sentiment.append("暫無")
     got_news_dict['summary'] = summary
     got_news_dict['sentiment'] = sentiment
-    
-    
+
     # 將 DataFrame 寫入資料庫
     if news.db_bulk_update_DataFrame(got_news_dict):
         print("已儲存斷詞分析")
     else:
         print("❗斷詞分析儲存失敗")
-            
+
 # 此部分負責將熱門詞結果儲存為csv檔案
 # df_top_group_words = pd.DataFrame(top_group_words, columns = ['category','top_keys'])
 # Part3_file_name = "熱門詞結果_"+datetime.now().strftime("%m%d_%H%M") +".csv"
