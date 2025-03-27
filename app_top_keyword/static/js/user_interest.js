@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     //初始化
-    let tbody = document.getElementById("top_tbody");
+    let newsCount_tbody = document.getElementById("interest_newsCount_tbody");
+    let wordCount_tbody = document.getElementById("interest_wordCount_tbody");
     let selectElement = document.getElementById("keyword_select");
     let weeks = 1;
 
@@ -27,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     document.querySelector(".choices__inner").classList.add("form-control");
 
-
     // 折線圖初始
     window.top = window.top || {};
     var ctx = document.getElementById("keyword_barChart").getContext("2d");
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
             labels: [],
             datasets: [
                 {
-                    label: "各時間點數據量",
+                    label: "新聞數量",
                     fill: true,
                     lineTension: 0,
                     backgroundColor: "rgba(134, 77, 217, 0.88)",
@@ -67,12 +67,14 @@ document.addEventListener("DOMContentLoaded", function () {
         },
     });
 
-    // 關鍵字類別選項框初始
+    // 關鍵字類別選項框、按類統計初始
     fetch('/top/api/get-categories/')
         .then(response => response.json())
         .then(data => {
 
             selectElement.innerHTML = ""; // 清空原有
+            tbody_clear();
+
             let first_get_selected = true;
             data.categories.forEach(category => {
                 let option = document.createElement("option");
@@ -81,9 +83,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 option.value = category;
                 option.textContent = category;
                 selectElement.appendChild(option);
+                tbody_category(category);
             });
         })
         .catch(error => console.error("Error fetching categories:", error));
+    
+    // 兩個Table_清空
+    function tbody_clear(){
+        newsCount_tbody.innerHTML = "";
+        wordCount_tbody.innerHTML = "";
+    }
+
+    // 兩個Table_初始化類別
+    function tbody_category(category){
+        let rowA = newsCount_tbody.insertRow();
+        let rowB = wordCount_tbody.insertRow();
+        rowA.insertCell(0).innerText = category
+        rowA.insertCell(1).innerText = ""
+        rowB.insertCell(0).innerText = category
+        rowB.insertCell(1).innerText = ""
+    }
 
     // fetch.請求資料並動作
     function interest_sendRequest() {
@@ -101,15 +120,14 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 let date = data.date;
                 let y = data.y;
+                let wordCount = data.wordCount;
+                let newsCount = data.newsCount;
                 window.top.myChart.data.labels = date;
                 window.top.myChart.data.datasets[0].data = y;
                 window.top.myChart.update();
-                tbody.innerHTML = "";
-                for (let i = 0; i < words.length; i++) {
-                    let row = tbody.insertRow();
-                    row.insertCell(0).innerText = i + 1; // 序號
-                    row.insertCell(1).innerText = words[i]; // 關鍵字
-                    row.insertCell(2).innerText = counts[i]; // 次數
+                for (let i = 0; i < wordCount.length; i++) {
+                    newsCount_tbody.rows[i].cells[1].textContent = newsCount[i];
+                    wordCount_tbody.rows[i].cells[1].textContent = wordCount[i];
                 }
             })
             .catch(error => console.error("❗js錯誤:", error));

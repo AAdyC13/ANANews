@@ -81,12 +81,14 @@ def get_user_interest(request):
 
         category: str = data.get("category")
         cond: str = data.get("cond")
-        user_keywords: str = data.get("user_keywords")
+        user_keywords: list = data.get("user_keywords").split(",")
         weeks: int = int(data.get("weeks"))
-        row_data = interest_ana.get_keyword_time_based_freq(
+        row_data = interest_ana.ana_main(
             user_keywords, cond, category, weeks)
-        y, date = zip(*[(int(i["y"]), i["x"]) for i in row_data])
-        Response_data = {"y": list(y), "date": list(date)}
+        y, date = zip(*[(int(i["y"]), i["x"]) for i in row_data[0]])
+
+        Response_data = {"y": list(y), "date": list(date),
+                         "wordCount": list(row_data[1].values()), "newsCount": list(row_data[2].values())}
         return JsonResponse(Response_data)
 
     return JsonResponse({"error": "Invalid request"}, status=400)
