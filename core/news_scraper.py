@@ -4,97 +4,119 @@ from bs4 import BeautifulSoup
 from .models import analysed_news as news
 from .models import system_config as sysdb
 import time
+import celery
+
+user_agent = UserAgent()
+backend='redis://127.0.0.1:6379/1'
+broker='redis://127.0.0.1:6379/2'
+news_scraper_celery = celery.Celery('test',broker=broker,backend=backend)
+
+@news_scraper_celery.task
+def news_scraper_starter()-> bool:
+    """
+        celery函數\n
+        從【聯合新聞網】的【即時】頁面底下\n
+        抓取及時列表中【要聞】,【社會】,【地方】,【全球】,【兩岸】,\n
+        【產經】,【股市】,【運動】,【生活】,【文教】\n
+        類新聞(數量因各種情況受影響)並存入資料庫
+        Returns:
+            bool: 是否成功
+    """
+    def news_collector() -> bool:
+        """
+        主程序，呼叫單爬蟲逐一爬取，太多request會被封
+
+        Returns:
+            bool: 是否成功
+        """        
+        news_category_info: dict = sysdb.sysdb_get("news_categories")
+        news_counter = 0
+        for i in range(10):
+            print(f"開始爬取【{news_category_info['news_categories'][i]}】類新聞")
+            page = web_requester(
+                f"https://udn.com/news/breaknews/1/{news_category_info['website_numbers'][i]}#breaknews")
+            if (page):
+                for each_news in page.find_all('a', {"class": "story-list__image--holder", 'data-content_level': "開放閱讀"}):
+                    news_dict = {}
+                    if each_news.get('href'):
+                        parts = each_news.get('href').split("/")
+                        news_id1, news_id2 = parts[-2], parts[-1].split("?")[0]
+                        news_id = (int(news_id1), int(news_id2))
+                        if news.db_is_news_exists(news_id):
+                            print(f"🔸已收錄新聞：{news_id}")
+                        else:
+                            data = news_story_extract(each_news.get('href'))
+                            if data:
+                                news_dict = {
+                                    "title": each_news.get('aria-label'),
+                                    "photo_link": each_news.find('source', {"type": "image/webp"}).get('srcset').replace("&", "&amp;")
+                                } | data
+
+                                if news.db_update(news_id, news_dict):
+                                    print("新收錄新聞：", news_id)
+                                    news_counter += 1
+                                else:
+                                    print("❗收錄新聞失敗：", news_id)
+
+                            else:
+                                print("❗收錄新聞失敗：", news_id)
+
+        print(f"本次一共新收錄{news_counter}份新聞\n")
+    
+    def web_requester(url: str) -> BeautifulSoup | None:
+        """
+        爬蟲函數
+        Args:
+            url (str): 網頁連結
+        Returns:
+            BeautifulSoup|None: 爬取內容，若失敗回傳None
+
+        """
+        try:
+            req = requests.get(
+                url, headers={'user-agent': user_agent.random}, timeout=10)
+            req.raise_for_status()  # 如果返回狀態碼不正常，則會觸發異常
+            time.sleep(10)  # 所有網站呼叫的操作必須休息10秒再進行下一次爬取
+            return BeautifulSoup(req.text, 'lxml')
+
+        except requests.exceptions.RequestException as e:
+            print(f"❗core/news_scraper/web_requester 爬取失敗: {e}")
+            return None
+
+
+    def news_story_extract(news_link: str) -> dict | None:
+        """
+        負責爬取新聞內文
+
+        Args:
+            news_link (str): 內文鏈接
+
+        Returns:
+            dict | None: 回傳整理好的內文，若無回傳None
+        """        
+        in_page = web_requester("https://udn.com"+news_link)
+        if in_page:
+            # 重要：replace("&", "&amp;")是必要的，網站伺服器會針對 & 和 &amp 傳輸兩張不一樣的圖片，據觀察，好像是大圖和縮小圖，縮小圖應該是為了不占用資源的版本
+            try:
+                return {
+                    "date": in_page.find('div', {"class": "article-content__subinfo"}).find('section', {"class": "authors"}).find('time', {"class": "article-content__time"}).get_text('', strip=True),
+                    "category": in_page.find('nav', {"class": "article-content__breadcrumb"}).find_all("a")[1].get_text('', strip=True),
+                    "content": in_page.find('section', {"class": "article-content__editor"}).get_text('', strip=True),
+                }
+            except AttributeError as e:
+                print(f"❗core/news_scraper/news_story_extract 找不到對應資料: {e}")
+                return None
+            except IndexError as e:
+                print(
+                    f"❗core/news_scraper/news_story_extract 內文category的find_all()[1]出錯: {e}")
+                return None
+
+    return news_collector()
 
 # 停用機制：一次爬取某個時間段內所有新聞
 # from datetime import datetime, timedelta
 # gole_Time = datetime.now() - timedelta(days=1)
 # page_time = datetime.strptime(news_dict['date'], '%Y-%m-%d %H:%M')
-
-user_agent = UserAgent()
-
-
-def web_requester(url: str) -> BeautifulSoup | None:
-    """網頁爬蟲
-    Args:
-        url (str): 網頁連結
-    Returns:
-        BeautifulSoup|None: 爬取內容，若失敗回傳None
-
-    """
-    try:
-        req = requests.get(
-            url, headers={'user-agent': user_agent.random}, timeout=10)
-        req.raise_for_status()  # 如果返回狀態碼不正常，則會觸發異常
-        time.sleep(10)  # 所有網站呼叫的操作必須休息10秒再進行下一次爬取
-        return BeautifulSoup(req.text, 'lxml')
-
-    except requests.exceptions.RequestException as e:
-        print(f"❗core/news_scraper/web_requester 爬取失敗: {e}")
-        return None
-
-
-def news_story_extract(news_link: str) -> dict | None:
-    in_page = web_requester("https://udn.com"+news_link)
-    if in_page:
-        # 重要：replace("&", "&amp;")是必要的，網站伺服器會針對 & 和 &amp 傳輸兩張不一樣的圖片，據觀察，好像是大圖和縮小圖，縮小圖應該是為了不占用資源的版本
-        try:
-            return {
-                "date": in_page.find('div', {"class": "article-content__subinfo"}).find('section', {"class": "authors"}).find('time', {"class": "article-content__time"}).get_text('', strip=True),
-                "category": in_page.find('nav', {"class": "article-content__breadcrumb"}).find_all("a")[1].get_text('', strip=True),
-                "content": in_page.find('section', {"class": "article-content__editor"}).get_text('', strip=True),
-            }
-        except AttributeError as e:
-            print(f"❗core/news_scraper/news_story_extract 找不到對應資料: {e}")
-            return None
-        except IndexError as e:
-            print(
-                f"❗core/news_scraper/news_story_extract 內文category的find_all()[1]出錯: {e}")
-            return None
-
-
-def news_collector() -> bool:
-    """
-    從【聯合新聞網】的【即時】頁面底下\n
-    抓取及時列表中【要聞】,【社會】,【地方】,【全球】,【兩岸】,\n
-    【產經】,【股市】,【運動】,【生活】,【文教】\n
-    類新聞(數量因各種情況受影響)並存入資料庫
-    Returns:
-        bool: 是否成功
-    """
-    news_category_info: dict = sysdb.sysdb_get("news_categories")
-    news_counter = 0
-    for i in range(10):
-        print(f"開始爬取【{news_category_info['news_categories'][i]}】類新聞")
-        page = web_requester(
-            f"https://udn.com/news/breaknews/1/{news_category_info['website_numbers'][i]}#breaknews")
-        if (page):
-            for each_news in page.find_all('a', {"class": "story-list__image--holder", 'data-content_level': "開放閱讀"}):
-                news_dict = {}
-                if each_news.get('href'):
-                    parts = each_news.get('href').split("/")
-                    news_id1, news_id2 = parts[-2], parts[-1].split("?")[0]
-                    news_id = (int(news_id1), int(news_id2))
-                    if news.db_is_news_exists(news_id):
-                        print(f"🔸已收錄新聞：{news_id}")
-                    else:
-                        data = news_story_extract(each_news.get('href'))
-                        if data:
-                            news_dict = {
-                                "title": each_news.get('aria-label'),
-                                "photo_link": each_news.find('source', {"type": "image/webp"}).get('srcset').replace("&", "&amp;")
-                            } | data
-
-                            if news.db_update(news_id, news_dict):
-                                print("新收錄新聞：", news_id)
-                                news_counter += 1
-                            else:
-                                print("❗收錄新聞失敗：", news_id)
-
-                        else:
-                            print("❗收錄新聞失敗：", news_id)
-
-    print(f"本次一共新收錄{news_counter}份新聞\n")
-
 
 # 停用：透過js內部請求新聞的api抓取新聞，用途為一次運行無限抓取新聞，直到條件滿足
 # 停用原因：不穩定，沒必要
