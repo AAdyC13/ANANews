@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //初始化
     let category = document.getElementById("keyword_select").value;
     let keywordCount = 0;
-    let tbody = document.getElementById("top_tbody");
+    const tbody = document.getElementById("top_tbody");
 
     // 滑桿初始
     var stepSlider = document.getElementById("keyword_maxNum_NoUISlider");

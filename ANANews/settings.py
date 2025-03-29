@@ -1,7 +1,7 @@
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-#用pathlib更現代化，也是Django默認生成的寫法
+# 用pathlib更現代化，也是Django默認生成的寫法
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -19,6 +19,12 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+# Celery 配置
+CELERY_BROKER_URL = "redis://localhost:6379/1"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'corsheaders',  # 跨域資源共享
+    # 'corsheaders',  # 跨域資源共享
     'app_top_keyword',
     'core',
     'index',

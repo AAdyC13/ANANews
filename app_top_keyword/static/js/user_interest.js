@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     //初始化
-    let newsCount_tbody = document.getElementById("interest_newsCount_tbody");
-    let wordCount_tbody = document.getElementById("interest_wordCount_tbody");
-    let selectElement = document.getElementById("keyword_select");
+    const newsCount_tbody = document.getElementById("interest_newsCount_tbody");
+    const wordCount_tbody = document.getElementById("interest_wordCount_tbody");
+    const selectElement = document.getElementById("keyword_select");
     let weeks = 1;
 
     // 滑桿初始
@@ -126,8 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.top.myChart.data.datasets[0].data = y;
                 window.top.myChart.update();
                 for (let i = 0; i < wordCount.length; i++) {
-                    newsCount_tbody.rows[i].cells[1].textContent = newsCount[i];
-                    wordCount_tbody.rows[i].cells[1].textContent = wordCount[i];
+                    newsCount_tbody.rows[i].cells[1].innerText = newsCount[i];
+                    wordCount_tbody.rows[i].cells[1].innerText = wordCount[i];
                 }
             })
             .catch(error => console.error("❗js錯誤:", error));
