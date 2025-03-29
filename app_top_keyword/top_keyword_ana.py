@@ -29,6 +29,9 @@ def analyze_top_keywords():
     return top_cate_words
 
 
+_cached_top_cate_words = analyze_top_keywords()  #伺服器啟動時計算一次
+
+
 def top_keyword_ana(category: str) -> dict:
     """
     回傳聯合新聞網所有類別的關鍵字及其數量
@@ -41,5 +44,5 @@ def top_keyword_ana(category: str) -> dict:
     """
     global _cached_top_cate_words  # 使用全域變數來快取結果
     if _cached_top_cate_words is None:
-        _cached_top_cate_words = analyze_top_keywords()  # 只在程式啟動時計算一次
+        _cached_top_cate_words = analyze_top_keywords()  # 若沒有則再計算一次
     return _cached_top_cate_words.get(category, {})  # 回傳對應類別的結果

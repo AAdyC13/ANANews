@@ -4,39 +4,47 @@
 
 <!-- top_base_引入js_自定義js-->
 <script src="{% static 'js\index.js' %}"></script>
+<script src="{% static 'js\news_scraper.js' %}"></script>
+<!-- top_keyword_引入CSS_nouislider -->
+<link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.css' %}">
+<!-- top_keyword_引入js_nouislider -->
+<script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
+<!-- top_keyword_引入js_wNumb，nouislider部分功能 -->
+<script src="{% static 'vendor/nouislider/wNumb.min.js' %}"></script>
+
 
 <div class="page-content">
-    <!-- index_頁面大標題-->
-    <div class="bg-dash-dark-2 py-4">
-        <div class="container-fluid">
-            <h2 class="h5 mb-0">首頁</h2>
-        </div>
+  <!-- index_頁面大標題-->
+  <div class="bg-dash-dark-2 py-4">
+    <div class="container-fluid">
+      <h2 class="h5 mb-0">首頁</h2>
     </div>
-    <!-- index_頁面主板塊-->
-    <section>
+  </div>
+  <!-- index_頁面主板塊-->
+  <section>
+    <div class="container-fluid">
+      <section>
         <div class="container-fluid">
-            <section>
-                <div class="container-fluid">
-                    <div class="row gy-4">
-                        <!-- index_新聞收錄統計-->
-                        <div class="col-md-3 col-sm-6">
-                            <div class="card mb-0">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-end justify-content-between mb-2">
-                                        <div class="me-2">
-                                            <p class="text-sm text-uppercase text-gray-600 lh-1 mb-0">新聞收錄數量</p>
-                                            <label id = "latest_news_time" class="form-label">最新收錄時間：xxxx/xx/xx</label>
-                                        </div>
-                                        <p id = "total_news" class="text-xxl lh-1 mb-0 text-dash-color-1">000</p>
-                                    </div>
-                                    <div class="progress" style="height: 3px">
-                                        <div id = "total_news_bar"class="progress-bar bg-dash-color-1" role="progressbar" style="width: 1%"
-                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="10000"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div class="col-md-3 col-sm-6">
+          <div class="row gy-4">
+            <!-- index_新聞收錄統計-->
+            <div class="col-md-3 col-sm-6">
+              <div class="card mb-0">
+                <div class="card-body">
+                  <div class="d-flex align-items-end justify-content-between mb-2">
+                    <div class="me-2">
+                      <p class="text-sm text-uppercase text-gray-600 lh-1 mb-0">新聞收錄數量</p>
+                      <label id="latest_news_time" class="form-label">最新收錄時間：xxxx/xx/xx</label>
+                    </div>
+                    <p id="total_news" class="text-xxl lh-1 mb-0 text-dash-color-1">000</p>
+                  </div>
+                  <div class="progress" style="height: 3px">
+                    <div id="total_news_bar" class="progress-bar bg-dash-color-1" role="progressbar" style="width: 1%"
+                      aria-valuenow="50" aria-valuemin="0" aria-valuemax="10000"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-3 col-sm-6">
                       <div class="card mb-0">
                         <div class="card-body">
                           <div class="d-flex align-items-end justify-content-between mb-2">
@@ -90,61 +98,86 @@
                         </div>
                       </div>
                     </div> -->
-                    </div>
-                </div>
-            </section>
+          </div>
         </div>
-    </section>
-    <!-- index_爬蟲控制區-->
-    <section class="pt-0">
-        <div class="container-fluid">
-            <div class="row gy-4">
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" id="news_scraper_start" type="button">啟動</button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <!-- <canvas id="barChartExample2" width="216" height="108" style="display: block; width: 216px; height: 108px;" class="chartjs-render-monitor"></canvas> -->
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <!-- <canvas id="lineChart" width="505" height="252" style="display: block; width: 505px; height: 252px;" class="chartjs-render-monitor"></canvas> -->
-                        </div>
-                    </div>
-                </div>
+      </section>
+    </div>
+  </section>
+  <!-- index_爬蟲控制區-->
+  <section class="pt-0">
+    <div class="container-fluid">
+      <div class="row gy-4">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="h4 mb-0">新聞爬蟲控制區</h3>
             </div>
+            <div class="card-body pt-0">
+              <p class="text-sm">爬蟲結合<strong>celery</strong>與<strong>redis</strong>於外部工作｜爬取網站：<a
+                  href="https://udn.com/news/index" target="_blank">聯合新聞網</a></p>
+              <form>
+                <div class="mb-3">
+                  <div class="form-group">
+                    <label class="form-label">請將希望爬取的類別置於右側</label>
+                    <select id="news_scraper_category_set" multiple="multiple" name="multiselect" data-multijs="true"
+                      style="display: none;">
+                      <option value="#{val.city}" selected="" data-origin-disabled="false">Baker</option>
+                      <option value="#{val.city}" data-origin-disabled="false">Independence</option>
+                      <option value="#{val.city}" data-origin-disabled="false">Emerald</option>
+                      <option value="#{val.city}" data-origin-disabled="false">Beyerville</option>
+                      <option value="#{val.city}" data-origin-disabled="false">Vallonia</option>
+                      <option value="#{val.city}" selected="" data-origin-disabled="false">Weogufka</option>
+                      <option value="#{val.city}" data-origin-disabled="false">Catherine</option>
+                      <option value="#{val.city}" data-origin-disabled="false">Healy</option>
+                      <option value="#{val.city}" data-origin-disabled="false">Coalmont</option>
+                      <option value="#{val.city}" data-origin-disabled="false">Glenville</option>
+                    </select>
+                    <div class="multi-wrapper">
+                      <div class="non-selected-wrapper">
+                        <a tabindex="0" class="item selected" role="button" data-value="#{val.city}"
+                          multi-index="0">Baker</a>
+                        <a tabindex="0" class="item" role="button" data-value="#{val.city}"
+                          multi-index="1">Independence</a><a tabindex="0" class="item" role="button"
+                          data-value="#{val.city}" multi-index="2">Emerald</a><a tabindex="0" class="item" role="button"
+                          data-value="#{val.city}" multi-index="3">Beyerville</a><a tabindex="0" class="item"
+                          role="button" data-value="#{val.city}" multi-index="4">Vallonia</a><a tabindex="0"
+                          class="item selected" role="button" data-value="#{val.city}" multi-index="5">Weogufka</a><a
+                          tabindex="0" class="item" role="button" data-value="#{val.city}"
+                          multi-index="6">Catherine</a><a tabindex="0" class="item" role="button"
+                          data-value="#{val.city}" multi-index="7">Healy</a><a tabindex="0" class="item" role="button"
+                          data-value="#{val.city}" multi-index="8">Coalmont</a><a tabindex="0" class="item"
+                          role="button" data-value="#{val.city}" multi-index="9">Glenville</a>
+                      </div>
+                      <div class="selected-wrapper"><a tabindex="0" class="item selected" role="button"
+                          data-value="#{val.city}" multi-index="0">Baker</a><a tabindex="0" class="item selected"
+                          role="button" data-value="#{val.city}" multi-index="5">Weogufka</a></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">請選擇<a style="pointer-events: none;">每類</a>欲爬取新聞數量</label>
+                  <div class="nouislider mt-2">
+                    <div id="news_scraper_each_gatNum"></div>
+                  </div>
+                  <div class="card-footer text-muted d-flex justify-content-between">
+                    <span>本次爬取預計取得 <code id="news_scraper_HowCat">？</code> 類共 <code id="news_scraper_HowMany">？</code>
+                      份新聞</span>
+                    <span>預計耗時 <code id="news_scraper_HowTime">？</code> 秒</span>
+                  </div>
+                </div>
+
+                <!-- <button id="news_scraper_STOP" class="btn btn-danger" type="button">緊急停止</button> -->
+                <button id="news_scraper_start"class="btn btn-primary ladda-button" type="button" data-style="zoom-out"><span
+                    class="ladda-label">啟動</span><span class="ladda-spinner"></span></button>
+              </form>
+            </div>
+
+          </div>
         </div>
-    </section>
+
+      </div>
+    </div>
+  </section>
 
 </div>
 {% endblock %}
