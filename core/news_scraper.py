@@ -4,14 +4,11 @@ from bs4 import BeautifulSoup
 from .models import analysed_news as news
 from .models import system_config as sysdb
 import time
-import celery
+
 
 user_agent = UserAgent()
-backend='redis://127.0.0.1:6379/1'
-broker='redis://127.0.0.1:6379/2'
-news_scraper_celery = celery.Celery('test',broker=broker,backend=backend)
 
-@news_scraper_celery.task
+
 def news_scraper_starter()-> bool:
     """
         celery函數\n
@@ -110,8 +107,11 @@ def news_scraper_starter()-> bool:
                 print(
                     f"❗core/news_scraper/news_story_extract 內文category的find_all()[1]出錯: {e}")
                 return None
-
-    return news_collector()
+            
+    #news_collector()
+    task_down = "Yes"
+    time.sleep(5)
+    return task_down
 
 # 停用機制：一次爬取某個時間段內所有新聞
 # from datetime import datetime, timedelta

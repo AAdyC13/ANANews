@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block apps_content %}
+
+<!-- top_base_引入js_自定義js-->
+<script src="{% static 'js\index.js' %}"></script>
+
 <div class="page-content">
     <!-- index_頁面大標題-->
     <div class="bg-dash-dark-2 py-4">
@@ -11,9 +15,135 @@
     <!-- index_頁面主板塊-->
     <section>
         <div class="container-fluid">
-            <p>這裡目前什麼都沒有呢😭</p>
+            <section>
+                <div class="container-fluid">
+                    <div class="row gy-4">
+                        <!-- index_新聞收錄統計-->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-end justify-content-between mb-2">
+                                        <div class="me-2">
+                                            <p class="text-sm text-uppercase text-gray-600 lh-1 mb-0">新聞收錄數量</p>
+                                            <label id = "latest_news_time" class="form-label">最新收錄時間：xxxx/xx/xx</label>
+                                        </div>
+                                        <p id = "total_news" class="text-xxl lh-1 mb-0 text-dash-color-1">000</p>
+                                    </div>
+                                    <div class="progress" style="height: 3px">
+                                        <div id = "total_news_bar"class="progress-bar bg-dash-color-1" role="progressbar" style="width: 1%"
+                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="10000"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-3 col-sm-6">
+                      <div class="card mb-0">
+                        <div class="card-body">
+                          <div class="d-flex align-items-end justify-content-between mb-2">
+                            <div class="me-2">
+                                  <svg class="svg-icon svg-icon-sm svg-icon-heavy text-gray-600 mb-2">
+                                    <use xlink:href="#stack-1"> </use>
+                                  </svg>
+                              <p class="text-sm text-uppercase text-gray-600 lh-1 mb-0">New Projects</p>
+                            </div>
+                            <p class="text-xxl lh-1 mb-0 text-dash-color-2">375</p>
+                          </div>
+                          <div class="progress" style="height: 3px">
+                            <div class="progress-bar bg-dash-color-2" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                      <div class="card mb-0">
+                        <div class="card-body">
+                          <div class="d-flex align-items-end justify-content-between mb-2">
+                            <div class="me-2">
+                                  <svg class="svg-icon svg-icon-sm svg-icon-heavy text-gray-600 mb-2">
+                                    <use xlink:href="#survey-1"> </use>
+                                  </svg>
+                              <p class="text-sm text-uppercase text-gray-600 lh-1 mb-0">New Invoices</p>
+                            </div>
+                            <p class="text-xxl lh-1 mb-0 text-dash-color-3">140</p>
+                          </div>
+                          <div class="progress" style="height: 3px">
+                            <div class="progress-bar bg-dash-color-3" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                      <div class="card mb-0">
+                        <div class="card-body">
+                          <div class="d-flex align-items-end justify-content-between mb-2">
+                            <div class="me-2">
+                                  <svg class="svg-icon svg-icon-sm svg-icon-heavy text-gray-600 mb-2">
+                                    <use xlink:href="#paper-stack-1"> </use>
+                                  </svg>
+                              <p class="text-sm text-uppercase text-gray-600 lh-1 mb-0">All Projects</p>
+                            </div>
+                            <p class="text-xxl lh-1 mb-0 text-dash-color-4">41</p>
+                          </div>
+                          <div class="progress" style="height: 3px">
+                            <div class="progress-bar bg-dash-color-4" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                    </div>
+                </div>
+            </section>
         </div>
-
+    </section>
+    <!-- index_爬蟲控制區-->
+    <section class="pt-0">
+        <div class="container-fluid">
+            <div class="row gy-4">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class=""></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="news_scraper_start" type="button">啟動</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class=""></div>
+                                </div>
+                            </div>
+                            <!-- <canvas id="barChartExample2" width="216" height="108" style="display: block; width: 216px; height: 108px;" class="chartjs-render-monitor"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class=""></div>
+                                </div>
+                            </div>
+                            <!-- <canvas id="lineChart" width="505" height="252" style="display: block; width: 505px; height: 252px;" class="chartjs-render-monitor"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
 </div>

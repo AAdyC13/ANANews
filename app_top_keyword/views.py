@@ -7,7 +7,6 @@ import app_top_keyword.top_person_ana as person_ana
 import app_top_keyword.user_interest_ana as interest_ana
 from core.utils import news_categories as newsCat
 
-
 def top_keyword(request):
     return render(request,
                   'app_top_keyword/top_keyword.html')
@@ -78,6 +77,10 @@ def get_categories(request):
 def get_user_interest(request):
     if request.method == "POST":
         data = json.loads(request.body)
+        
+        # from core.tasks import do_thing
+        # a=  do_thing.delay("DAC")
+        # print(a.id)
 
         category: str = data.get("category")
         cond: str = data.get("cond")

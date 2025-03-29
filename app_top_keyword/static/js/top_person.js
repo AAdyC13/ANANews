@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     //初始化
     let personCount = 5;
-    let tbody = document.getElementById("top_tbody");
-    let selectElement = document.getElementById("person_select");
+    const tbody = document.getElementById("top_tbody");
+    const selectElement = document.getElementById("person_select");
     let category = selectElement.value;
 
     // 關鍵字選項框初始

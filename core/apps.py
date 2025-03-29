@@ -7,7 +7,8 @@ class CoreConfig(AppConfig):
     
     def ready(self):
         if os.environ.get('RUN_MAIN') == 'true':  # 確保只在主進程執行
-            ...
+            import core.tasks
+            
             # import core.tokenizer
             # core.tokenizer.tokenizer()
             #core.tokenizer.test()
