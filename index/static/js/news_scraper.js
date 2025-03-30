@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const code_HowMany = document.getElementById("news_scraper_HowMany");
     const spen_HowTime = document.getElementById("news_scraper_HowTime");
     const categorys_select = document.getElementById("news_scraper_category_set");
+    const logDiv = document.getElementById("log-output");
+    // 與asgi伺服器建立連線
+    const scraper_socket = new WebSocket("ws://127.0.0.3:8001/ws/celery-logs/");
 
     // 滑桿初始
     if (NoUI_each_gatNum) {
@@ -72,9 +75,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // 事件.當按下啟動按鈕時
     document.getElementById("news_scraper_start").addEventListener("click", function () {
         fetch('/index/api/news_scraper_start/')
-        .then(response => response.json())
-        .then(data => {console.log(data.hi)})
-        .catch(error => console.error("Error fetching categories:", error));
+            .then(response => response.json())
+            .then(data => { console.log(data.Response) })
+            .catch(error => console.error("Error fetching categories:", error));
 
     });
 
@@ -89,4 +92,18 @@ document.addEventListener("DOMContentLoaded", function () {
         each_Num = values[handle] || 0;
         calculate_crawl_estimation()
     });
+
+
+    // WebSocket有新消息時
+    scraper_socket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        logDiv.innerText += `\n`;
+        logDiv.innerText += `${data.message}`;  // 更新前端顯示
+    };
+
+    // WebSocket關閉時
+    scraper_socket.onclose = function (event) {
+        console.log("WebSocket已關閉");
+    };
+
 })

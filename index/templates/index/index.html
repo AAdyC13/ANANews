@@ -24,30 +24,28 @@
     </div>
   </div>
   <!-- index_頁面主板塊-->
-  <section>
-    <div class="container-fluid">
-      <section>
-        <div class="container-fluid">
-          <div class="row gy-4">
-            <!-- index_新聞收錄統計-->
-            <div class="col-md-3 col-sm-6">
-              <div class="card mb-0">
-                <div class="card-body">
-                  <div class="d-flex align-items-end justify-content-between mb-2">
-                    <div class="me-2">
-                      <p class="text-sm text-uppercase text-gray-600 lh-1 mb-0">新聞收錄數量</p>
-                      <label id="latest_news_time" class="form-label">最新收錄時間：xxxx/xx/xx</label>
-                    </div>
-                    <p id="total_news" class="text-xxl lh-1 mb-0 text-dash-color-1">000</p>
-                  </div>
-                  <div class="progress" style="height: 3px">
-                    <div id="total_news_bar" class="progress-bar bg-dash-color-1" role="progressbar" style="width: 1%"
-                      aria-valuenow="50" aria-valuemin="0" aria-valuemax="10000"></div>
-                  </div>
+  <div class="container-fluid">
+    <section>
+      <div class="row gy-4">
+        <!-- index_新聞收錄統計-->
+        <div class="col-md-3 col-sm-6">
+          <div class="card mb-0">
+            <div class="card-body">
+              <div class="d-flex align-items-end justify-content-between mb-2">
+                <div class="me-2">
+                  <p class="text-sm text-uppercase text-gray-600 lh-1 mb-0">新聞收錄數量</p>
+                  <label id="latest_news_time" class="form-label">最新收錄時間：xxxx/xx/xx</label>
                 </div>
+                <p id="total_news" class="text-xxl lh-1 mb-0 text-dash-color-1">000</p>
+              </div>
+              <div class="progress" style="height: 3px">
+                <div id="total_news_bar" class="progress-bar bg-dash-color-1" role="progressbar" style="width: 1%"
+                  aria-valuenow="50" aria-valuemin="0" aria-valuemax="10000"></div>
               </div>
             </div>
-            <!-- <div class="col-md-3 col-sm-6">
+          </div>
+        </div>
+        <!-- <div class="col-md-3 col-sm-6">
                       <div class="card mb-0">
                         <div class="card-body">
                           <div class="d-flex align-items-end justify-content-between mb-2">
@@ -101,15 +99,14 @@
                         </div>
                       </div>
                     </div> -->
-          </div>
-        </div>
-      </section>
-    </div>
-  </section>
-  <!-- index_爬蟲控制區-->
+      </div>
+    </section>
+  </div>
+  <!-- index_新聞爬蟲區-->
   <section class="pt-0">
     <div class="container-fluid">
       <div class="row gy-4">
+        <!-- index_新聞爬蟲控制區-->
         <div class="col-lg-6">
           <div class="card">
             <div class="card-header">
@@ -149,32 +146,24 @@
 
                 <button id="news_scraper_category_reset" class="btn btn-secondary" type="button">取消已選類別</button>
                 <button id="news_scraper_start" class="btn btn-primary ladda-button" type="button"
-                  data-style="zoom-out"><span class="ladda-label">啟動</span><span class="ladda-spinner"></span></button>
+                  data-style="zoom-out" disabled><span class="ladda-label">啟動</span><span class="ladda-spinner"></span></button>
               </form>
             </div>
 
           </div>
         </div>
-
-      </div>
-    </div>
+        <!-- index_新聞爬蟲監視器-->
+        <div class="col-lg-6 d-flex flex-column">
+          <div class="card h-100 d-flex flex-column">
+            <div class="card-header text-muted d-flex justify-content-between">
+              <h3 class="h4 mb-0">新聞爬蟲監視器🖥️</h3>
+              <h3 class="h4 mb-0">未啟動🔴</h3>
+            </div>
+            <div class="card-body pt-0 d-flex flex-column">
+              <pre class="card-footer" id="log-output" style="height: 500px; overflow-y: scroll;"></pre>
+            </div>
+          </div>
+        </div>
   </section>
-  <div id="log-output" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc;"></div>
-  <script>
-    const socket = new WebSocket("ws://127.0.0.3:8001/ws/celery-logs/");
-
-    socket.onmessage = function (event) {
-      const data = JSON.parse(event.data);
-      const logDiv = document.getElementById("log-output");
-      logDiv.innerHTML += `<p>${data.message}</p>`;  // 更新前端顯示
-    };
-
-    socket.onclose = function (event) {
-      console.log("WebSocket closed.");
-    };
-  </script>
-
-
-
 </div>
 {% endblock %}
