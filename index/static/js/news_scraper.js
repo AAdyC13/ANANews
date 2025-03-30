@@ -1,11 +1,12 @@
-document.addEventListener("DOMContentLoaded",function(){
+document.addEventListener("DOMContentLoaded", function () {
     //初始化變數
-    let keywordCount = 0;
-    const MutiSel_category_set = document.getElementById("news_scraper_category_set");
+    let each_Num = 0;
+    let categorys = [];
     const NoUI_each_gatNum = document.getElementById("news_scraper_each_gatNum");
     const code_HowCat = document.getElementById("news_scraper_HowCat");
     const code_HowMany = document.getElementById("news_scraper_HowMany");
-    const code_HowTime = document.getElementById("news_scraper_HowTime");
+    const spen_HowTime = document.getElementById("news_scraper_HowTime");
+    const categorys_select = document.getElementById("news_scraper_category_set");
 
     // 滑桿初始
     if (NoUI_each_gatNum) {
@@ -21,20 +22,67 @@ document.addEventListener("DOMContentLoaded",function(){
         });
     }
 
-    //初始化網頁顯示內容
-    // fetch('/index/api/get_news_DBinfo')
-    // .then(response => response.json())
-    // .then(data => {
-    //     latest_news_time.innerText = `最新收錄時間：${data.latest_news_time}`
-    //     total_news.innerText= data.total_news
+    // 多重選項框初始
+    fetch('/top/api/get-categories/')
+        .then(response => response.json())
+        .then(data => {
+            categorys_select.innerHTML = ""; // 清空默認
+            data.categories.forEach(category => {
+                if (category != "全部") {
+                    let option = document.createElement("option");
+                    option.value = category;
+                    option.textContent = category;
+                    option.selected = true;
+                    categorys_select.appendChild(option);
+                }
+            });
+            multi(categorys_select, {
+                enable_search: false,
+                non_selected_header: "未選區",
+                selected_header: "已選區",
+                "limit": -1,
+                "limit_reached": function () { },
+                "hide_empty_groups": true,
+            });
+            categorys = Array.from(categorys_select.selectedOptions).map(option => option.value);
+            calculate_crawl_estimation()
+        })
+        .catch(error => console.error("Error fetching categories:", error));
 
-    //     total_news_bar.setAttribute("aria-valuenow", data.total_news);
-    //     total_news_bar.setAttribute("style",`width: ${data.total_news/100}%`)
-        
 
+    // 更新爬蟲預測欄
+    function calculate_crawl_estimation() {
+        code_HowCat.innerText = categorys.length,
+            code_HowMany.innerText = each_Num,
+            second_calcu = categorys.length * each_Num * 10
+        if (second_calcu < 60) {
+            spen_HowTime.innerHTML = `預計耗時
+                <code >${second_calcu}</code>秒`
+        } else {
+            spen_HowTime.innerHTML = `預計耗時 <code>${Math.floor(second_calcu / 60)}</code> 分 <code>${second_calcu % 60}</code> 秒`;
+        }
+    }
 
-    // })
-    // .catch(error => console.error("Error fetching get_latest_news_time:", error));
+    // 事件.當按下取消已選類別按鈕時
+    document.getElementById("news_scraper_category_reset").addEventListener("click", function () {
+        categorys_select.querySelectorAll("select option").forEach(opt => opt.selected = false);
+        categorys_select.dispatchEvent(new Event("change"));
+    });
 
+    // 事件.當按下啟動按鈕時
+    document.getElementById("news_scraper_start").addEventListener("click", function () {
 
+    });
+
+    // 事件.當選擇框change時
+    categorys_select.addEventListener("change", function () {
+        categorys = Array.from(categorys_select.selectedOptions).map(option => option.value);
+        calculate_crawl_estimation()
+    });
+
+    // 事件.當滑桿end時
+    NoUI_each_gatNum.noUiSlider.on("change", function (values, handle) {
+        each_Num = values[handle] || 0;
+        calculate_crawl_estimation()
+    });
 })
