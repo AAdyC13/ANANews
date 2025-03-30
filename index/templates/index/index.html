@@ -126,16 +126,16 @@
                   <div class="form-group">
                     <li class="form-label">請將希望爬取的類別置於右側</li>
                     <select id="news_scraper_category_set" multiple="multiple" name="news_scraper_category_set">
-                      <option value="None"disabled>如果你看到了我，</option>
-                      <option value="None"disabled>說明請求選單的函數出錯了</option>
-                      <option value="None"disabled>js沒收到選單</option>
-                      <option value="None"disabled>所以沒更新默認html</option>
+                      <option value="None" disabled>如果你看到了我，</option>
+                      <option value="None" disabled>說明請求選單的函數出錯了</option>
+                      <option value="None" disabled>js沒收到選單</option>
+                      <option value="None" disabled>所以沒更新默認html</option>
                     </select>
 
                   </div>
                 </div>
                 <div class="mb-3">
-                  
+
                   <li class="form-label">請選擇<a href="" style="pointer-events: none;">每類</a>欲爬取新聞數量</li>
                   <div class="nouislider mt-2">
                     <div id="news_scraper_each_gatNum"></div>
@@ -143,7 +143,7 @@
                   <div class="card-footer text-muted d-flex justify-content-between">
                     <span>本次爬取預計取得 <code id="news_scraper_HowCat">？</code> 類共 <code id="news_scraper_HowMany">？</code>
                       份新聞</span>
-                    <span id="news_scraper_HowTime">預計耗時 <code >？</code> 秒</span>
+                    <span id="news_scraper_HowTime">預計耗時 <code>？</code> 秒</span>
                   </div>
                 </div>
 
@@ -159,6 +159,22 @@
       </div>
     </div>
   </section>
+  <div id="log-output" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc;"></div>
+  <script>
+    const socket = new WebSocket("ws://127.0.0.3:8001/ws/celery-logs/");
+
+    socket.onmessage = function (event) {
+      const data = JSON.parse(event.data);
+      const logDiv = document.getElementById("log-output");
+      logDiv.innerHTML += `<p>${data.message}</p>`;  // 更新前端顯示
+    };
+
+    socket.onclose = function (event) {
+      console.log("WebSocket closed.");
+    };
+  </script>
+
+
 
 </div>
 {% endblock %}

@@ -77,11 +77,6 @@ def get_categories(request):
 def get_user_interest(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        
-        # from core.tasks import do_thing
-        # a=  do_thing.delay("DAC")
-        # print(a.id)
-
         category: str = data.get("category")
         cond: str = data.get("cond")
         user_keywords: list = data.get("user_keywords").split(",")

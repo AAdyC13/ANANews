@@ -24,6 +24,12 @@ CELERY_BROKER_URL = "redis://localhost:6379/1"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 
+# Channel 配置
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",  # 可改為 Redis
+    }
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -36,6 +42,7 @@ INSTALLED_APPS = [
     'app_top_keyword',
     'core',
     'index',
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -67,8 +74,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ANANews.wsgi.application'
-
+#WSGI_APPLICATION = 'ANANews.wsgi.application'
+ASGI_APPLICATION = "ANANews.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

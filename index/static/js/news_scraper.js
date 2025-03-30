@@ -71,6 +71,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 事件.當按下啟動按鈕時
     document.getElementById("news_scraper_start").addEventListener("click", function () {
+        fetch('/index/api/news_scraper_start/')
+        .then(response => response.json())
+        .then(data => {console.log(data.hi)})
+        .catch(error => console.error("Error fetching categories:", error));
 
     });
 
