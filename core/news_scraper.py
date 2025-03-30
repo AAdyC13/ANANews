@@ -4,20 +4,28 @@ from bs4 import BeautifulSoup
 from .models import analysed_news as news
 from .models import system_config as sysdb
 import time
-
+from datetime import datetime, timedelta
+from celery import shared_task
+import channels.layers
+from asgiref.sync import async_to_sync
+channel_layer = channels.layers.get_channel_layer()
 
 user_agent = UserAgent()
 
 
-def news_scraper_starter()-> bool:
+@shared_task
+def news_scraper_starter(want_category: list, each_num: int) -> bool:
     """
-        celery函數\n
-        從【聯合新聞網】的【即時】頁面底下\n
-        抓取及時列表中【要聞】,【社會】,【地方】,【全球】,【兩岸】,\n
-        【產經】,【股市】,【運動】,【生活】,【文教】\n
-        類新聞(數量因各種情況受影響)並存入資料庫
-        Returns:
-            bool: 是否成功
+    celery函數\n
+    從【聯合新聞網】的【即時】頁面底下\n
+    抓取及時列表中【要聞】,【社會】,【地方】,【全球】,【兩岸】,\n
+    【產經】,【股市】,【運動】,【生活】,【文教】\n
+    類新聞(數量因各種情況受影響)並存入資料庫
+    Args:
+        want_category (list): 要爬取的類別
+        each_num (int): 各類別要爬取的新聞數量
+    Returns:
+        bool: 是否成功
     """
     def news_collector() -> bool:
         """
@@ -25,41 +33,46 @@ def news_scraper_starter()-> bool:
 
         Returns:
             bool: 是否成功
-        """        
-        news_category_info: dict = sysdb.sysdb_get("news_categories")
+        """
         news_counter = 0
-        for i in range(10):
-            print(f"開始爬取【{news_category_info['news_categories'][i]}】類新聞")
-            page = web_requester(
-                f"https://udn.com/news/breaknews/1/{news_category_info['website_numbers'][i]}#breaknews")
-            if (page):
-                for each_news in page.find_all('a', {"class": "story-list__image--holder", 'data-content_level': "開放閱讀"}):
-                    news_dict = {}
-                    if each_news.get('href'):
-                        parts = each_news.get('href').split("/")
-                        news_id1, news_id2 = parts[-2], parts[-1].split("?")[0]
-                        news_id = (int(news_id1), int(news_id2))
-                        if news.db_is_news_exists(news_id):
-                            print(f"🔸已收錄新聞：{news_id}")
-                        else:
-                            data = news_story_extract(each_news.get('href'))
-                            if data:
-                                news_dict = {
-                                    "title": each_news.get('aria-label'),
-                                    "photo_link": each_news.find('source', {"type": "image/webp"}).get('srcset').replace("&", "&amp;")
-                                } | data
-
-                                if news.db_update(news_id, news_dict):
-                                    print("新收錄新聞：", news_id)
-                                    news_counter += 1
-                                else:
-                                    print("❗收錄新聞失敗：", news_id)
-
+        for i in range(len(want_category)):
+            logs_Sender_Printer(f"開始爬取【{want_category[i]}】類新聞")
+            if each_num == 0:
+                time.sleep(0.1)
+            else:
+                inside_counter = 0
+                page = web_requester(
+                    f"https://udn.com/news/breaknews/1/{want_category[i]}#breaknews")
+                if (page):
+                    for each_news in page.find_all('a', {"class": "story-list__image--holder", 'data-content_level': "開放閱讀"}):
+                        if inside_counter >= each_num:
+                            break
+                        inside_counter += 1
+                        news_dict = {}
+                        if each_news.get('href'):
+                            parts = each_news.get('href').split("/")
+                            news_id1, news_id2 = parts[-2], parts[-1].split("?")[0]
+                            news_id = (int(news_id1), int(news_id2))
+                            if news.db_is_news_exists(news_id):
+                                logs_Sender_Printer(f"🔸已收錄新聞：{news_id}")
                             else:
-                                print("❗收錄新聞失敗：", news_id)
+                                data = news_story_extract(each_news.get('href'))
+                                if data:
+                                    news_dict = {
+                                        "title": each_news.get('aria-label'),
+                                        "photo_link": each_news.find('source', {"type": "image/webp"}).get('srcset').replace("&", "&amp;")
+                                    } | data
 
-        print(f"本次一共新收錄{news_counter}份新聞\n")
-    
+                                    if news.db_update(news_id, news_dict):
+                                        logs_Sender_Printer(f"新收錄新聞：{news_id}")
+                                        news_counter += 1
+                                    else:
+                                        logs_Sender_Printer(f"❗收錄新聞失敗：{news_id}")
+                                else:
+                                    logs_Sender_Printer(f"❗收錄新聞失敗：{news_id}")
+
+        logs_Sender_Printer(f"✅本次一共新收錄{news_counter}份新聞")
+
     def web_requester(url: str) -> BeautifulSoup | None:
         """
         爬蟲函數
@@ -77,9 +90,8 @@ def news_scraper_starter()-> bool:
             return BeautifulSoup(req.text, 'lxml')
 
         except requests.exceptions.RequestException as e:
-            print(f"❗core/news_scraper/web_requester 爬取失敗: {e}")
+            logs_Sender_Printer(f"❗core/news_scraper/web_requester 爬取失敗: {e}")
             return None
-
 
     def news_story_extract(news_link: str) -> dict | None:
         """
@@ -90,7 +102,7 @@ def news_scraper_starter()-> bool:
 
         Returns:
             dict | None: 回傳整理好的內文，若無回傳None
-        """        
+        """
         in_page = web_requester("https://udn.com"+news_link)
         if in_page:
             # 重要：replace("&", "&amp;")是必要的，網站伺服器會針對 & 和 &amp 傳輸兩張不一樣的圖片，據觀察，好像是大圖和縮小圖，縮小圖應該是為了不占用資源的版本
@@ -101,17 +113,39 @@ def news_scraper_starter()-> bool:
                     "content": in_page.find('section', {"class": "article-content__editor"}).get_text('', strip=True),
                 }
             except AttributeError as e:
-                print(f"❗core/news_scraper/news_story_extract 找不到對應資料: {e}")
+                logs_Sender_Printer(
+                    f"❗core/news_scraper/news_story_extract 找不到對應資料: {e}")
                 return None
             except IndexError as e:
-                print(
-                    f"❗core/news_scraper/news_story_extract 內文category的find_all()[1]出錯: {e}")
+                logs_Sender_Printer(
+                    f"❗core/news_scraper/news_story_extract 內文category的find_all('a')[1]出錯: {e}")
                 return None
-            
-    #news_collector()
-    task_down = "Yes"
-    time.sleep(5)
-    return task_down
+
+    def logs_Sender_Printer(message: str) -> bool:
+        """
+        向asgi伺服器發送WebSocket訊息
+
+        Args:
+            message (str): 要發送的訊息
+
+        Returns:
+            bool: 是否成功
+        """
+        try:
+            print(message)
+            log_message = f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [news_scraper] {message}"
+            async_to_sync(channel_layer.group_send)(
+                "celery_logs", {"type": "log_message", "message": log_message}
+            )
+            return True
+        except Exception as ex:
+            print(f"❗core/news_scraper/logs_sender 錯誤: {ex}")
+            return False
+    logs_Sender_Printer(f"ℹ️news_scraper_starter任務啟動")
+    logs_Sender_Printer(f"ℹ️爬取類別：{want_category}")
+    logs_Sender_Printer(f"ℹ️每類數量：{each_num}")
+    news_collector()
+    return f"news_scraper_starter complete"
 
 # 停用機制：一次爬取某個時間段內所有新聞
 # from datetime import datetime, timedelta
