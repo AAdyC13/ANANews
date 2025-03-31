@@ -12,5 +12,4 @@ class CeleryLogConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard("celery_logs", self.channel_name)
 
     async def log_message(self, event):
-        # 接收到來自 Celery 任務的訊息後，發送給 WebSocket 客戶端
         await self.send(text_data=json.dumps({"message": event["message"]}))

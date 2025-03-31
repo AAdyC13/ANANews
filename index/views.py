@@ -38,7 +38,7 @@ def news_scraper_start(request):
         data = json.loads(request.body)
         try:
             a = news_scraper.news_scraper_starter.delay(
-                data.get("categorys"), data.get("each_Num"),)
+                data.get("categorys"), int(data.get("each_Num")),)
             word = f"✅成功發布任務：{a.id}"
             print(word)
             return JsonResponse({"Response": word})
@@ -48,3 +48,8 @@ def news_scraper_start(request):
             return JsonResponse({"Response": word})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+@csrf_exempt  # 取消 CSRF 保護
+def check_scraper_isWork(request):
+    return JsonResponse({"Response": utils.news_scraper_isWork()})

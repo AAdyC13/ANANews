@@ -1,10 +1,11 @@
 from fake_useragent import UserAgent
 import requests
+from .utils import set_news_scraper_isWork, website_numbers
+from .tokenizer import tokenizer
 from bs4 import BeautifulSoup
 from .models import analysed_news as news
-from .models import system_config as sysdb
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from celery import shared_task
 import channels.layers
 from asgiref.sync import async_to_sync
@@ -14,18 +15,15 @@ user_agent = UserAgent()
 
 
 @shared_task
-def news_scraper_starter(want_category: list, each_num: int) -> bool:
+def news_scraper_starter(want_category: list, each_num: int):
     """
     celery函數\n
     從【聯合新聞網】的【即時】頁面底下\n
-    抓取及時列表中【要聞】,【社會】,【地方】,【全球】,【兩岸】,\n
-    【產經】,【股市】,【運動】,【生活】,【文教】\n
-    類新聞(數量因各種情況受影響)並存入資料庫
+    抓取及時列表中各類新聞(數量因各種情況受影響)並存入資料庫\n
+    ✅附加自動觸發tokenizer
     Args:
         want_category (list): 要爬取的類別
         each_num (int): 各類別要爬取的新聞數量
-    Returns:
-        bool: 是否成功
     """
     def news_collector() -> bool:
         """
@@ -40,9 +38,10 @@ def news_scraper_starter(want_category: list, each_num: int) -> bool:
             if each_num == 0:
                 time.sleep(0.1)
             else:
+                dict_numbers = website_numbers()
                 inside_counter = 0
                 page = web_requester(
-                    f"https://udn.com/news/breaknews/1/{want_category[i]}#breaknews")
+                    f"https://udn.com/news/breaknews/1/{dict_numbers[want_category[i]]}#breaknews")
                 if (page):
                     for each_news in page.find_all('a', {"class": "story-list__image--holder", 'data-content_level': "開放閱讀"}):
                         if inside_counter >= each_num:
@@ -51,12 +50,14 @@ def news_scraper_starter(want_category: list, each_num: int) -> bool:
                         news_dict = {}
                         if each_news.get('href'):
                             parts = each_news.get('href').split("/")
-                            news_id1, news_id2 = parts[-2], parts[-1].split("?")[0]
+                            news_id1, news_id2 = parts[-2], parts[-1].split("?")[
+                                0]
                             news_id = (int(news_id1), int(news_id2))
                             if news.db_is_news_exists(news_id):
                                 logs_Sender_Printer(f"🔸已收錄新聞：{news_id}")
                             else:
-                                data = news_story_extract(each_news.get('href'))
+                                data = news_story_extract(
+                                    each_news.get('href'))
                                 if data:
                                     news_dict = {
                                         "title": each_news.get('aria-label'),
@@ -67,11 +68,16 @@ def news_scraper_starter(want_category: list, each_num: int) -> bool:
                                         logs_Sender_Printer(f"新收錄新聞：{news_id}")
                                         news_counter += 1
                                     else:
-                                        logs_Sender_Printer(f"❗收錄新聞失敗：{news_id}")
+                                        logs_Sender_Printer(
+                                            f"❗收錄新聞失敗：{news_id}")
                                 else:
                                     logs_Sender_Printer(f"❗收錄新聞失敗：{news_id}")
 
         logs_Sender_Printer(f"✅本次一共新收錄{news_counter}份新聞")
+        if news_counter != 0:
+            tokenizer()
+        else:
+            set_news_scraper_isWork(False)
 
     def web_requester(url: str) -> BeautifulSoup | None:
         """
@@ -141,6 +147,7 @@ def news_scraper_starter(want_category: list, each_num: int) -> bool:
         except Exception as ex:
             print(f"❗core/news_scraper/logs_sender 錯誤: {ex}")
             return False
+    set_news_scraper_isWork(True)
     logs_Sender_Printer(f"ℹ️news_scraper_starter任務啟動")
     logs_Sender_Printer(f"ℹ️爬取類別：{want_category}")
     logs_Sender_Printer(f"ℹ️每類數量：{each_num}")
