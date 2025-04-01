@@ -1,28 +1,51 @@
 {% load static %}
 <nav id="sidebar">
-    <!-- Sidebar Header-->
-    <div class="sidebar-header d-flex align-items-center p-4"><img class="avatar shadow-0 img-fluid rounded-circle" src="{% static 'img/author_icon.jpg' %}" alt="作者圖片"></a>
-      <div class="ms-3 title">
-        <h1 class="h5 mb-1">鄭宇哲</h1>
-        <p class="text-sm text-gray-700 mb-0 lh-1">C110134217</p>
-      </div>
-    </div><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">可用功能</span>
-    <ul class="list-unstyled">
-          <li class="sidebar-item active"><a class="sidebar-link" href='/'> 
-                  <svg class="svg-icon svg-icon-sm svg-icon-heavy">
-                    <use xlink:href="#real-estate-1"> </use>
-                  </svg><span>首頁</span></a></li>
-          <li class="sidebar-item"><a class="sidebar-link" href="#tablesDropdown" data-bs-toggle="collapse"> 
-                  <svg class="svg-icon svg-icon-sm svg-icon-heavy">
-                    <use xlink:href="#portfolio-grid-1"> </use>
-                  </svg><span>熱門分析</span></a>
-            <ul class="collapse list-unstyled " id="tablesDropdown">
-              <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/top_keyword">{{top_keyword}}</a></li>
-              <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/top_person">{{top_person}}</a></li>
-              <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/user_interest">{{user_interest}}</a></li>
-            </ul>
-          </li>
-          <!-- 
+  <!-- Sidebar Header-->
+  <div class="sidebar-header d-flex align-items-center p-4"><img class="avatar shadow-0 img-fluid rounded-circle"
+      src="{% static 'img/author_icon.jpg' %}" alt="作者圖片"></a>
+    <div class="ms-3 title">
+      <h1 class="h5 mb-1">鄭宇哲</h1>
+      <p class="text-sm text-gray-700 mb-0 lh-1">C110134217</p>
+    </div>
+  </div><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">主要</span>
+  <ul class="list-unstyled">
+    
+    <li class="sidebar-item active"><a class="sidebar-link" href='/'>
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+          <use xlink:href="#real-estate-1"> </use>
+        </svg><span>首頁</span></a></li>
+
+    <li class="sidebar-item"><a class="sidebar-link" href="#tablesDropdown" data-bs-toggle="collapse">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+          <use xlink:href="#portfolio-grid-1"> </use>
+        </svg><span>熱門分析</span></a>
+      <ul class="collapse list-unstyled " id="tablesDropdown">
+        <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/top_keyword">{{top_keyword}}</a></li>
+        <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/top_person">{{top_person}}</a></li>
+        <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/user_interest">{{user_interest}}</a></li>
+      </ul>
+    </li>
+
+    <li class="sidebar-item"><a class="sidebar-link" href="#tablesDropdown" data-bs-toggle="collapse">
+      <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+        <use xlink:href="#portfolio-grid-1"> </use>
+      </svg><span>進階查詢</span></a>
+    <ul class="collapse list-unstyled " id="tablesDropdown">
+      <li><a class="sidebar-link" href="http://{{ request.get_host }}/advanced_search/user_interest">{{user_interest}}</a>
+      </li>
+    </ul>
+  </li>
+
+    <li class="sidebar-item"><a class="sidebar-link" href="#tablesDropdown" data-bs-toggle="collapse">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+          <use xlink:href="#portfolio-grid-1"> </use>
+        </svg><span>特色分析</span></a>
+      <ul class="collapse list-unstyled " id="tablesDropdown">
+        <li><a class="sidebar-link" href="http://{{ request.get_host }}/special_ana/president_Lai">{{president_Lai}}</a>
+        </li>
+      </ul>
+    </li>
+    <!-- 
           <li class="sidebar-item"><a class="sidebar-link" href="#chartsDropdown" data-bs-toggle="collapse"> 
                   <svg class="svg-icon svg-icon-sm svg-icon-heavy">
                     <use xlink:href="#sales-up-1"> </use>
@@ -72,8 +95,8 @@
               <li><a class="sidebar-link" href="pages-pricing.html">Pricing table</a></li>
             </ul>
           </li> -->
-    </ul><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">開發中</span>
-    <ul class="list-unstyled">
+  </ul><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">其他</span>
+  <ul class="list-unstyled">
 
-    </ul>
-  </nav>
+  </ul>
+</nav>

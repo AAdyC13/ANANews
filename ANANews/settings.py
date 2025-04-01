@@ -41,10 +41,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'corsheaders',  # 跨域資源共享
+    # 'corsheaders', #跨域資源共享
+    
+    # APP
     'app_top_keyword',
-    'core',
+    'app_special_ana',
+    'app_advanced_search',
+    
+    # 其他核心
     'index',
+    'core',
     "channels",
 ]
 
