@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var navBrand = document.querySelector(".navbar-brand");
     if (sidebarToggler) {
         sidebarToggler.addEventListener("click", function () {
+
             this.classList.toggle("active");
             navBrand.classList.toggle("active");
 
@@ -116,20 +117,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 服務於底下功能的function，停用
-    // function bsValidationBehavior(errorInputs, form) {
-    //     function watchError() {
-    //         errorInputs.forEach((input) => {
-    //             if (input.classList.contains("js-validate-error-field")) {
-    //                 input.classList.add("is-invalid");
-    //                 input.classList.remove("is-valid");
-    //             } else {
-    //                 input.classList.remove("is-invalid");
-    //                 input.classList.add("is-valid");
-    //             }
-    //         });
-    //     }
-    //     watchError();
-    // }
+    function bsValidationBehavior(errorInputs, form) {
+        function watchError() {
+            errorInputs.forEach((input) => {
+                if (input.classList.contains("js-validate-error-field")) {
+                    input.classList.add("is-invalid");
+                    input.classList.remove("is-valid");
+                } else {
+                    input.classList.remove("is-invalid");
+                    input.classList.add("is-valid");
+                }
+            });
+        }
+        watchError();
+    }
 
     // ------------------------------------------------------- //
     // Login Form Validation
@@ -197,20 +198,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // ------------------------------------------------------- //
     // Profile page choices
     // ------------------------------------------------------ //
-    // function injectClassess(x) {
-    //     let pickerCustomClass = x.dataset.customclass;
-    //     let pickerSevClasses = pickerCustomClass.split(" ");
-    //     x.parentElement.classList.add.apply(x.parentElement.classList, pickerSevClasses);
-    // }
+    function injectClassess(x) {
+        let pickerCustomClass = x.dataset.customclass;
+        let pickerSevClasses = pickerCustomClass.split(" ");
+        x.parentElement.classList.add.apply(x.parentElement.classList, pickerSevClasses);
+    }
 
-    // const profileCountryChoices = document.querySelector(".profile-country-choices");
-    // if (profileCountryChoices) {
-    //     const countryChoices = new Choices(profileCountryChoices, {
-    //         searchEnabled: false,
-    //         placeholder: false,
-    //         callbackOnInit: () => injectClassess(profileCountryChoices),
-    //     });
-    // }
+    const profileCountryChoices = document.querySelector(".profile-country-choices");
+    if (profileCountryChoices) {
+        const countryChoices = new Choices(profileCountryChoices, {
+            searchEnabled: false,
+            placeholder: false,
+            callbackOnInit: () => injectClassess(profileCountryChoices),
+        });
+    }
 
     // ------------------------------------------------------- //
     // 使用 Masonry 排版插件對帶有圖片的元素進行網格布局並確保圖片加載完成後重新計算布局

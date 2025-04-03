@@ -8,6 +8,7 @@ def president_Lai(request):
     return render(request,
                   'app_special_ana/president_Lai.html')
 
+
 def base(request):
     return render(request,
                   'app_special_ana/special_ana_base.html')
