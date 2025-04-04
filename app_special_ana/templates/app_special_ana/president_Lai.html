@@ -15,10 +15,16 @@
         </div>
         <div class="card-body">
             <p class="card-text">網路聲量是什麼？ <br>新聞報導有多少篇新聞提及這組關鍵字，聲量越高表示能見度越高。</p>
-            <div class="col">
-                <h4 id="count_art">總篇數：-1篇</h4>
-                <h4 id="count_num">總次數：-1次</h4>
-            </div>
+            <hr>
+                <div class="col">
+                    <h4 id="count_art">總篇數：-1篇</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 id="count_num" class="mb-0">總次數：-1次</h4>
+                        <small class="text-muted">此頁面統計數據來自各新聞 content</small>
+                      </div>
+                </div>
+                
+            </hr>
         </div>
         <img class="img-fluid" src="{% static 'img/president_Lai.jpeg' %}" alt="Card image cap">
         <div id="latest_news_time" class="card-footer text-muted">最新收錄時間：xxxx/xx/xx</div>

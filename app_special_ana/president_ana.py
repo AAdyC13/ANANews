@@ -5,8 +5,6 @@ from core.utils import news_categories as newsCat
 from typing import Any
 import re
 
-df = None
-
 def ana_main(user_keywords, weeks) -> "dict[str, Any]":
     """
     依條件分析指定詞語，輸出供前端畫表格用的參數
@@ -76,12 +74,12 @@ def count_keyword(df_query, query_keywords):
 
     # 字典初始化
     for cate in news_categories:
-        cate_occurrence[cate] = 0   # {'政治':0, '科技':0}
+        cate_occurrence[cate] = 0
         cate_freq[cate] = 0
 
     for idx, row in df_query.iterrows():
         # count the number of articles各類別篇數統計
-        cate_occurrence[row.category] += 1  # {'政治':+1, '科技':0}
+        cate_occurrence[row.category] += 1
         cate_occurrence['全部'] += 1
 
         # count the keyword frequency各類別次數統計
