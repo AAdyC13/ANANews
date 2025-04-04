@@ -5,5 +5,5 @@ urlpatterns = [
     path('president_Lai/', views.president_Lai, name='president_Lai'),
     
     path('base/', views.base, name='base'),
-    #path("api/chart-data/", views.get_chart_data, name="chart-data"),
+    path("api/president_data/", views.president_data, name="president_data"),
 ]

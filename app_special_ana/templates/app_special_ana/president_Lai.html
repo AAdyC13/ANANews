@@ -7,8 +7,45 @@
 {% block big_title %}{{president_Lai}}{% endblock %}
 {% block small_title %}{{president_Lai}}{% endblock %}
 
-{% block top_content %}
+{% block special_ana_content %}
+<div class="col-md-6">
+    <div class="card mb-4">
+        <div class="card-header border-bottom border-dash-dark-1">
+            <h4>賴清德聲量觀察</h4>
+        </div>
+        <div class="card-body">
+            <p class="card-text">網路聲量是什麼？ <br>新聞報導有多少篇新聞提及這組關鍵字，聲量越高表示能見度越高。</p>
+            <div class="col">
+                <h4 id="count_art">總篇數：-1篇</h4>
+                <h4 id="count_num">總次數：-1次</h4>
+            </div>
+        </div>
+        <img class="img-fluid" src="{% static 'img/president_Lai.jpeg' %}" alt="Card image cap">
+        <div id="latest_news_time" class="card-footer text-muted">最新收錄時間：xxxx/xx/xx</div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="card mb-4">
+        <div class="card-header border-bottom border-dash-dark-1">
+            <h4>聲量分布情況</h4>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><a href="#" style="pointer-events: none;"><b>依據新聞類別統計網路聲量</b></a>｜各類別出現關鍵字的新聞</p>
+            <canvas id="president_smallBar" style="display: block; " class="chartjs-render-monitor"></canvas>
+        </div>
 
+    </div>
+    <div class="card mb-4">
+        <div class="card-header border-bottom border-dash-dark-1">
+            <h4>聲量變化</h4>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><a href="#" style="pointer-events: none;"><b>依據時間顯示聲量的變化</b></a>｜從最新收錄時間往回4周</p>
+            <canvas id="president_Line" style="display: block;" class="chartjs-render-monitor"></canvas>
+        </div>
+
+    </div>
+</div>
 
 <!-- special_ana_president_Lai_引入js_自定義js-->
 <script src="{% static 'js\president_Lai.js' %}"></script>

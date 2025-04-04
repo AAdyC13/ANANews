@@ -4,11 +4,9 @@ from core.models import analysed_news as news
 from core.utils import news_categories as newsCat
 # _cached_top_cate_person = None
 
-df = news.db_get_all_DataFrame()
-
-
 def ana_main(user_keywords, cond, cate, weeks):
-    
+    global df
+    df = news.db_get_all_DataFrame()
     df_query = filter_dataFrame(user_keywords, cond, cate, weeks) # 回傳已過濾的dataFrame
     
     # 將Dataframe製作成用於點線圖顯示的xy軸
@@ -27,7 +25,7 @@ def ana_main(user_keywords, cond, cate, weeks):
 
 
 def filter_dataFrame(user_keywords, cond, cate, weeks):
-
+    
     end_date, start_date = date_checker(weeks)
 
     # 期間條件

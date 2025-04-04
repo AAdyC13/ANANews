@@ -3,6 +3,8 @@
 import os
 import sys
 
+# celery -A ANANews worker -l  info -P eventlet
+#daphne -b 127.0.0.3 -p 8001 ANANews.asgi:application
 
 def main():
     """Run administrative tasks."""

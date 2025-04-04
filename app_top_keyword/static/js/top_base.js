@@ -9,8 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
             datasets: [{
                 label: '次數',
                 data: [],
-                //backgroundColor: 'rgb(133, 77, 217)',
-                backgroundColor: "rgba(134, 77, 217, 0.88)",
+                backgroundColor: 'rgb(133, 77, 217)',
                 borderColor: "rgba(134, 77, 217, 088)",
                 borderCapStyle: "butt",
                 borderDash: [],
