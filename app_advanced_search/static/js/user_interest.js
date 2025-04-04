@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 {
                     label: "新聞數量",
                     fill: true,
-                    lineTension: 0,
+                    lineTension: 0.5,
                     backgroundColor: "rgba(134, 77, 217, 0.88)",
                     borderColor: "rgba(134, 77, 217, 088)",
                     borderCapStyle: "butt",
