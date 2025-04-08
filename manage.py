@@ -4,7 +4,8 @@ import os
 import sys
 
 # celery -A ANANews worker -l  info -P eventlet
-#daphne -b 127.0.0.3 -p 8001 ANANews.asgi:application
+# daphne -b 127.0.0.3 -p 8001 ANANews.asgi:application
+
 
 def main():
     """Run administrative tasks."""
@@ -19,6 +20,7 @@ def main():
         ) from exc
     if len(sys.argv) == 1 or sys.argv[1] == "runserver":
         sys.argv = ["manage.py", "runserver", "127.0.0.3:8000"]
+        # sys.argv = ["manage.py", "runserver", "0.0.0.0:8000"]
     execute_from_command_line(sys.argv)
 
 
