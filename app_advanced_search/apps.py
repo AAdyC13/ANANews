@@ -9,5 +9,5 @@ class AppAdvancedSearchConfig(AppConfig):
     def ready(self):
         if os.environ.get('RUN_MAIN') == 'true':  # 確保只在主進程執行
             ...
-        from .assoc_ana import ana_main
-        print(ana_main("美國", "and", "全部", 1))
+        # from .assoc_ana import ana_main
+        # print(ana_main("美國", "and", "全部", 1))
