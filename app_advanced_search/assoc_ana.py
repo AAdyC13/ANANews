@@ -11,8 +11,6 @@ def ana_main(user_keywords, cond, cate, weeks):
     df_query = filter_dataFrame(
         user_keywords, cond, cate, weeks)  # 回傳已過濾的dataFrame
 
-    key = user_keywords.split()
-
     # if df_query is empty, return an error message
     if len(df_query) == 0:
         return None
@@ -20,7 +18,7 @@ def ana_main(user_keywords, cond, cate, weeks):
     newslinks = get_title_link_topk(df_query, k=15)
     related_words, clouddata = get_related_word_clouddata(df_query)
     same_paragraph = get_same_para(
-        df_query, key, cond, k=10)  # multiple keywords
+        df_query, user_keywords, cond, k=10)  # multiple keywords
 
     return {
         'newslinks': newslinks,

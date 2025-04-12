@@ -31,7 +31,6 @@ def assoc_ana(request):
         weeks: int = int(data.get("weeks"))
         row_data = ana_main(
             user_keywords, cond, category, weeks)
-
-        Response_data = {}
-        return JsonResponse(Response_data)
+        print(row_data)
+        return JsonResponse(row_data)
     return JsonResponse({"error": "Invalid request"}, status=400)

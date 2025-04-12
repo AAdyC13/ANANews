@@ -100,44 +100,31 @@
         </div>
     </div>
 </div>
-
-<!-- keyword_assoc_引入js_自定義js-->
-<script src="{% static 'js\keyword_assoc.js' %}"></script>
 {% endblock %}
 {% block top_bar_Table %}
 <!-- keyword_assoc_關聯文字雲 -->
 <div class="col-lg-12">
     <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">關聯文字雲</h4>
+
+        </div>
         <div class="card-body">
-            <div class="chartjs-size-monitor">
-                <div class="chartjs-size-monitor-expand">
-                    <div class=""></div>
-                </div>
-                <div class="chartjs-size-monitor-shrink">
-                    <div class=""></div>
-                </div>
-            </div><strong>關聯文字雲</strong>
-            
         </div>
+
     </div>
 </div>
 
-<!-- keyword_assoc_按類統計-新聞次數 -->
+<!-- keyword_assoc_以下新聞與它有關 -->
 <div class="col-lg-6">
     <div class="card mb-0">
         <div class="card-header">
-            <h3 class="h4 mb-0">按類統計-新聞次數</h3>
+            <h3 class="h4 mb-0">以下新聞與它有關(取數篇展示)</h3>
         </div>
         <div class="card-body pt-0">
             <div class="table-responsive">
-                <table id="interest_newsCount" class="table mb-0 table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>類別</th>
-                            <th>有多少新聞報導提起</th>
-                        </tr>
-                    </thead>
-                    <tbody id="interest_newsCount_tbody">
+                <table class="table mb-0 table-striped table-sm">
+                    <tbody id="assoc_newsTitle_tbody">
                         <tr style="display: none;"></tr>
                     </tbody>
                 </table>
@@ -146,22 +133,16 @@
     </div>
 </div>
 
-<!-- keyword_assoc_按類統計-出現次數 -->
+<!-- keyword_assoc_關鍵字所在的段落 -->
 <div class="col-lg-6">
     <div class="card mb-0">
         <div class="card-header">
-            <h3 class="h4 mb-0">按類統計-出現次數</h3>
+            <h3 class="h4 mb-0">關鍵字所在的段落(取數段展示)</h3>
         </div>
         <div class="card-body pt-0">
             <div class="table-responsive">
-                <table id="interest_wordCount" class="table mb-0 table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>類別</th>
-                            <th>單字出現次數</th>
-                        </tr>
-                    </thead>
-                    <tbody id="interest_wordCount_tbody">
+                <table class="table mb-0 table-striped table-sm">
+                    <tbody id="assoc_newsContext_tbody">
                         <tr style="display: none;"></tr>
                     </tbody>
                 </table>
@@ -169,4 +150,30 @@
         </div>
     </div>
 </div>
+
+<!-- keyword_assoc_與它同時出現的關鍵字 -->
+<div class="card mb-0">
+    <div class="card-header">
+        <h3 class="h4 mb-0">與它同時出現的關鍵字</h3>
+    </div>
+    <div class="card-body pt-0">
+        <div class="table-responsive">
+            <table class="table mb-0 table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>關鍵字</th>
+                        <th>統計次數</th>
+                        <th>關鍵字</th>
+                        <th>統計次數</th>
+                    </tr>
+                </thead>
+                <tbody id="assoc_words_tbody">
+                    <tr style="display: none;"></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- keyword_assoc_引入js_自定義js-->
+<script src="{% static 'js\keyword_assoc.js' %}"></script>
 {% endblock %}
