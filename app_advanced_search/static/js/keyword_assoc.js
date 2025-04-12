@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const words_tbody = document.getElementById("assoc_words_tbody");
   const selectElement = document.getElementById("keyword_select");
   let weeks = 1;
+  let clouddata = []
 
   // 滑桿初始
   var stepSlider = document.getElementById("week_NoUISlider");
@@ -106,10 +107,34 @@ document.addEventListener("DOMContentLoaded", function () {
             newRow.insertCell();
           }
         }
+        document.getElementById("my_word_cloud").innerHTML = "";
+        var word_cloud = d3.layout.cloud()
+          .size([width, height])
+          .words(data.clouddata.map(function (d) { return { text: d.text, size: d.size }; }))
+          .padding(5)        //space between words
+          .rotate(function () { return ~~(Math.random() * 2) * 25; })
+          .fontSize(function (d) { return d.size; })
+          .on("end", draw);
+        word_cloud.start();
 
-
-
-        
+        // Wordcloud features that are THE SAME from one word to the other can be here
+        function draw(words) {
+          svg
+            .append("g")
+            .attr("transform", "translate(" + word_cloud.size()[0] / 2 + "," + word_cloud.size()[1] / 2 + ")")
+            .attr("id", "my_word_cloud")
+            .selectAll("text")
+            .data(words)
+            .enter().append("text")
+            .style("font-size", function (d) { return d.size; })
+            .style("fill", function () { return get_randomColor(); })
+            .attr("text-anchor", "middle")
+            .style("font-family", "Impact")
+            .attr("transform", function (d) {
+              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .text(function (d) { return d.text; });
+        }
       })
       .catch((error) => console.error("❗js錯誤:", error));
   }
@@ -137,4 +162,25 @@ document.addEventListener("DOMContentLoaded", function () {
   function get_Title(text, href) {
     return `<a href="https://udn.com${href}"target="_blank"rel="noopener noreferrer">${text}</a>`;
   }
+
+  function get_randomColor() {
+    const r = Math.floor(180 + Math.random() * 75); // 180~255
+    const g = Math.floor(180 + Math.random() * 75);
+    const b = Math.floor(180 + Math.random() * 75);
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  // set the dimensions and margins of the graph
+  var margin = { top: 10, right: 10, bottom: 10, left: 200 },
+    width = 1200 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+  // append the svg object to the body of the page
+  var svg = d3.select("#my_dataviz").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("id", "my_word_cloud")
+    .attr("transform",
+      "translate(" + margin.left + "," + margin.top + ")");
 });

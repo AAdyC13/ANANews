@@ -110,6 +110,7 @@
 
         </div>
         <div class="card-body">
+            <div id="my_dataviz"></div>
         </div>
 
     </div>
@@ -174,6 +175,12 @@
         </div>
     </div>
 </div>
-<!-- keyword_assoc_引入js_自定義js-->
+<!-- keyword_assoc_引入js_自定義js -->
 <script src="{% static 'js\keyword_assoc.js' %}"></script>
+<!-- keyword_assoc_引入js_d3js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- keyword_assoc_引入js_d3-cloud -->
+<script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+
 {% endblock %}
