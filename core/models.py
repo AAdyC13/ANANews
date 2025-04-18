@@ -1,5 +1,6 @@
 from django.db import models
 from pandas import DataFrame
+from django.db.models import Count
 
 
 class analysed_news(models.Model):
@@ -77,6 +78,30 @@ class analysed_news(models.Model):
         """
         source_query = "?from=udn-catebreaknews_ch2"
         return f'/news/story/{self.news_id_one}/{self.news_id_two}{source_query}'
+
+    @classmethod
+    def db_newsCount(cls) -> dict:
+        """
+        統計 db 內各類別新聞數量。
+
+        Returns:
+            dict: 回傳各類別新聞數量和總和。
+        """
+        category_counts = {key: 0 for key in
+                           ["總和"]+system_config.sysdb_get("news_categories")["news_categories"]}
+
+        db_counts = (
+            cls.objects
+            .values('category')
+            .annotate(count=Count('title'))
+            .order_by('-count')  # 可以不排序，看你需要
+        )
+        news_count = 0
+        for i in db_counts:
+            category_counts[i["category"]] = i["count"]
+            news_count += i["count"]
+        category_counts["總和"] = news_count
+        return category_counts
 
     @classmethod
     def db_get(cls, news_id: tuple) -> "dict | None":
