@@ -19,6 +19,6 @@ class CoreConfig(AppConfig):
             # import core.utils
             # core.utils.set_news_categories()
 
-            import core.models as models
-            print(models.analysed_news.db_newsCount())
+            # import core.models as models
+            # print(models.analysed_news.db_newsCount())
             
