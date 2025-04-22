@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .user_interest_ana import interest_ana_main
 import json
 from .assoc_ana import ana_main
-from .sentiment_ana import ana_main
+from .sentiment_ana import sentiment_ana_main
 
 
 def base(request):
@@ -45,6 +45,7 @@ def get_user_interest(request):
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+
 @csrf_exempt
 def assoc_ana(request):
     if request.method == "POST":
@@ -67,8 +68,20 @@ def sentiment_ana(request):
         cond: str = data.get("cond")
         user_keywords: list = data.get("user_keywords").split(",")
         weeks: int = int(data.get("weeks"))
-        # row_data = sentiment_main(
-        #     user_keywords, cond, category, weeks)
-        # print(row_data)
-        return JsonResponse()
+        row_data = sentiment_ana_main(user_keywords, cond, category, weeks)
+        x = []
+        y_pos = []
+        y_neg = []
+        counter = 0
+        for i in row_data['data_pos']:
+            x.append(i["x"])
+            y_pos.append(i["y"])
+            y_neg.append(row_data['data_neg'][counter]["y"])
+            counter += 1
+        return JsonResponse({
+            'sentiCount': row_data["sentiCount"],
+            'x': x,
+            'y_pos': y_pos,
+            'y_neg': y_neg,
+        })
     return JsonResponse({"error": "Invalid request"}, status=400)

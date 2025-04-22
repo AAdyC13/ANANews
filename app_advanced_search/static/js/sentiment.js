@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
   //初始化
-  const newsTitle_tbody = document.getElementById("assoc_newsTitle_tbody");
-  const newsContext_tbody = document.getElementById("assoc_newsContext_tbody");
-  const words_tbody = document.getElementById("assoc_words_tbody");
   const selectElement = document.getElementById("keyword_select");
+  const all = document.getElementById("all");
+  const pos = document.getElementById("pos");
+  const neg = document.getElementById("neg");
+  const midd = document.getElementById("midd");
+  const lineBar = document.getElementById("sentiment_barChart").getContext("2d");
+  const pieChart = document.getElementById("sentiment_pieChart").getContext("2d");
   let weeks = 1;
 
   // 滑桿初始
@@ -68,9 +71,119 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((response) => response.json())
       .then((data) => {
+        Chart2.data.labels = data.x;
+        Chart2.data.datasets[0].data = data.y_pos;
+        Chart2.data.datasets[1].data = data.y_neg;
+        Chart2.update();
+        pieData = []
+        counter = 0;
+        for (i in data.sentiCount) {
+          pieData.push(data.sentiCount[i])
+          counter += data.sentiCount[i]
+        }
+        Chart1.data.datasets[0].data = pieData;
+        Chart1.update();
+        pos.innerText = `正面:${data.sentiCount["Positive"]}篇`;
+        neg.innerText = `負面:${data.sentiCount["Negative"]}篇`;
+        midd.innerText = `中立:${data.sentiCount["Neutral"]}篇`;
+        all.innerText = `總和:${counter}篇`;
       })
       .catch((error) => console.error("❗js錯誤:", error));
   }
+  // 圓餅圖初始
+  var Chart1 = new Chart(pieChart, {
+    responsive: true,
+    type: "pie",
+    options: {
+      legend: {
+        display: true,
+        position: "left",
+      },
+    },
+    data: {
+      labels: ["正面", "負面", "中立"],
+      datasets: [
+        {
+          data: [],
+          borderWidth: 0,
+          backgroundColor: ["#a678eb", "#9762e6", "#864DD9"],
+          hoverBackgroundColor: ["#a678eb", "#9762e6", "#864DD9"],
+        },
+      ],
+    },
+  });
+
+  // 正反面折線圖初始
+  var Chart2 = new Chart(lineBar, {
+    type: "line",
+    options: {
+      legend: { labels: { fontColor: "#777", fontSize: 12 } },
+      scales: {
+        xAxes: [
+          {
+            display: true,
+          },
+        ],
+        yAxes: [
+          {
+            display: true,
+          },
+        ],
+      },
+    },
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: "正面",
+          fill: true,
+          lineTension: 0.3,
+          backgroundColor: "rgba(134, 77, 217, 0.6)",
+          borderColor: "rgba(134, 77, 217,0.6)",
+          borderCapStyle: "butt",
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: "miter",
+          borderWidth: 1,
+          pointBorderColor: "rgba(134, 77, 217, 0.6)",
+          pointBackgroundColor: "rgba(134, 77, 217, 0.6)",
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(134, 77, 217, 0.6)",
+          pointHoverBorderColor: "rgba(134, 77, 217, 0.6)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: [],
+          spanGaps: false,
+        },
+        {
+          label: "負面",
+          fill: true,
+          lineTension: 0.3,
+          backgroundColor: "rgba(98, 98, 98, 0.7)",
+          borderColor: "rgba(98, 98, 98, 0.7)",
+          borderCapStyle: "butt",
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: "miter",
+          borderWidth: 1,
+          pointBorderColor: "rgba(98, 98, 98, 0.7)",
+          pointBackgroundColor: "rgba(98, 98, 98, 0.7)",
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(98, 98, 98, 0.7)",
+          pointHoverBorderColor: "rgba(98, 98, 98, 0.7)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: [],
+          spanGaps: false,
+        }
+      ],
+    },
+  });
+
 
   // 事件.當按下查詢按鈕時
   document.getElementById("interest_submit").addEventListener("click", function () {
