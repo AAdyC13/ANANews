@@ -29,7 +29,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [("localhost", 6379)],
-            
+
         },
     },
 }
@@ -42,12 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 'corsheaders', #跨域資源共享
-    
+
     # APP
     'app_top_keyword',
     'app_special_ana',
     'app_advanced_search',
-    
+
     # 其他核心
     'index',
     'core',
@@ -83,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-#WSGI_APPLICATION = 'ANANews.wsgi.application'
+# WSGI_APPLICATION = 'ANANews.wsgi.application'
 ASGI_APPLICATION = "ANANews.asgi.application"
 
 # Database
