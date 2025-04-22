@@ -1,19 +1,12 @@
 import pandas as pd
-from datetime import datetime, timedelta
+from .utils import filter_dataFrame
 from core.models import analysed_news as news
 from collections import Counter
-import re
 
 
 def ana_main(user_keywords, cond, cate, weeks):
-    global df
-    df = news.db_get_all_DataFrame()
     df_query = filter_dataFrame(
         user_keywords, cond, cate, weeks)  # 回傳已過濾的dataFrame
-
-    # if df_query is empty, return an error message
-    if len(df_query) == 0:
-        return None
 
     newslinks = get_title_link_topk(df_query, k=15)
     related_words, clouddata = get_related_word_clouddata(df_query)
@@ -27,29 +20,6 @@ def ana_main(user_keywords, cond, cate, weeks):
         'clouddata': clouddata,
         'num_articles': len(df_query),
     }
-
-
-def filter_dataFrame(user_keywords, cond, cate, weeks):
-
-    end_date, start_date = date_checker(weeks)
-
-    # 新聞類別條件
-    if (cate == "全部") & (cond == 'and'):
-        df_query = df[(df.date >= start_date) & (df.date <= end_date)
-                      & df.content.apply(lambda text: all((qk in text) for qk in user_keywords))]
-    elif (cate == "全部") & (cond == 'or'):
-        df_query = df[(df['date'] >= start_date) & (df['date'] <= end_date)
-                      & df.content.apply(lambda text: any((qk in text) for qk in user_keywords))]
-    elif (cond == 'and'):
-        df_query = df[(df.category == cate)
-                      & (df.date >= start_date) & (df.date <= end_date)
-                      & df.content.apply(lambda text: all((qk in text) for qk in user_keywords))]
-    elif (cond == 'or'):
-        df_query = df[(df.category == cate)
-                      & (df['date'] >= start_date) & (df['date'] <= end_date)
-                      & df.content.apply(lambda text: any((qk in text) for qk in user_keywords))]
-
-    return df_query
 
 
 def get_title_link_topk(df_query, k=5) -> list:
@@ -186,16 +156,3 @@ def get_same_para(df_query, user_keywords, cond, k=10) -> list:
                 if any([kw in para for kw in user_keywords]):
                     same_para.append(para)  # 符合條件的段落para保存起來
     return same_para[0:k]
-
-
-def date_checker(weeks: int):
-    end_date: str = df.date.max()
-    start_date = ""
-    # start date
-    try:
-        start_date = (datetime.strptime(
-            end_date, '%Y-%m-%d %H:%M').date() - timedelta(weeks=weeks)).strftime('%Y-%m-%d')
-        return end_date, start_date
-    except Exception as e:
-        print(f"❗app_top_keyword/user_interest_ana/時間相減發生錯誤: {e}")
-        return end_date, start_date

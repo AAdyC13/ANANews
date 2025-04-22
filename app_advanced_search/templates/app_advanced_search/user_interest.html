@@ -1,16 +1,6 @@
 {% extends 'app_advanced_search/adv_base.html' %}
 {% load static %}
 {% block head_script %}
-<!-- user_interest_引入CSS_nouislider -->
-<link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.css' %}">
-<!-- user_interest_引入js_nouislider -->
-<script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
-<!-- user_interest_引入js_wNumb，nouislider部分功能 -->
-<script src="{% static 'vendor/nouislider/wNumb.min.js' %}"></script>
-<!-- user_interest_引入CSS_Choices-->
-<link rel="stylesheet" href="{% static 'vendor/choices.js/public/assets/styles/choices.min.css' %}">
-<!-- user_interest_引入js_Choices-->
-<script src="{% static 'vendor/choices.js/public/assets/scripts/choices.min.js' %}"></script>
 {% endblock %}
 
 {% block big_title %}{{user_interest}}{% endblock %}
@@ -100,11 +90,6 @@
         </div>
     </div>
 </div>
-
-<!-- user_interest_引入js_自定義js-->
-<script src="{% static 'js\user_interest.js' %}"></script>
-{% endblock %}
-{% block top_bar_Table %}
 <!-- user_interest_出現頻率圖 -->
 <div class="col-lg-12">
     <div class="card">
@@ -169,4 +154,6 @@
         </div>
     </div>
 </div>
+<!-- user_interest_引入js_自定義js-->
+<script src="{% static 'js\user_interest.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'app_advanced_search/adv_base.html' %}
+{% load static %}
+{% block head_script %}
+{% endblock %}
+
+{% block big_title %}{{sentiment}}{% endblock %}
+{% block small_title %}{{sentiment}}{% endblock %}
+
+{% block top_content %}
+<!-- sentiment_輸入條件 -->
+<div class="col-lg-6">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="h4 mb-0">關鍵詞條件</h3>
+        </div>
+        <div class="card-body pt-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="text">請選擇欲查詢之關鍵詞及其條件</p>
+                <small class="text-muted">此頁面統計數據來自???</small>
+            </div>
+
+            <form class="form-horizontal">
+                <!-- sentiment_關鍵字輸入框 -->
+                <div class="row gy-2 mb-4">
+                    <label class="col-sm-3 form-label" for="inputHorizontalElOne">查詢字詞</label>
+                    <div class="col-sm-9">
+                        <input class="form-control tags-input mb-0" type="text" value="" id="tagsInput"
+                            data-customclass="form-control">
+                    </div>
+                </div>
+
+                <div class="row gy-2 mb-4">
+                    <label class="col-sm-3 form-label" for="inputHorizontalElTwo">新聞類別</label>
+                    <div class="col-sm-9">
+                        <select class="form-select" id="keyword_select">
+                            <option value="全部" selected>如果你看到了我，說明請求選單的函數出錯了</option>
+                            <option value="None">js沒收到選單</option>
+                            <option value="None">所以沒更新默認html</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row gy-2 mb-4">
+                    <label class="col-sm-3 form-label" for="inputHorizontalElTwo">搜索條件</label>
+                    <div class="col-sm-9">
+                        <div class="row" id="interest_row">
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="and" type="radio" name="search_type" checked>
+                                    <label class="form-check-label" for="and">and</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="or" type="radio" name="search_type">
+                                    <label class="form-check-label" for="or">or</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9 ms-auto">
+                        <button class="btn btn-secondary" id="interest_del" type="reset">清空</button>
+                        <button class="btn btn-primary" id="interest_submit" type="button">查詢</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- sentiment_查詢周次-->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">時間區間</h4>
+
+        </div>
+        <div class="card-body pt-0">
+
+            <p class="mb-0 ">請透過此區調整欲查詢之時間寬度（周次）</p>
+            <form>
+                <div class="nouislider mt-5">
+                    <div id="week_NoUISlider"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- sentiment_情緒分析:文章層級 -->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">情緒分析:文章層級　　
+                <div id="all" class="d-inline py-1 px-3 rounded bg-dash-dark-3 fw-bold text-sm">總和:X篇</div>
+                <div id="pos" class="d-inline py-1 px-3 rounded bg-dash-dark-3 fw-bold text-sm">正面:X篇</div>
+                <div id="neg" class="d-inline py-1 px-3 rounded bg-dash-dark-3 fw-bold text-sm">負面:X篇</div>
+                <div id="midd" class="d-inline py-1 px-3 rounded bg-dash-dark-3 fw-bold text-sm">中立:X篇</div>
+            </h4>
+
+
+
+        </div>
+        <div class="card-body">
+            <canvas id="sentiment_pieChart" width="699" height="349"
+                style="display: block; width: 699px; height: 349px;" class="chartjs-render-monitor"></canvas>
+        </div>
+
+    </div>
+</div>
+<!-- sentiment_正反面折線圖 -->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">正反面情緒變化</h4>
+
+        </div>
+        <div class="card-body">
+            <canvas id="sentiment_barChart" width="699" height="349"
+                style="display: block; width: 699px; height: 349px;" class="chartjs-render-monitor"></canvas>
+        </div>
+
+    </div>
+</div>
+<!-- sentiment_引入js_自定義js -->
+<script src="{% static 'js\sentiment.js' %}"></script>
+<!-- sentiment_引入js_d3js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+{% endblock %}

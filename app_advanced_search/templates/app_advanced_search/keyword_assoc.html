@@ -1,16 +1,6 @@
 {% extends 'app_advanced_search/adv_base.html' %}
 {% load static %}
 {% block head_script %}
-<!-- keyword_assoc_引入CSS_nouislider -->
-<link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.css' %}">
-<!-- keyword_assoc_引入js_nouislider -->
-<script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
-<!-- keyword_assoc_引入js_wNumb，nouislider部分功能 -->
-<script src="{% static 'vendor/nouislider/wNumb.min.js' %}"></script>
-<!-- keyword_assoc_引入CSS_Choices-->
-<link rel="stylesheet" href="{% static 'vendor/choices.js/public/assets/styles/choices.min.css' %}">
-<!-- keyword_assoc_引入js_Choices-->
-<script src="{% static 'vendor/choices.js/public/assets/scripts/choices.min.js' %}"></script>
 {% endblock %}
 
 {% block big_title %}{{keyword_assoc}}{% endblock %}
@@ -27,7 +17,7 @@
         <div class="card-body pt-0">
             <div class="d-flex justify-content-between align-items-center">
                 <p class="text">請選擇欲查詢之關鍵詞及其條件</p>
-                <small class="text-muted">此頁面統計數據來自???</small>
+                <small class="text-muted">此頁面統計數據來自各新聞 content</small>
             </div>
 
             <form class="form-horizontal">
@@ -100,8 +90,6 @@
         </div>
     </div>
 </div>
-{% endblock %}
-{% block top_bar_Table %}
 <!-- keyword_assoc_關聯文字雲 -->
 <div class="col-lg-12">
     <div class="card">

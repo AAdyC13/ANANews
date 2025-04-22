@@ -9,5 +9,4 @@ urlpatterns = [
     path("api/chart-data/", views.get_chart_data, name="chart-data"),
     path('api/get-categories/', views.get_categories, name='get_categories'),
     path('api/person-data/', views.get_persons, name='get_persons'),
-    path('api/interest-data/', views.get_user_interest, name='get_user_interest'),
 ]

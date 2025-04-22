@@ -87,15 +87,15 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         })
         .catch(error => console.error("Error fetching categories:", error));
-    
+
     // 兩個Table_清空
-    function tbody_clear(){
+    function tbody_clear() {
         newsCount_tbody.innerHTML = "";
         wordCount_tbody.innerHTML = "";
     }
 
     // 兩個Table_初始化類別
-    function tbody_category(category){
+    function tbody_category(category) {
         let rowA = newsCount_tbody.insertRow();
         let rowB = wordCount_tbody.insertRow();
         rowA.insertCell(0).innerText = category
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let category = selectElement.value;
         let cond = document.querySelector('input[name="search_type"]:checked').id || "and"
         let user_keywords = document.getElementById("tagsInput").value
-        fetch("/top/api/interest-data/", {
+        fetch("/advanced_search/api/interest-data/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
 

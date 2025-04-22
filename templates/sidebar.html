@@ -9,7 +9,7 @@
     </div>
   </div><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">主要</span>
   <ul class="list-unstyled">
-    
+
     <li class="sidebar-item active"><a class="sidebar-link" href='/'>
         <svg class="svg-icon svg-icon-sm svg-icon-heavy">
           <use xlink:href="#real-estate-1"> </use>
@@ -26,16 +26,20 @@
     </li>
 
     <li class="sidebar-item"><a class="sidebar-link" href="#advDropdown" data-bs-toggle="collapse">
-      <svg class="svg-icon svg-icon-sm svg-icon-heavy">
-        <use xlink:href="#portfolio-grid-1"> </use>
-      </svg><span>進階查詢</span></a>
-    <ul class="collapse list-unstyled " id="advDropdown">
-      <li><a class="sidebar-link" href="http://{{ request.get_host }}/advanced_search/user_interest">{{user_interest}}</a>
-      </li>
-      <li><a class="sidebar-link" href="http://{{ request.get_host }}/advanced_search/keyword_assoc">{{keyword_assoc}}</a>
-      </li>
-    </ul>
-  </li>
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+          <use xlink:href="#portfolio-grid-1"> </use>
+        </svg><span>進階查詢</span></a>
+      <ul class="collapse list-unstyled " id="advDropdown">
+        <li><a class="sidebar-link"
+            href="http://{{ request.get_host }}/advanced_search/user_interest">{{user_interest}}</a>
+        </li>
+        <li><a class="sidebar-link"
+            href="http://{{ request.get_host }}/advanced_search/keyword_assoc">{{keyword_assoc}}</a>
+        </li>
+        <li><a class="sidebar-link" href="http://{{ request.get_host }}/advanced_search/sentiment">{{sentiment}}</a>
+        </li>
+      </ul>
+    </li>
 
     <li class="sidebar-item"><a class="sidebar-link" href="#specialDropdown" data-bs-toggle="collapse">
         <svg class="svg-icon svg-icon-sm svg-icon-heavy">
@@ -46,7 +50,7 @@
         </li>
       </ul>
     </li>
-    
+
   </ul><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">其他</span>
   <ul class="list-unstyled">
 
