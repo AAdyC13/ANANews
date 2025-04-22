@@ -1,8 +1,6 @@
-import pandas as pd
 from datetime import datetime, timedelta
 from core.models import analysed_news as news
-from collections import Counter
-import re
+from transformers import BertTokenizer, BertForSequenceClassification, pipeline
 
 
 def ana_main(user_keywords, cond, cate, weeks):

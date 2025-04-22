@@ -157,9 +157,24 @@ class analysed_news(models.Model):
         try:
             df = DataFrame(list(cls.objects.filter(
                 tokens=[]).values()))  # 轉換為 DataFrame
-            return df if not df.empty else None  # 確保回傳非空的 DataFrame
+            return df
         except Exception as e:
             print(f"❗core/models/db_get_rowNews_DataFrame 發生錯誤: {e}")
+            return False
+
+    @classmethod
+    def db_get_sentiment_DataFrame(cls) -> "DataFrame | None":
+        """將未情緒分析的新聞打包進 DataFrame
+
+        Returns:
+            DataFrame | 包含未處理的新聞，若失敗則回傳 None
+        """
+        try:
+            df = DataFrame(list(cls.objects.filter(
+                sentiment="暫無").values()))  # 轉換為 DataFrame
+            return df
+        except Exception as e:
+            print(f"❗core/models/db_get_sentiment_DataFrame 發生錯誤: {e}")
             return False
 
     @classmethod

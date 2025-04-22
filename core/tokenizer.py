@@ -3,23 +3,24 @@ from collections import Counter
 from .models import analysed_news as news
 from datetime import datetime
 from asgiref.sync import async_to_sync
+from .utils import set_news_scraper_isWork, set_news_DBinfo
+
 import channels.layers
-from .utils import set_news_scraper_isWork,set_news_DBinfo
+import core.sentiment_analyzer
+
 channel_layer = channels.layers.get_channel_layer()
-def test():
-    ...
 
 
 def tokenizer():
     set_news_scraper_isWork(True)
     logs_Sender_Printer(f"ℹ️news_scraper_starter任務啟動")
-    logs_Sender_Printer("🔥載入斷詞模型...真浪費時間")
+    logs_Sender_Printer("🔥載入斷詞模型")
     from ckip_transformers.nlp import CkipWordSegmenter, CkipPosTagger, CkipNerChunker
     logs_Sender_Printer("🔥載入斷詞模型完成！")
     got_news_dict: DataFrame = news.db_get_rowNews_DataFrame()
-    logs_Sender_Printer(f"ℹ️已讀取到{len(got_news_dict)-1}比未分析新聞")
+    logs_Sender_Printer(f"ℹ️已讀取到{len(got_news_dict)}筆未分析新聞")
     logs_Sender_Printer(f"ℹ️開始進行斷詞分析")
-    
+
     # "albert-tiny" 最小模型，斷詞速度比較快，犧牲一些精確度
     # "bert-base" 最大模型，斷詞準確，不要用CPU來算
     mod = "bert-base"
@@ -28,7 +29,6 @@ def tokenizer():
     pos = CkipPosTagger(model=mod, device=dev)
     ner = CkipNerChunker(model=mod, device=dev)
 
-    
     # Word Segmentation 進行分詞
     tokens = ws(got_news_dict.content)
     # POS 分析詞性
@@ -82,9 +82,12 @@ def tokenizer():
     if news.db_bulk_update_DataFrame(got_news_dict):
         set_news_DBinfo(datetime.now().strftime('%Y-%m-%d %H:%M'))
         logs_Sender_Printer("✅已儲存斷詞分析")
+        core.sentiment_analyzer.sentiment_analyzer()
+
     else:
         logs_Sender_Printer("❗斷詞分析儲存失敗")
     set_news_scraper_isWork(False)
+
 
 def logs_Sender_Printer(message: str) -> bool:
     """
@@ -106,8 +109,3 @@ def logs_Sender_Printer(message: str) -> bool:
     except Exception as ex:
         print(f"❗core/tokenizer/logs_sender 錯誤: {ex}")
         return False
-# 此部分負責將熱門詞結果儲存為csv檔案
-# df_top_group_words = pd.DataFrame(top_group_words, columns = ['category','top_keys'])
-# Part3_file_name = "熱門詞結果_"+datetime.now().strftime("%m%d_%H%M") +".csv"
-# df_top_group_words.to_csv(Part3_file_name, index=False, encoding="utf-8-sig")
-# print("已將 CSV 檔案儲存在：%s\n檔案名稱：%s" % (where, Part3_file_name))

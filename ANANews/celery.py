@@ -18,7 +18,8 @@ logger.setLevel(logging.INFO)
 app = Celery("ANANews")  # 創建 Celery 實例
 app.config_from_object("django.conf:settings",
                        namespace="CELERY")  # 加載 Django 設定
-app.autodiscover_tasks(["core.tasks","core.news_scraper"])
+app.autodiscover_tasks(
+    ["core.tasks", "core.news_scraper"])
 
 
 @app.task(bind=True)
