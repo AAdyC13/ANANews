@@ -21,6 +21,11 @@ def keyword_assoc(request):
                   'app_advanced_search/keyword_assoc.html')
 
 
+def sentiment(request):
+    return render(request,
+                  'app_advanced_search/sentiment.html')
+
+
 @csrf_exempt
 def assoc_ana(request):
     if request.method == "POST":
@@ -32,4 +37,19 @@ def assoc_ana(request):
         row_data = ana_main(
             user_keywords, cond, category, weeks)
         return JsonResponse(row_data)
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+@csrf_exempt
+def sentiment_ana(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        category: str = data.get("category")
+        cond: str = data.get("cond")
+        user_keywords: list = data.get("user_keywords").split(",")
+        weeks: int = int(data.get("weeks"))
+        # row_data = sentiment_main(
+        #     user_keywords, cond, category, weeks)
+        # print(row_data)
+        return JsonResponse()
     return JsonResponse({"error": "Invalid request"}, status=400)

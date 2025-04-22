@@ -3,11 +3,11 @@
 {% block head_script %}
 {% endblock %}
 
-{% block big_title %}{{user_interest}}{% endblock %}
-{% block small_title %}{{user_interest}}{% endblock %}
+{% block big_title %}{{sentiment}}{% endblock %}
+{% block small_title %}{{sentiment}}{% endblock %}
 
 {% block top_content %}
-<!-- user_interest_輸入條件 -->
+<!-- sentiment_輸入條件 -->
 <div class="col-lg-6">
 
     <div class="card">
@@ -17,11 +17,11 @@
         <div class="card-body pt-0">
             <div class="d-flex justify-content-between align-items-center">
                 <p class="text">請選擇欲查詢之關鍵詞及其條件</p>
-                <small class="text-muted">此頁面統計數據來自各新聞 tokens_v2</small>
+                <small class="text-muted">此頁面統計數據來自???</small>
             </div>
 
             <form class="form-horizontal">
-                <!-- user_interest_關鍵字輸入框 -->
+                <!-- sentiment_關鍵字輸入框 -->
                 <div class="row gy-2 mb-4">
                     <label class="col-sm-3 form-label" for="inputHorizontalElOne">查詢字詞</label>
                     <div class="col-sm-9">
@@ -72,7 +72,7 @@
         </div>
     </div>
 </div>
-<!-- user_interest_查詢周次-->
+<!-- sentiment_查詢周次-->
 <div class="col-lg-6">
     <div class="card">
         <div class="card-header">
@@ -90,70 +90,37 @@
         </div>
     </div>
 </div>
-<!-- user_interest_出現頻率圖 -->
-<div class="col-lg-12">
+<!-- sentiment_情緒分析:文章層級 -->
+<div class="col-lg-6">
     <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">情緒分析:文章層級</h4>
+
+        </div>
         <div class="card-body">
-            <div class="chartjs-size-monitor">
-                <div class="chartjs-size-monitor-expand">
-                    <div class=""></div>
-                </div>
-                <div class="chartjs-size-monitor-shrink">
-                    <div class=""></div>
-                </div>
-            </div><strong>出現頻率圖</strong>
-            <canvas id="keyword_barChart" class="chartjs-render-monitor"></canvas>
+            <canvas id="sentiment_pieChart" width="699" height="349"
+                style="display: block; width: 699px; height: 349px;" class="chartjs-render-monitor"></canvas>
         </div>
-    </div>
-</div>
 
-<!-- user_interest_按類統計-新聞次數 -->
-<div class="col-lg-6">
-    <div class="card mb-0">
-        <div class="card-header">
-            <h3 class="h4 mb-0">按類統計-新聞次數</h3>
-        </div>
-        <div class="card-body pt-0">
-            <div class="table-responsive">
-                <table id="interest_newsCount" class="table mb-0 table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>類別</th>
-                            <th>有多少新聞報導提起</th>
-                        </tr>
-                    </thead>
-                    <tbody id="interest_newsCount_tbody">
-                        <tr style="display: none;"></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </div>
+<!-- sentiment_正反面情緒變化 -->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">正反面情緒變化</h4>
 
-<!-- user_interest_按類統計-出現次數 -->
-<div class="col-lg-6">
-    <div class="card mb-0">
-        <div class="card-header">
-            <h3 class="h4 mb-0">按類統計-出現次數</h3>
         </div>
-        <div class="card-body pt-0">
-            <div class="table-responsive">
-                <table id="interest_wordCount" class="table mb-0 table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>類別</th>
-                            <th>單字出現次數</th>
-                        </tr>
-                    </thead>
-                    <tbody id="interest_wordCount_tbody">
-                        <tr style="display: none;"></tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="card-body">
+            <canvas id="sentiment_barChart" width="699" height="349"
+                style="display: block; width: 699px; height: 349px;" class="chartjs-render-monitor"></canvas>
         </div>
+
     </div>
 </div>
-<!-- user_interest_引入js_自定義js-->
-<script src="{% static 'js\user_interest.js' %}"></script>
+<!-- sentiment_引入js_自定義js -->
+<script src="{% static 'js\sentiment.js' %}"></script>
+<!-- sentiment_引入js_d3js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
 {% endblock %}
