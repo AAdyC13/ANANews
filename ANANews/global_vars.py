@@ -5,5 +5,6 @@ def global_variables(request):
         "user_interest": "關鍵詞分析",
         "president_Lai": "總統最近在幹嘛",
         "keyword_assoc": "全文檢索與關聯分析",
-        "sentiment": "情緒分析"
+        "sentiment": "情緒分析",
+        "LegislativeYuan_caucus": "立院黨團聲量"
     }
