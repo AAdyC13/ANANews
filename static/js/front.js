@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // ------------------------------------------------------- //
-    // Sidebar展開、關閉
+    // Sidebar縮小、恢復正常的按鈕
     // ------------------------------------------------------ //
     var sidebarToggler = document.querySelector(".sidebar-toggle");
     var sidebar = document.querySelector("#sidebar");
@@ -115,6 +115,29 @@ document.addEventListener("DOMContentLoaded", function () {
             document.dispatchEvent(new Event("sidebarChanged"));
         });
     }
+    // ------------------------------------------------------- //
+    // Sidebar調整active位置
+    // ------------------------------------------------------ //
+    function handleSidebarUpdate(pathname = window.location.pathname) {
+        if (pathname === "/") {
+            const rootItem = document.getElementById("index");
+            rootItem?.classList.add("active");
+            return;
+        }
+
+        const [first, second] = pathname.split("/").slice(1);
+        const parentItem = document.getElementById(first);
+        if (!parentItem) return;
+
+        parentItem.classList.add("active");
+
+        const subList = parentItem.querySelector(".collapse.list-unstyled");
+        subList?.classList.add("show");
+
+        const subItem = document.getElementById(second);
+        subItem?.classList.add("active");
+    }
+    handleSidebarUpdate();
 
     // 服務於底下功能的function，停用
     function bsValidationBehavior(errorInputs, form) {

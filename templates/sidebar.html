@@ -10,45 +10,49 @@
   </div><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">主要</span>
   <ul class="list-unstyled">
 
-    <li class="sidebar-item active"><a class="sidebar-link" href='/'>
+    <li class="sidebar-item" id="index"><a class="sidebar-link" href='/'>
         <svg class="svg-icon svg-icon-sm svg-icon-heavy">
           <use xlink:href="#real-estate-1"> </use>
         </svg><span>首頁</span></a></li>
 
-    <li class="sidebar-item"><a class="sidebar-link" href="#topDropdown" data-bs-toggle="collapse">
+    <li class="sidebar-item" id="top"><a class="sidebar-link" href="#topDropdown" data-bs-toggle="collapse">
         <svg class="svg-icon svg-icon-sm svg-icon-heavy">
           <use xlink:href="#portfolio-grid-1"> </use>
         </svg><span>熱門分析</span></a>
       <ul class="collapse list-unstyled " id="topDropdown">
-        <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/top_keyword">{{top_keyword}}</a></li>
-        <li><a class="sidebar-link" href="http://{{ request.get_host }}/top/top_person">{{top_person}}</a></li>
+        <li id="top_keyword"><a class="sidebar-link"
+            href="http://{{ request.get_host }}/top/top_keyword">{{top_keyword}}</a></li>
+        <li id="top_person"><a class="sidebar-link"
+            href="http://{{ request.get_host }}/top/top_person">{{top_person}}</a></li>
       </ul>
     </li>
 
-    <li class="sidebar-item"><a class="sidebar-link" href="#advDropdown" data-bs-toggle="collapse">
+    <li class="sidebar-item" id="advanced_search"><a class="sidebar-link" href="#advDropdown" data-bs-toggle="collapse">
         <svg class="svg-icon svg-icon-sm svg-icon-heavy">
           <use xlink:href="#portfolio-grid-1"> </use>
         </svg><span>進階查詢</span></a>
       <ul class="collapse list-unstyled " id="advDropdown">
-        <li><a class="sidebar-link"
+        <li id="user_interest"><a class="sidebar-link"
             href="http://{{ request.get_host }}/advanced_search/user_interest">{{user_interest}}</a>
         </li>
-        <li><a class="sidebar-link"
+        <li id="keyword_assoc"><a class="sidebar-link"
             href="http://{{ request.get_host }}/advanced_search/keyword_assoc">{{keyword_assoc}}</a>
         </li>
-        <li><a class="sidebar-link" href="http://{{ request.get_host }}/advanced_search/sentiment">{{sentiment}}</a>
+        <li id="sentiment"><a class="sidebar-link"
+            href="http://{{ request.get_host }}/advanced_search/sentiment">{{sentiment}}</a>
         </li>
       </ul>
     </li>
 
-    <li class="sidebar-item"><a class="sidebar-link" href="#specialDropdown" data-bs-toggle="collapse">
+    <li class="sidebar-item" id="special_ana"><a class="sidebar-link" href="#specialDropdown" data-bs-toggle="collapse">
         <svg class="svg-icon svg-icon-sm svg-icon-heavy">
           <use xlink:href="#portfolio-grid-1"> </use>
         </svg><span>特色分析</span></a>
       <ul class="collapse list-unstyled " id="specialDropdown">
-        <li><a class="sidebar-link" href="http://{{ request.get_host }}/special_ana/president_Lai">{{president_Lai}}</a>
+        <li id="president_Lai"><a class="sidebar-link"
+            href="http://{{ request.get_host }}/special_ana/president_Lai">{{president_Lai}}</a>
         </li>
-        <li><a class="sidebar-link"
+        <li id="LegislativeYuan_caucus"><a class="sidebar-link"
             href="http://{{ request.get_host }}/special_ana/LegislativeYuan_caucus">{{LegislativeYuan_caucus}}</a>
         </li>
       </ul>
