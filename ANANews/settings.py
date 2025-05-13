@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'app_top_keyword',
     'app_special_ana',
     'app_advanced_search',
+    'app_llm_report',
 
     # 其他核心
     'index',
