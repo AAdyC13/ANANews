@@ -34,45 +34,45 @@ def base(request):
                   'app_llm_report/llm_base.html')
 
 
-def get_userkey_data(request):
-    userkey = request.POST.get('userkey')
-    cate = request.POST['cate']  # This is an alternative way to get POST data.
-    cond = request.POST.get('cond')
-    weeks = int(request.POST.get('weeks'))
-    key = userkey.split()
+# def get_userkey_data(request):
+#     userkey = request.POST.get('userkey')
+#     cate = request.POST['cate']  # This is an alternative way to get POST data.
+#     cond = request.POST.get('cond')
+#     weeks = int(request.POST.get('weeks'))
+#     key = userkey.split()
 
-    df_query = filter_dataFrame(key, cond, cate, weeks)
+#     df_query = filter_dataFrame(key, cond, cate, weeks)
 
-    # if df_query is empty, return an error message
-    if len(df_query) == 0:
-        return {'error': 'No results found for the given keywords.'}
+#     # if df_query is empty, return an error message
+#     if len(df_query) == 0:
+#         return {'error': 'No results found for the given keywords.'}
 
-    # (1)從內部取得聲量分布資料 get frequency data from internal module
-    try:
-        response_from_sentiment = api_get_userkey_sentiment(request)
-        response_from_sentiment = response_from_sentiment.content.decode(
-            'utf-8')  # 取得的格式是bytes，必須Decode the response content to a string
-        response_from_sentiment = json.loads(
-            response_from_sentiment)  # 將字串轉換為字典
+#     # (1)從內部取得聲量分布資料 get frequency data from internal module
+#     try:
+#         response_from_sentiment = api_get_userkey_sentiment(request)
+#         response_from_sentiment = response_from_sentiment.content.decode(
+#             'utf-8')  # 取得的格式是bytes，必須Decode the response content to a string
+#         response_from_sentiment = json.loads(
+#             response_from_sentiment)  # 將字串轉換為字典
 
-    except Exception as e:
-        print(f"Error calling api_get_userkey_sentiment: {e}")
-        return {'error': 'Failed to get sentiment data.'}
+#     except Exception as e:
+#         print(f"Error calling api_get_userkey_sentiment: {e}")
+#         return {'error': 'Failed to get sentiment data.'}
 
-    # (2)從內部取得聲量分布資料 get frequency data from internal module
-    try:
-        response_from_userkeyword = api_get_top_userkey(request)
-        response_from_userkeyword = response_from_userkeyword.content.decode(
-            'utf-8')  # 取得的格式是bytes，必須Decode the response content to a string
-        response_from_userkeyword = json.loads(
-            response_from_userkeyword)  # 將字串轉換為字典
+#     # (2)從內部取得聲量分布資料 get frequency data from internal module
+#     try:
+#         response_from_userkeyword = api_get_top_userkey(request)
+#         response_from_userkeyword = response_from_userkeyword.content.decode(
+#             'utf-8')  # 取得的格式是bytes，必須Decode the response content to a string
+#         response_from_userkeyword = json.loads(
+#             response_from_userkeyword)  # 將字串轉換為字典
 
-    except Exception as e:
-        print(f"Error calling api_get_top_userkey: {e}")
-        return {'error': 'Failed to get keyword frequency data.'}
+#     except Exception as e:
+#         print(f"Error calling api_get_top_userkey: {e}")
+#         return {'error': 'Failed to get keyword frequency data.'}
 
-    return response_from_userkeyword, response_from_sentiment
-    # return {**response_from_userkeyword, **response_from_sentiment}
+#     return response_from_userkeyword, response_from_sentiment
+#     # return {**response_from_userkeyword, **response_from_sentiment}
 
 
 @csrf_exempt  # 取消 CSRF 保護
