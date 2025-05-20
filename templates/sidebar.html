@@ -58,6 +58,17 @@
       </ul>
     </li>
 
+    <li class="sidebar-item" id="llm_report"><a class="sidebar-link" href="#specialDropdown" data-bs-toggle="collapse">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+          <use xlink:href="#portfolio-grid-1"> </use>
+        </svg><span>AI分析報告</span></a>
+      <ul class="collapse list-unstyled " id="specialDropdown">
+        <li id="ollama"><a class="sidebar-link"
+            href="http://{{ request.get_host }}/llm_report/ollama">{{ollama}}</a>
+        </li>
+      </ul>
+    </li>
+
   </ul><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">其他</span>
   <ul class="list-unstyled">
 
