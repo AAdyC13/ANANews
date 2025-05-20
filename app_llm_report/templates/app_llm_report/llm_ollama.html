@@ -1,0 +1,243 @@
+{% extends 'app_advanced_search/adv_base.html' %}
+{% load static %}
+{% block head_script %}
+{% endblock %}
+
+{% block big_title %}{{ollama}}{% endblock %}
+{% block small_title %}{{ollama}}{% endblock %}
+
+{% block top_content %}
+<!-- llm_ollama_輸入條件 -->
+<div class="col-lg-6">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="h4 mb-0">關鍵詞條件</h3>
+        </div>
+        <div class="card-body pt-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="text">請選擇欲查詢之關鍵詞及其條件</p>
+                <small class="text-muted">此頁面統計數據來自各新聞 content</small>
+            </div>
+
+            <form class="form-horizontal">
+                <!-- llm_ollama_關鍵字輸入框 -->
+                <div class="row gy-2 mb-4">
+                    <label class="col-sm-3 form-label" for="inputHorizontalElOne">查詢字詞</label>
+                    <div class="col-sm-9">
+                        <input class="form-control tags-input mb-0" type="text" value="" id="tagsInput"
+                            data-customclass="form-control">
+                    </div>
+                </div>
+
+                <div class="row gy-2 mb-4">
+                    <label class="col-sm-3 form-label" for="inputHorizontalElTwo">新聞類別</label>
+                    <div class="col-sm-9">
+                        <select class="form-select" id="keyword_select">
+                            <option value="全部" selected>如果你看到了我，說明請求選單的函數出錯了</option>
+                            <option value="None">js沒收到選單</option>
+                            <option value="None">所以沒更新默認html</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row gy-2 mb-4">
+                    <label class="col-sm-3 form-label" for="inputHorizontalElTwo">搜索條件</label>
+                    <div class="col-sm-9">
+                        <div class="row" id="interest_row">
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="and" type="radio" name="search_type" checked>
+                                    <label class="form-check-label" for="and">and</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="or" type="radio" name="search_type">
+                                    <label class="form-check-label" for="or">or</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9 ms-auto">
+                        <button class="btn btn-secondary" id="interest_del" type="reset">清空</button>
+                        <button class="btn btn-primary" id="interest_submit" type="button">查詢</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- llm_ollama_查詢周次-->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">時間區間</h4>
+
+        </div>
+        <div class="card-body pt-0">
+
+            <p class="mb-0 ">請透過此區調整欲查詢之時間寬度（周次）</p>
+            <form>
+                <div class="nouislider mt-5">
+                    <div id="week_NoUISlider"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- llm_ollama_AI聲量分析報告 -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">AI聲量分析報告</h4>
+
+        </div>
+        <div class="card-body pt-0 d-flex flex-column">
+            <pre class="card-footer" id="log-output" style="height: 500px; overflow-y: scroll;">
+                <div class="report-content">
+                    <h2>台灣與美國網路聲量分析報告 (2025/03/17 - 2025/04/22)</h2>
+                    <p><strong>摘要:</strong></p>
+                    <p>本報告基於台灣及美國的網路聲量數據分析，呈現了四月下旬至五月初期間關鍵議題、情緒變動趨勢及其背後可能的原因。分析結果顯示，台灣網路聲量以“生活”、“政治”和“兩岸”為核心，顯示出對於社會議題、政治事件以及兩岸關係關注度較高。美國方面，"政治"
+                        和 “生活” 也佔據主導地位，但"運動" 的聲量在特定時間點上升，可疑示對特定體育賽事或運動相關話題的關注。整體而言，台灣的網路聲量呈現波動性，而美國聲量則相對穩定，但仍具有波動性，反映了議題及事件的敏感性。</p>
+                    <p><strong>1. 關鍵字分析:</strong></p>
+                    <ul>
+                        <li><strong>台灣:</strong>
+                            <ul>
+                                <li><strong>熱門關鍵字:</strong> “生活” (474) 顯示台灣民眾關注生活相關議題，如經濟、消費、健康、娛樂等。</li>
+                                <li><strong>政治：</strong> “政治” (178) 佔據重要地位，反映了對政府政策、選舉、政治人物等議題的濃厚關注。</li>
+                                <li><strong>兩岸：</strong> “兩岸” (143) 點名顯示對兩岸關係持續關注，可能與時事事件或政治議題相關。</li>
+                                <li><strong>其他：</strong> “經濟”、“房價”、“社會議題” 等關鍵字也呈現不小聲量，代表了民眾普遍關注的領域。</li>
+                            </ul>
+                        </li>
+                        <li><strong>美國:</strong>
+                            <ul>
+                                <li><strong>政治：</strong> “政治” (497) 是美國網路聲量的最大佔比，表明對政治議題（如選舉、政策、爭議）的持續關注。</li>
+                                <li><strong>生活：</strong> “生活” (336) 顯示對健康、娛樂、家庭生活等議題的關注。</li>
+                                <li><strong>運動：</strong> “運動” (117) 在4月27日後顯著增加，可能與某個重要的體育賽事（如MLB季後賽）相關。</li>
+                                <li><strong>經濟:</strong> “經濟”、“通脹”、“利率” 等關鍵字也佔據一定比例，顯示美國民眾對於經濟狀況的關注。</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p><strong>2. 內容分析:</strong></p>
+                    <ul>
+                        <li><strong>台灣:</strong> 網路聲量高峰集中於關注“政治”事件及政策調整時，例如政府對特定產業的干預、選舉相關討論等。 “兩岸”
+                            關鍵字的波動反映了兩岸議題的敏感性，通常與大陸政治事件或台灣內外傳聞有關。 “生活” 相關議題的持續關注，可能與台灣的經濟狀況或社會發展趨勢有關。</li>
+                        <li><strong>美國:</strong> 美國網路聲量的波動受到政治事件、經濟數據、以及重大體育賽事的影響。 “運動” 的增長可能與美國職棒MLB季後賽的討論相關。</li>
+                    </ul>
+                    <p><strong>3. 情感分析:</strong></p>
+                    <ul>
+                        <li><strong>台灣:</strong> 網路聲量的整體情緒傾向偏負。政治事件通常會引發負面情緒，例如對政府政策的不滿、對社會問題的擔憂等。</li>
+                        <li><strong>美國:</strong> 美國網路聲量的整體情緒傾向偏中性，但受到特定事件影響而出現波動。</li>
+                    </ul>
+                    <p><strong>4. 時間趨勢分析:</strong></p>
+                    <ul>
+                        <li><strong>台灣:</strong> 網路聲量呈現波動性，高峰通常與政治事件或重大社會議題相關。整體而言，四月中旬至五月初的聲量較為密集，可能反映了台灣的選舉活動或政策調整。</li>
+                        <li><strong>美國:</strong> 網路聲量相對穩定，但受到重大事件（如MLB季後賽）的影響而出現波動。</li>
+                    </ul>
+                    <p><strong>5. 建議:</strong></p>
+                    <ul>
+                        <li><strong>關注政治事件：</strong> 台灣網路聲量波動的主要驅動因素是政治事件。持續監測政治事件的發展，分析其對網路聲量的影響。</li>
+                        <li><strong>監測社會議題：</strong> 關注“生活”關鍵字的出現頻率，了解台灣民眾關注的社會議題，評估其可能帶來的社會影響。</li>
+                        <li><strong>關注體育賽事：</strong> 持續監測“運動”關鍵字的出現頻率，了解其對網路聲量的影響。</li>
+                        <li><strong>跨國議題監測：</strong> 持續關注兩岸議題，作為台灣的政治、經濟與社會發展的重要指標。</li>
+                        <li><strong>數據精準度：</strong> 分析網路聲量數據時，需注意數據的來源、評估標準及分析方法，以提高分析的準確性和可靠性。</li>
+                    </ul>
+                    <p><strong>6. 總結:</strong></p>
+                    <p>本報告揭示了台灣和美國網路聲量的變化，並揭示了關注重點和情緒趨勢。 透過持續監測和分析網路聲量數據，可以更深入地了解台灣和美國民眾的關注點、行為模式和社會趨勢，為政策制定和社會發展提供重要的參考資訊。
+                        由於網路聲量是反映民意的指標，其變動會直接影響社會議題的討論和政策的制定。</p>              </div>
+
+
+
+            </pre>
+        </div>
+
+    </div>
+</div>
+
+<!-- llm_ollama_出現頻率以時間呈現 -->
+<div class="col-lg-6">
+    <div class="card mb-0">
+        <div class="card-body">
+            <div class="chartjs-size-monitor">
+                <div class="chartjs-size-monitor-expand">
+                    <div class=""></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink">
+                    <div class=""></div>
+                </div>
+            </div><strong>出現頻率圖</strong>
+            <canvas id="keyword_barChart" class="chartjs-render-monitor"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- llm_ollama_按類統計-新聞次數 -->
+<div class="col-lg-6">
+    <div class="card mb-0">
+        <div class="card-header">
+            <h3 class="h4 mb-0">按類統計-新聞次數</h3>
+        </div>
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table id="interest_newsCount" class="table mb-0 table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>類別</th>
+                            <th>有多少新聞報導提起</th>
+                        </tr>
+                    </thead>
+                    <tbody id="interest_newsCount_tbody">
+                        <tr style="display: none;"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- llm_ollama_情緒分析:文章層級 -->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">情緒分析:文章層級　　
+                <div id="all" class="d-inline py-1 px-3 rounded bg-dash-dark-3 fw-bold text-sm">總和:X篇</div>
+                <div id="pos" class="d-inline py-1 px-3 rounded bg-dash-dark-3 fw-bold text-sm">正面:X篇</div>
+                <div id="neg" class="d-inline py-1 px-3 rounded bg-dash-dark-3 fw-bold text-sm">負面:X篇</div>
+                <div id="midd" class="d-inline py-1 px-3 rounded bg-dash-dark-3 fw-bold text-sm">中立:X篇</div>
+            </h4>
+
+
+
+        </div>
+        <div class="card-body">
+            <canvas id="sentiment_pieChart" width="699" height="349"
+                style="display: block; width: 699px; height: 349px;" class="chartjs-render-monitor"></canvas>
+        </div>
+
+    </div>
+</div>
+
+<!-- llm_ollama_正反面折線圖 -->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0 ">正反面情緒變化</h4>
+
+        </div>
+        <div class="card-body">
+            <canvas id="sentiment_barChart" width="699" height="349"
+                style="display: block; width: 699px; height: 349px;" class="chartjs-render-monitor"></canvas>
+        </div>
+
+    </div>
+</div>
+
+<!-- llm_ollama_引入js_自定義js -->
+<script src="{% static 'js\llm_ollama.js' %}"></script>
+
+{% endblock %}

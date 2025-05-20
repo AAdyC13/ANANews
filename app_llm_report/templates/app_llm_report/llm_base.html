@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block apps_content %}
+
+<!-- adv_base_引入js_chart.js，好看長條圖-->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+<!-- adv_base_引入CSS_nouislider -->
+<link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.css' %}">
+<!-- adv_base_引入js_nouislider -->
+<script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
+<!-- adv_base_引入js_wNumb，nouislider部分功能 -->
+<script src="{% static 'vendor/nouislider/wNumb.min.js' %}"></script>
+<!-- adv_base_引入CSS_Choices -->
+<link rel="stylesheet" href="{% static 'vendor/choices.js/public/assets/styles/choices.min.css' %}">
+<!-- adv_base_引入js_Choices-->
+<script src="{% static 'vendor/choices.js/public/assets/scripts/choices.min.js' %}"></script>
+
+<!-- adv_base_引入js_自定義js-->
+<!-- <script src="{% static 'js\adv_base.js' %}"></script> -->
+{% block head_script %}
+{% endblock %}
+
+<div class="page-content form-page">
+    <!-- adv_base頁面大標題-->
+    <div class="bg-dash-dark-2 py-4">
+        <div class="container-fluid">
+            <h2 class="h5 mb-0">{% block big_title %}{% endblock %}</h2>
+        </div>
+    </div>
+    <!-- adv_base頁面索引-->
+    <div class="container-fluid py-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 py-3 px-0">
+                <li class="breadcrumb-item"><a href="/advanced_search/base/" style="pointer-events: none;">進階查詢</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% block small_title %}{% endblock %}</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- adv_base頁面主板塊-->
+    <section class="pt-0">
+        <div class="container-fluid">
+            <div class="row gy-4">
+                <!-- adv_baseAPP複寫區塊_開始-->
+                {% block top_content %}
+                {% endblock %}
+                <!-- adv_baseAPP複寫區塊_結束-->
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
