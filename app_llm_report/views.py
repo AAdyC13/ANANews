@@ -1,27 +1,28 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .predict_sentiment import predict_sentiment
 import json
 import requests
 
-url = "http://163.18.22.32:11435/api/generate"
-# 設置遠程 Ollama 模型的基礎 URL
-REMOTE_OLLAMA_URL = "http://163.18.22.32:11435"
+# url = "http://163.18.22.32:11435/api/generate"
+# # 設置遠程 Ollama 模型的基礎 URL
+# REMOTE_OLLAMA_URL = "http://163.18.22.32:11435"
 
-model_name = "gemma3:4b"  # 默認模型名稱
-# model_name = "qwen2.5:7b"  # 默認模型名稱
-# model_name = "deepseek-r1:14b"  # 默認模型名稱
-# 列出所有可用的模型
-print(f"正在連接 {REMOTE_OLLAMA_URL} 檢查可用模型...")
-response = requests.get(f"{REMOTE_OLLAMA_URL}/api/tags")
-models = response.json()
-print("\n可用的模型:")
-available_models = [model['name'] for model in models['models']]
-for model in available_models:
-    print(f"- {model}")
-# 檢查指定的模型是否可用
-if model_name in available_models:
-    print(f"\n✅ 模型 '{model_name}' 已可用")
+# model_name = "gemma3:4b"  # 默認模型名稱
+# # model_name = "qwen2.5:7b"  # 默認模型名稱
+# # model_name = "deepseek-r1:14b"  # 默認模型名稱
+# # 列出所有可用的模型
+# print(f"正在連接 {REMOTE_OLLAMA_URL} 檢查可用模型...")
+# response = requests.get(f"{REMOTE_OLLAMA_URL}/api/tags")
+# models = response.json()
+# print("\n可用的模型:")
+# available_models = [model['name'] for model in models['models']]
+# for model in available_models:
+#     print(f"- {model}")
+# # 檢查指定的模型是否可用
+# if model_name in available_models:
+#     print(f"\n✅ 模型 '{model_name}' 已可用")
 
 
 def llm_report(request):
@@ -29,50 +30,64 @@ def llm_report(request):
                   'app_llm_report/llm_ollama.html')
 
 
+def my_bert(request):
+    return render(request,
+                  'app_llm_report/my_bert.html')
+
+
 def base(request):
     return render(request,
                   'app_llm_report/llm_base.html')
 
 
-def get_userkey_data(request):
-    userkey = request.POST.get('userkey')
-    cate = request.POST['cate']  # This is an alternative way to get POST data.
-    cond = request.POST.get('cond')
-    weeks = int(request.POST.get('weeks'))
-    key = userkey.split()
+@csrf_exempt  # 取消 CSRF 保護
+def my_bert_ana(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request"}, status=400)
+    data = json.loads(request.body)
+    text: str = data.get("text")
+    return JsonResponse({"data": predict_sentiment(text)})
 
-    df_query = filter_dataFrame(key, cond, cate, weeks)
 
-    # if df_query is empty, return an error message
-    if len(df_query) == 0:
-        return {'error': 'No results found for the given keywords.'}
+# def get_userkey_data(request):
+#     userkey = request.POST.get('userkey')
+#     cate = request.POST['cate']  # This is an alternative way to get POST data.
+#     cond = request.POST.get('cond')
+#     weeks = int(request.POST.get('weeks'))
+#     key = userkey.split()
 
-    # (1)從內部取得聲量分布資料 get frequency data from internal module
-    try:
-        response_from_sentiment = api_get_userkey_sentiment(request)
-        response_from_sentiment = response_from_sentiment.content.decode(
-            'utf-8')  # 取得的格式是bytes，必須Decode the response content to a string
-        response_from_sentiment = json.loads(
-            response_from_sentiment)  # 將字串轉換為字典
+#     df_query = filter_dataFrame(key, cond, cate, weeks)
 
-    except Exception as e:
-        print(f"Error calling api_get_userkey_sentiment: {e}")
-        return {'error': 'Failed to get sentiment data.'}
+#     # if df_query is empty, return an error message
+#     if len(df_query) == 0:
+#         return {'error': 'No results found for the given keywords.'}
 
-    # (2)從內部取得聲量分布資料 get frequency data from internal module
-    try:
-        response_from_userkeyword = api_get_top_userkey(request)
-        response_from_userkeyword = response_from_userkeyword.content.decode(
-            'utf-8')  # 取得的格式是bytes，必須Decode the response content to a string
-        response_from_userkeyword = json.loads(
-            response_from_userkeyword)  # 將字串轉換為字典
+#     # (1)從內部取得聲量分布資料 get frequency data from internal module
+#     try:
+#         response_from_sentiment = api_get_userkey_sentiment(request)
+#         response_from_sentiment = response_from_sentiment.content.decode(
+#             'utf-8')  # 取得的格式是bytes，必須Decode the response content to a string
+#         response_from_sentiment = json.loads(
+#             response_from_sentiment)  # 將字串轉換為字典
 
-    except Exception as e:
-        print(f"Error calling api_get_top_userkey: {e}")
-        return {'error': 'Failed to get keyword frequency data.'}
+#     except Exception as e:
+#         print(f"Error calling api_get_userkey_sentiment: {e}")
+#         return {'error': 'Failed to get sentiment data.'}
 
-    return response_from_userkeyword, response_from_sentiment
-    # return {**response_from_userkeyword, **response_from_sentiment}
+#     # (2)從內部取得聲量分布資料 get frequency data from internal module
+#     try:
+#         response_from_userkeyword = api_get_top_userkey(request)
+#         response_from_userkeyword = response_from_userkeyword.content.decode(
+#             'utf-8')  # 取得的格式是bytes，必須Decode the response content to a string
+#         response_from_userkeyword = json.loads(
+#             response_from_userkeyword)  # 將字串轉換為字典
+
+#     except Exception as e:
+#         print(f"Error calling api_get_top_userkey: {e}")
+#         return {'error': 'Failed to get keyword frequency data.'}
+
+#     return response_from_userkeyword, response_from_sentiment
+#     # return {**response_from_userkeyword, **response_from_sentiment}
 
 
 @csrf_exempt  # 取消 CSRF 保護

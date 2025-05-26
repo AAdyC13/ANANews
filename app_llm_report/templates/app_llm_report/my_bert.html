@@ -1,0 +1,55 @@
+{% extends 'app_llm_report/llm_base.html' %}
+{% load static %}
+{% block head_script %}
+{% endblock %}
+
+{% block big_title %}{{my_bert}}{% endblock %}
+{% block small_title %}{{my_bert}}{% endblock %}
+{% block top_content %}
+<div class="col-lg-6">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="h4 mb-0">情緒分類器</h3>
+        </div>
+        <div class="card-body pt-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="text">請輸入一段帶有情緒的文字...</p>
+                <!-- <small class="text-muted">此頁面統計數據來自各新聞 content</small> -->
+            </div>
+
+            <form class="form-horizontal">
+                <!-- llm_ollama_關鍵字輸入框 -->
+                <div class="row gy-2 mb-4">
+                    <div class="col-sm-12">
+                        <textarea class="form-control mb-0" id="input" rows="4" placeholder="高級餐廳，服務好，食物美味"></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-9 ms-auto">
+                        <button class="btn btn-secondary" id="interest_del" type="reset">清空</button>
+                        <button class="btn btn-primary" id="interest_submit" type="button">開始判讀</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="h4 mb-0">判讀結果</h3>
+        </div>
+        <div class="card-body pt-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="text" id="analized_results">輸入完畢後，請按下「開始判讀」</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- llm_ollama_引入js_自定義js -->
+<script src="{% static 'js\my_bert.js' %}"></script>
+{% endblock %}

@@ -58,13 +58,14 @@
       </ul>
     </li>
 
-    <li class="sidebar-item" id="llm_report"><a class="sidebar-link" href="#specialDropdown" data-bs-toggle="collapse">
+    <li class="sidebar-item" id="llm_report"><a class="sidebar-link" href="#llmDropdown" data-bs-toggle="collapse">
         <svg class="svg-icon svg-icon-sm svg-icon-heavy">
           <use xlink:href="#portfolio-grid-1"> </use>
         </svg><span>AI分析報告</span></a>
-      <ul class="collapse list-unstyled " id="specialDropdown">
-        <li id="ollama"><a class="sidebar-link"
-            href="http://{{ request.get_host }}/llm_report/ollama">{{ollama}}</a>
+      <ul class="collapse list-unstyled " id="llmDropdown">
+        <li id="ollama"><a class="sidebar-link" href="http://{{ request.get_host }}/llm_report/ollama">{{ollama}}</a>
+        </li>
+        <li id="my_bert"><a class="sidebar-link" href="http://{{ request.get_host }}/llm_report/my_bert">{{my_bert}}</a>
         </li>
       </ul>
     </li>
