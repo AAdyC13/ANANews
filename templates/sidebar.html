@@ -7,7 +7,7 @@
       <h1 class="h5 mb-1">鄭宇哲</h1>
       <p class="text-sm text-gray-700 mb-0 lh-1">C110134217</p>
     </div>
-  </div><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">主要</span>
+  </div><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">新聞爬蟲分析師</span>
   <ul class="list-unstyled">
 
     <li class="sidebar-item" id="index"><a class="sidebar-link" href='/'>
@@ -58,20 +58,25 @@
       </ul>
     </li>
 
-    <li class="sidebar-item" id="llm_report"><a class="sidebar-link" href="#llmDropdown" data-bs-toggle="collapse">
+    <!-- {{ollama}} -->
+    <li class="sidebar-item" id="llm_report"><a class="sidebar-link"
+        href='http://{{ request.get_host }}/llm_report/ollama'>
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+          <use xlink:href="#real-estate-1"></use>
+        </svg><span>AI分析新聞報告</span></a></li>
+
+  </ul><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">AI工具箱</span>
+  <ul class="list-unstyled">
+    <li class="sidebar-item" id="ai_sentiment"><a class="sidebar-link" href="#llmDropdown" data-bs-toggle="collapse">
         <svg class="svg-icon svg-icon-sm svg-icon-heavy">
           <use xlink:href="#portfolio-grid-1"> </use>
-        </svg><span>AI分析報告</span></a>
+        </svg><span>AI 情緒分析</span></a>
       <ul class="collapse list-unstyled " id="llmDropdown">
-        <li id="ollama"><a class="sidebar-link" href="http://{{ request.get_host }}/llm_report/ollama">{{ollama}}</a>
-        </li>
-        <li id="my_bert"><a class="sidebar-link" href="http://{{ request.get_host }}/llm_report/my_bert">{{my_bert}}</a>
+        <li id="my_bert"><a class="sidebar-link"
+            href="http://{{ request.get_host }}/ai_sentiment/my_bert">{{my_bert}}</a>
         </li>
       </ul>
     </li>
-
-  </ul><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2">其他</span>
-  <ul class="list-unstyled">
 
   </ul>
 </nav>
