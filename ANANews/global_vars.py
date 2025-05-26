@@ -7,5 +7,6 @@ def global_variables(request):
         "keyword_assoc": "全文檢索與關聯分析",
         "sentiment": "情緒分析",
         "LegislativeYuan_caucus": "立院黨團聲量",
-        "ollama": "Gemma3模型 ● 分析報告"
+        "ollama": "Gemma3模型 ● 分析報告",
+        "my_bert": "文章情緒判斷系統"
     }
