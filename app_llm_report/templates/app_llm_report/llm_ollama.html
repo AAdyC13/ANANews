@@ -1,6 +1,7 @@
 {% extends 'app_llm_report/llm_base.html' %}
 {% load static %}
 {% block head_script %}
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.2/dist/markdown-it.min.js"></script>
 {% endblock %}
 
 {% block big_title %}{{ollama}}{% endblock %}
@@ -99,8 +100,8 @@
         </div>
         <div class="card-body pt-0 d-flex flex-column">
             <pre class="card-footer" id="log-output" style="height: 500px; overflow-y: scroll;">
-                <div class="report-content">
-                    <h2>台灣與美國網路聲量分析報告 (2025/03/17 - 2025/04/22)</h2>
+                <div class="report-content"id="ollama_response">
+                    <h2>樣板：台灣與美國網路聲量分析報告 (2025/03/17 - 2025/04/22)</h2>
                     <p><strong>摘要:</strong></p>
                     <p>本報告基於台灣及美國的網路聲量數據分析，呈現了四月下旬至五月初期間關鍵議題、情緒變動趨勢及其背後可能的原因。分析結果顯示，台灣網路聲量以“生活”、“政治”和“兩岸”為核心，顯示出對於社會議題、政治事件以及兩岸關係關注度較高。美國方面，"政治"
                         和 “生活” 也佔據主導地位，但"運動" 的聲量在特定時間點上升，可疑示對特定體育賽事或運動相關話題的關注。整體而言，台灣的網路聲量呈現波動性，而美國聲量則相對穩定，但仍具有波動性，反映了議題及事件的敏感性。</p>
