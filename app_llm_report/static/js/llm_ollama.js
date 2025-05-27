@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const lineBar = document.getElementById("sentiment_barChart").getContext("2d");
   const pieChart = document.getElementById("sentiment_pieChart").getContext("2d");
   const newsCount_tbody = document.getElementById("interest_newsCount_tbody");
+  // 初始化 markdown-it
+  const md = window.markdownit();
 
   // 滑桿初始
   var stepSlider = document.getElementById("week_NoUISlider");
@@ -131,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   // fetch.請求資料並動作
   function ollama_sendRequest() {
+    document.getElementById("ollama_response").innerText = "正在處理請求，請稍候...";
     let category = selectElement.value;
     let cond =
       document.querySelector('input[name="search_type"]:checked').id || "and";
@@ -147,7 +150,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }),
     })
       .then((response) => response.json())
-      .then((data) => { })
+      .then((data) => {
+        if (data.report) {
+          // 將 Markdown 轉換為 HTML 並渲染
+          document.getElementById("ollama_response").innerHTML = md.render(data.report);
+        } else {
+          document.getElementById("ollama_response").innerText = "無法獲取回應，請稍後再試。";
+        }
+      })
 
 
       .catch((error) => console.error("❗js錯誤:", error));

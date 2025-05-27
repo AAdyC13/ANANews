@@ -1,0 +1,86 @@
+{% extends 'app_ai_classifier/base.html' %}
+{% load static %}
+{% block head_script %}
+{% endblock %}
+
+{% block big_title %}{{app_ai_classifier}}{% endblock %}
+{% block small_title %}{{app_ai_classifier}}{% endblock %}
+{% block top_content %}
+<div class="col-lg-6">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="h4 mb-0">進階情緒分類器</h3>
+        </div>
+        <div class="card-body pt-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="text">請輸入一段帶有情緒的文字，或從下列範例中選擇一項</p>
+            </div>
+
+            <form class="form-horizontal">
+                <!-- llm_ollama_關鍵字輸入框 -->
+                <div class="row gy-2 mb-4">
+                    <div class="col-sm-12">
+                        <select class="form-select mb-3" id="example_selector">
+                            <option value="" selected>-- 請選擇範例 --</option>
+                            <option value="positive1">
+                                正面範例1：高級餐廳，服務好, 食物美味
+                            </option>
+                            <option value="positive2">
+                                正面範例2：這部電影拍得非常精彩，演員的演技也十分到位
+                            </option>
+                            <option value="positive3">
+                                正面範例3：法新社報導，現年88歲的教宗在為病人舉行彌撒後，坐著輪椅穿越聖伯多祿廣場，並對群眾表示：「祝大家週日愉快。非常感謝大家。」
+                            </option>
+                            <option value="negative1">
+                                負面範例1：這家餐廳的服務態度很差，等了一個小時才上菜
+                            </option>
+                            <option value="negative2">
+                                負面範例2：苗栗縣某大樓今天發生命案，警消到場發現3人倒在臥室，9歲男童與8個月大女嬰明顯死亡，母親頸、腕有刀傷及胸口插著1把刀仍有生命跡象，送醫搶救，警方正調查釐清案情。
+                            </option>
+                            <option value="negative3">
+                                負面範例3：美媒報導，川普回任美國總統後，中國試圖與華府建立溝通管道，包括駐美大使謝鋒求見富商馬斯克等均告失敗。如今川普宣布34%的對等關稅已令中國沮喪及憤怒，美中缺乏溝通未來很可能使兩國陷入相互報復的循環，短期內很難重啟談判。
+                            </option>
+                            <option value="negative4">
+                                負面範例4：美國財經新聞網CNBC報導，Coin
+                                Metrics的數據顯示，比特幣價格一度跌至7萬6221美元，這個價格和今年1月創下的歷史高點相比跌幅達30%。今年多數時間，比特幣價格都在8萬美元以上，僅近期波動期間幾次短暫跌破該價位。
+                            </option>
+                            <option value="arguable1">
+                                待商榷範例1：美國財經新聞網CNBC報導，Coin
+                                Metrics的數據顯示，比特幣價格一度跌至7萬6221美元，這個價格和今年1月創下的歷史高點相比跌幅達30%。今年多數時間，比特幣價格都在8萬美元以上，僅近期波動期間幾次短暫跌破該價位。
+                            </option>
+                            <option value="arguable2">
+                                待商榷範例2：美國課徵對等關稅衝擊台灣經濟，國民黨團總召傅崐萁指總預算刪減的新台幣1439億元可作紓困。民進黨立法院黨團總召柯建銘說，總預算已表決通過，經總統公告，接續要暫時處分與釋憲，怎麼拿回來，毫無憲法常識。
+                            </option>
+                        </select>
+                        <textarea class="form-control mb-0" id="input" rows="4" placeholder="輸入一段帶有情緒的文字..."></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-9 ms-auto">
+                        <button class="btn btn-secondary" id="interest_del" type="reset">清空</button>
+                        <button class="btn btn-primary" id="interest_submit" type="button">開始判讀</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="h4 mb-0">判讀結果</h3>
+        </div>
+        <div class="card-body pt-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="text" id="analized_results">輸入完畢後，請按下「開始判讀」</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- llm_ollama_引入js_自定義js -->
+<script src="{% static 'js\ai_sent.js' %}"></script>
+{% endblock %}

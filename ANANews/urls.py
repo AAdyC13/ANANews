@@ -12,4 +12,8 @@ urlpatterns = [
     path('special_ana/', include('app_special_ana.urls')),
     path('advanced_search/', include('app_advanced_search.urls')),
     path('llm_report/', include('app_llm_report.urls')),
+    path('app_ai_classifier/', include('app_ai_classifier.urls')),
+
+    # 最初是和llm_report做在一起，分開要處裡太多，懶得改，只改版面
+    path('ai_sentiment/', include('app_llm_report.urls')),
 ]
