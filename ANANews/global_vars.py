@@ -8,5 +8,6 @@ def global_variables(request):
         "sentiment": "情緒分析",
         "LegislativeYuan_caucus": "立院黨團聲量",
         "ollama": "Gemma3模型 ● 分析報告",
-        "my_bert": "文章情緒判斷系統"
+        "my_bert": "基礎情緒判斷系統",
+        "app_ai_classifier": "進階AI情緒分類",
     }

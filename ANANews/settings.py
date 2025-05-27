@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'app_special_ana',
     'app_advanced_search',
     'app_llm_report',
+    'app_ai_classifier',
 
     # 其他核心
     'index',
