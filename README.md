@@ -1,2 +1,2 @@
-ANANews
-學校作品：Django框架網站-ANANews  
+# Analysing News
+Collage class work: python Django project - Analysing News (ANANews)
