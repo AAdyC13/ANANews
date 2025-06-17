@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # 用pathlib更現代化，也是Django默認生成的寫法
@@ -12,15 +13,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8*si(fa6h+2!#=13jbvtn6a1pfp5-w1_j9^u#!++)*$15d%(oz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
-# Celery 配置
-CELERY_BROKER_URL = "redis://localhost:6379/1"
+# Celery 配置 - 支持Docker環境
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/1')
+CELERY_BROKER_URL = REDIS_URL
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 
@@ -28,8 +30,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("localhost", 6379)],
-
+            "hosts": [REDIS_URL],
         },
     },
 }
@@ -133,10 +134,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",  # 確保 Django 找得到 static 目錄
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # 為生產環境添加
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

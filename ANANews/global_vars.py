@@ -10,4 +10,6 @@ def global_variables(request):
         "ollama": "Gemma3模型 ● 分析報告",
         "my_bert": "基礎情緒判斷系統",
         "app_ai_classifier": "進階AI情緒分類",
+        "app_ai_classifier_openAI": "與GPT模型聊天",
+        "me": "關於網站"
     }

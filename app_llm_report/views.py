@@ -116,7 +116,6 @@ def ollama_request(request):
     建議
     總結:
     '''
-        print(prompt)
 
         # 這裡你可以呼叫ChatGPT的API來生成報告，或其他任何AI大型模型的API
         # 這裡使用requests來呼叫我用Ollama架設的遠端的API

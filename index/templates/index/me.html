@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Analysing News - 新聞分析與AI工具整合平台">
+    <meta name="keywords" content="新聞分析, AI工具, 爬蟲, 情緒分析, 大數據">
+    <meta name="author" content="ANANews Team">
+    <title>關於我們 - Analysing News</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .intro-container {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 80px 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .main-sections {
+            background: white;
+            padding: 80px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+            border: 2px dashed #dee2e6;
+            overflow: hidden;
+        }
+
+        .feature-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .category-news {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .category-ai {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .category-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator::before {
+            content: '↓';
+            font-size: 2rem;
+            color: white;
+            opacity: 0.7;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        .feature-card.highlight {
+            border: 2px solid #667eea;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+        }
+
+        .back-to-home {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid transparent;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background: #667eea;
+            color: white;
+            border-color: white;
+        }
+
+        .home-button:active {
+            transform: translateY(-1px);
+        }
+    </style>
+
+    <div class="intro-container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">Analysing News</h1>
+            <p class="hero-subtitle">新聞分析與AI工具整合平台</p>
+            <p class="hero-description">
+                歡迎您蒞臨 Analysing News！本網站功能分為兩個大板塊：<br>
+                <strong>新聞爬蟲分析師</strong> 和 <strong>AI工具箱</strong>，<br>
+                為您提供全方位的新聞分析與人工智慧服務體驗。
+            </p>
+            <div class="scroll-indicator"></div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="main-sections">
+            <div class="container">
+                <!-- 新聞爬蟲分析師 Section -->
+                <div class="section category-news">
+                    <h2 class="category-title">📰 新聞爬蟲分析師</h2>
+
+                    <div class="features-grid">
+                        <div class="feature-card highlight">
+                            <div class="feature-image">
+
+                                <img src="https://i.ibb.co/9k21nBCm/1.png" alt="首頁控制區">
+                            </div>
+                            <h3 class="feature-title">首頁：新聞爬蟲控制區</h3>
+                            <p class="feature-description">
+                                可以指定想爬取的類別和需求，網站後端會自動利用Celery多線程worker於背景爬取新聞並分析存入資料庫。
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/ccPSBgVF/2.png" alt="熱門關鍵詞">
+                            </div>
+                            <h3 class="feature-title">熱門分析 - 熱門關鍵詞</h3>
+                            <p class="feature-description">
+                                將資料庫內所有的關鍵字統計製表，按數量排序，快速掌握當前熱門話題趨勢。
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/rKz5svsZ/4.png" alt="熱門人物排行">
+                            </div>
+                            <h3 class="feature-title">熱門分析 - 熱門人物排行</h3>
+                            <p class="feature-description">
+                                將資料庫內所有提及的人物統計製表，按提及數量排序，了解媒體關注焦點人物。
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/1YXbJLMw/5.png" alt="關鍵詞分析">
+                            </div>
+                            <h3 class="feature-title">進階查詢 - 關鍵詞分析</h3>
+                            <p class="feature-description">
+                                可以自定義選擇關鍵詞查詢比較，深度分析特定主題的新聞趨勢變化。
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/HpFZwbzk/6.png" alt="全文檢索">
+                            </div>
+                            <h3 class="feature-title">進階查詢 - 全文檢索與關聯分析</h3>
+                            <p class="feature-description">
+                                可以自定義選擇關鍵詞查詢分析，附帶新聞關聯、文字雲、段落預覽功能。
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/SwnPK3bv/7.png" alt="情緒分析">
+                            </div>
+                            <h3 class="feature-title">進階查詢 - 情緒分析</h3>
+                            <p class="feature-description">
+                                可以自定義選擇關鍵詞分析其新聞的情緒，附帶圓餅圖、正反面情緒變化趨勢。
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/hRkNcq3V/8.png" alt="總統分析">
+                            </div>
+                            <h3 class="feature-title">特色分析 - 總統最近在幹嘛</h3>
+                            <p class="feature-description">
+                                針對2025年現任總統賴清德的新聞分析。聲量分析專欄，掌握政治動態。
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/FbcqdNPb/9.png" alt="立院黨團">
+                            </div>
+                            <h3 class="feature-title">特色分析 - 立院黨團聲量</h3>
+                            <p class="feature-description">
+                                針對2025年立法院黨團的新聞分析。聲量分析專欄，比較各黨團媒體曝光度。
+                            </p>
+                        </div>
+
+                        <div class="feature-card highlight">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/RfrkBKv/10.png" alt="AI報告">
+                            </div>
+                            <h3 class="feature-title">AI分析新聞報告</h3>
+                            <p class="feature-description">
+                                由Gemma3模型生成報告。可以自定義選擇關鍵詞查詢分析，獲得AI深度解讀。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI工具箱 Section -->
+                <div class="section category-ai">
+                    <h2 class="category-title">🤖 AI工具箱</h2>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/tpmhFHn5/11.png" alt="AI情緒分析">
+                            </div>
+                            <h3 class="feature-title">AI情緒分析</h3>
+                            <p class="feature-description">
+                                非常小的本地自訓練模型，快速產生文字情緒分析結果，輕量級即時處理。
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/Gf57r082/12.png" alt="進階情緒分類">
+                            </div>
+                            <h3 class="feature-title">進階AI情緒分類</h3>
+                            <p class="feature-description">
+                                老師提供的自訓練模型，有較大的訓練資料集，產生更精準的文字情緒分析。
+                            </p>
+                        </div>
+
+                        <div class="feature-card highlight">
+                            <div class="feature-image">
+                                <img src="https://i.ibb.co/F4rBgqC2/13.png" alt="GPT聊天">
+                            </div>
+                            <h3 class="feature-title">與GPT模型聊天</h3>
+                            <p class="feature-description">
+                                由本網站作者提供之OpenAI API，使用GPT 4o模型，可以和AI進行智能對話交流。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 返回首頁按鈕 -->
+        <section class="back-to-home">
+            <a href="/" class="home-button">🏠 返回首頁</a>
+        </section>
+    </div>
+
+    <script>
+        // 平滑滾動效果
+        document.addEventListener('DOMContentLoaded', function () {
+            // 添加滾動動畫
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // 觀察所有 feature cards
+            const cards = document.querySelectorAll('.feature-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+
+            // 卡片懸停效果增強
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-15px) scale(1.02)';
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(-10px) scale(1)';
+                });
+            });
+
+            // 滾動指示器點擊事件
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            if (scrollIndicator) {
+                scrollIndicator.addEventListener('click', function () {
+                    document.querySelector('.main-sections').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // 添加視差滾動效果
+            window.addEventListener('scroll', function () {
+                const scrolled = window.pageYOffset;
+                const heroSection = document.querySelector('.hero-section');
+                const rate = scrolled * -0.5;
+
+                if (heroSection) {
+                    heroSection.style.transform = `translate3d(0, ${rate}px, 0)`;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

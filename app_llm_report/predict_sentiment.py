@@ -4,7 +4,7 @@ import torch
 # Setting device on GPU if available, else CPU
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # (2) or Load model from local
-best_model = "app_llm_report\\my_bert_sentimentANA_model"  #
+best_model = "app_llm_report/my_bert_sentimentANA_model"  #
 # model = AutoModelForSequenceClassification.from_pretrained("./my-best-model").to(device)
 model = BertForSequenceClassification.from_pretrained(
     best_model, num_labels=2).to(device)  # specify number of labels

@@ -1,0 +1,40 @@
+FROM python:3.11-slim
+
+# 設置工作目錄
+WORKDIR /app
+
+# 安裝系統依賴
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    netcat-traditional \
+    && rm -rf /var/lib/apt/lists/*
+
+# 複製requirements文件
+COPY requirements.txt .
+
+# 安裝Python依賴
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 複製應用代碼
+COPY . .
+
+# 設置環境變量
+ENV PYTHONPATH=/app
+ENV DJANGO_SETTINGS_MODULE=ANANews.settings
+ENV DEBUG=False
+
+# 創建非root用戶
+RUN adduser --disabled-password --gecos '' appuser && \
+    chown -R appuser:appuser /app
+USER appuser
+
+# 暴露端口
+EXPOSE 8000
+
+# 複製啟動腳本
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# 啟動命令
+CMD ["/app/start.sh"]
