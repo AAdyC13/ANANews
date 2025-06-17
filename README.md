@@ -10,5 +10,5 @@ Create a file named `keys.json` in the **root directory** with the following str
 ```json
 {
  "OPENAI_API_KEY": "",
-	"OPENAI_ORG_ID": "",
+ "OPENAI_ORG_ID": "",
 }
