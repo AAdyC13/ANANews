@@ -12,6 +12,10 @@ def index(request):
     return render(request, "index/index.html")
 
 
+def web_intro(request):
+    return render(request, "index/me.html")
+
+
 @csrf_exempt  # 取消 CSRF 保護
 def get_news_DBinfo(request):
     # set_news_DBinfo("還沒做完")

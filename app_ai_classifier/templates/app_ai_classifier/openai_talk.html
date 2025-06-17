@@ -1,0 +1,57 @@
+{% extends 'app_ai_classifier/base.html' %}
+{% load static %}
+{% block head_script %}
+{% endblock %}
+
+{% block big_title %}{{app_ai_classifier_openAI}}{% endblock %}
+{% block small_title %}{{app_ai_classifier_openAI}}{% endblock %}
+{% block top_content %}
+<section id="ai">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h4>輸入框</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <textarea class="form-control" id="textarea_content" name="textarea_text" rows="6"
+                                placeholder="請輸入您想和AI聊的內容..."></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary w-100" id="btn_send" disabled><i
+                                class="bi bi-send"></i>
+                            發送</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 mb-3">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">對話內容</h4>
+                        <div>
+                            <button class="btn btn-success btn-sm" id="btn_aiConnect"><i class="bi bi-trash"></i>
+                                嘗試連線AI</button>
+                            <button class="btn btn-outline-secondary btn-sm" id="btn_clearMemory"><i
+                                    class="bi bi-trash"></i>
+                                清除對話</button>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <div id="chat_container" class="overflow-y-auto"
+                            style="height: 50vh; max-height: 500px; position: relative; overflow-x: hidden;">
+                            <div class="text-center text-muted my-5">
+                                <p>👋 歡迎使用 AI 聊天室！</p>
+                                <p>請先點選上方「嘗試連線AI」按鈕，成功連線後便可聊天</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'js/openai_talk.js' %}"></script>
+{% endblock %}
